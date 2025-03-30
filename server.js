@@ -3,15 +3,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
+const path = require("path");
 
 const app = express();
 
-const path = require("path");
+// ตั้งค่า View Engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// 📌 Route ไปหน้า Index
 app.get("/", (req, res) => {
-  res.redirect("/users");
+  res.render("index"); // แสดงหน้า index.ejs
 });
 
 // เชื่อมต่อ MongoDB
@@ -28,16 +30,10 @@ db.on("error", (err) => console.error("❌ MongoDB Error:", err));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
-app.set("view engine", "ejs");
 
-// เชื่อมต่อ Routes
-const MyRoutes = require("./src/routes/MyRoutes");
-app.use("/users", MyRoutes);
-
-// ถ้าไม่พบ path ให้ redirect กลับไปที่หน้าแรก
-app.all("*", (req, res) => {
-  res.redirect("/");
-});
+// 📌 เชื่อมต่อ Routes (เปลี่ยน `/users` → `/users/list`)
+const userRoutes = require("./src/routes/MyRoutes");
+app.use("/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

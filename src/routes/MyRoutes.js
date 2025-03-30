@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 
-// 📌 GET: แสดง Users ทั้งหมด
-router.get("/", userController.getAllUsers);
+// 📌 เปลี่ยนจาก "/" → "/list"
+router.get("/list", userController.getAllUsers);
 
 // 📌 GET: ฟอร์มเพิ่ม User
 router.get("/new", userController.newUserForm);

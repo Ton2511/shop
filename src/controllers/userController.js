@@ -1,10 +1,10 @@
 const User = require("../models/User");
 
-// 📌 GET: แสดง Users ทั้งหมด
+// 📌 เปลี่ยนให้ `/users/list` แสดง User ทั้งหมด
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
-    res.render("users/index", { users });
+    res.render("users/list", { users }); // เปลี่ยนเป็น list.ejs
   } catch (err) {
     console.error("❌ Error getting users:", err);
     res.status(500).send("Internal Server Error");
@@ -21,7 +21,7 @@ exports.createUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     await User.create({ name, email, password });
-    res.redirect("/users");
+    res.redirect("/users/list"); // เปลี่ยนเส้นทางไป list
   } catch (err) {
     console.error("❌ Error creating user:", err);
     res.status(500).send("Internal Server Error");
@@ -44,7 +44,7 @@ exports.updateUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     await User.findByIdAndUpdate(req.params.id, { name, email, password });
-    res.redirect("/users");
+    res.redirect("/users/list");
   } catch (err) {
     console.error("❌ Error updating user:", err);
     res.status(500).send("Internal Server Error");
@@ -55,7 +55,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
-    res.redirect("/users");
+    res.redirect("/users/list");
   } catch (err) {
     console.error("❌ Error deleting user:", err);
     res.status(500).send("Internal Server Error");
