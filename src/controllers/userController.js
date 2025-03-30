@@ -1,14 +1,9 @@
 const User = require("../models/User");
 
-// 📌 เปลี่ยนให้ `/users/list` แสดง User ทั้งหมด
+// 📌 GET: แสดง Users ทั้งหมด
 exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.render("users/list", { users }); // เปลี่ยนเป็น list.ejs
-  } catch (err) {
-    console.error("❌ Error getting users:", err);
-    res.status(500).send("Internal Server Error");
-  }
+  const users = await User.find();
+  res.render("users/list", { title: "รายชื่อผู้ใช้", users, content: "users/list" });
 };
 
 // 📌 GET: ฟอร์มเพิ่ม User

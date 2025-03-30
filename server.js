@@ -6,13 +6,17 @@ const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const path = require("path");
+const expressLayouts = require("express-ejs-layouts");
 
 const app = express();
 app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ ตั้งค่า View Engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(expressLayouts); // ✅ เปิดใช้งาน Layouts
+app.set("layout", "layouts/main"); // ✅ กำหนด Layout หลัก
 
 // ✅ เชื่อมต่อ MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -54,10 +58,14 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
+
+
+
 // ✅ Route ไปหน้า Index
 app.get("/", (req, res) => {
-  res.render("index"); // แสดงหน้า index.ejs
+  res.render("index", { title: "หน้าแรก" }); // ✅ ใช้ Layout
 });
+
 
 // ✅ เชื่อมต่อ Routes
 const userRoutes = require("./src/routes/userRoutes");
@@ -66,10 +74,13 @@ const authRoutes = require("./src/routes/authRoutes");
 app.use("/users", requireAuth, userRoutes);
 app.use("/", authRoutes); // เส้นทาง `/login` และ `/logout`
 
+
 // ถ้าไม่พบ path ให้ redirect กลับไปที่หน้าแรก
 app.all("*", (req, res) => {
   res.redirect("/");
 });
+
+
 
 // ✅ เริ่มเซิร์ฟเวอร์
 const PORT = process.env.PORT || 5000;
