@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Organic - Grocery Store HTML Website Template</title>
+    <title>I.L.P</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -99,7 +99,6 @@
               <div>
                 <a href = '/users/list' class="nav-link"><h5 class="my-0"><i class="fa-solid fa-user" ></i> User</h5></a>
               </div>
-
             </li>
             <li class="d-flex mb-4 ms-3 justify-content-between lh-sm" style="border-bottom: dotted;">
                 <div>
@@ -272,7 +271,7 @@
               </div> -->
               <div class="col-11 col-md-11">
                 <form id="search-form" class="text-center" action="index.html" method="post">
-                  <input type="text" class="form-control border-0 bg-transparent" placeholder="ค้นหาสินค้า">
+                  <input type="text" class="form-control border-0 bg-transparent" placeholder="Search for products">
                 </form>
               </div>
               <div class="col-1">
@@ -312,11 +311,23 @@
           <div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end ">
             <ul class="d-flex justify-content-end list-unstyled m-0 me-3">
 
-              <li>
-                <a href="#" class="p-2 mx-1 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                    <i class="fa-solid fa-user-tie"> Admin</i>
-                </a>
-              </li>
+              
+              <% if (session.user) { %>
+                <li>
+                    <a href="#" class="p-2 mx-1 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                        <i class="fa-solid fa-user-tie"> Admin</i>
+                    </a>
+                </li>
+                
+                <li><a href="/logout" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?')" class="p-2 mx-1 text-light"><i class="fa-solid fa-right-from-bracket">Logout</i></a></li>
+              <% } else { %>
+                <li>
+                    <a href="/login" class="p-2 mx-1 text-light" >
+                        <i class="fa-solid fa-right-to-bracket"> Login</i>
+                    </a>
+                </li>
+              <% } %>
+              
             </ul>
           </div>
 
@@ -329,7 +340,7 @@
         <div class="row">
           <div class="col-lg-6 pt-5 mt-5">
             <h2 class="display-1 ls-1"><span class="fw-bold text-primary">Intertrade</span> Limited <span class="fw-bold">Partnership</span></h2>
-            <p class="fs-4">Dignissim massa diam elementum.</p>
+            <p class="fs-4">-------------</p>
             <div class="d-flex gap-3">
               <a href="#" class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Start Shopping</a>
               <a href="#" class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Category</a>
@@ -359,7 +370,7 @@
         
         <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center">
           <div class="col">
-            <div class="card border-0 bg-primary rounded-0 p-4 text-light">
+            <div class="card border-0 bg-teal rounded-0 p-4 text-light">
               <div class="row">
                 <div class="col-md-3 text-center">
                   <svg width="60" height="60"><use xlink:href="#fresh"></use></svg>
