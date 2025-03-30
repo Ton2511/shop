@@ -6,6 +6,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 
 const app = express();
+app.use(express.static("public"));
 
 // ตั้งค่า View Engine
 app.set("views", path.join(__dirname, "views"));
