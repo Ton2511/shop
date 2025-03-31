@@ -34,11 +34,19 @@ exports.editUserForm = async (req, res) => {
   }
 };
 
+const bcrypt = require("bcryptjs"); // เพิ่ม bcrypt
 // 📌 PUT: อัปเดต User
 exports.updateUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    await User.findByIdAndUpdate(req.params.id, { name, email, password });
+    const updatedData = { name, email };
+
+    // ถ้ามีการเปลี่ยนรหัสผ่าน ให้แฮชก่อนบันทึก
+    if (password) {
+      updatedData.password = await bcrypt.hash(password, 10);
+    }
+
+    await User.findByIdAndUpdate(req.params.id, updatedData, { new: true });
     res.redirect("/users/list");
   } catch (err) {
     console.error("❌ Error updating user:", err);
