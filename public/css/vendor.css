@@ -84,6 +84,7 @@
 .chocolat-zoomable .chocolat-img {
     cursor: zoom-in;
 }
+
 .chocolat-loader {
     transition: opacity 0.3s;
     height: 32px;

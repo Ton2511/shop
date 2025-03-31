@@ -1,3 +1,13 @@
+body {
+  .card {
+    background-color: white; /* พื้นหลังสีขาว */
+    border-radius: 12px; /* ขอบโค้ง */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงาเพิ่มมิติ */
+    padding: 50px; /* ระยะห่างข้างใน */
+    border: 1px solid #ddd; /* ขอบสีเทาอ่อน */
+    
+    
+}
 
 .text-blue {
   color: #007bff !important;
@@ -27,7 +37,7 @@
   color: #4fc133 !important;
 }
 .text-teal {
-  color: #20c997 !important;
+  color: #21f0cd !important;
 }
 
 .text-cyan {
@@ -64,7 +74,7 @@
   color: #ffab00 !important;
 }
 .text-danger {
-  color: #ff3e1d !important;
+  color: #ff2600 !important;
 }
 .text-light {
   color: #fcfdfd !important;
@@ -113,7 +123,7 @@
 }
 .bg-teal {
   color: #fff;
-  background-color: #20c997 !important;
+  background-color: #24d6b9 !important;
 }
 .bg-cyan {
   color: #fff;
@@ -161,7 +171,7 @@
 }
 .bg-danger {
   color: #fff;
-  background-color: #ff3e1d !important;
+  background-color: #ff2a2a !important;
 }
 .bg-light {
   color: #000;
@@ -172,7 +182,14 @@
   background-color: #233446 !important;
 }
 
-body {
+
+.tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* เปลี่ยนสีแถวเมื่อ hover */
+}
+
   --heading-font        : "Inter", sans-serif;
   --bs-link-color: #333;
   --bs-link-hover-color:#333;
@@ -195,8 +212,10 @@ body {
   --bs-secondary: #364127;
   --bs-secondary-rgb: 54, 65, 39;
   
-  --bs-danger: #F95F09;
-  --bs-danger-rgb: 249, 95, 9;
+  --bs-danger: #ff2600;
+
+
+  
 
   --bs-success: #a3be4c;
   --bs-success-rgb: 163, 190, 76;
@@ -327,6 +346,13 @@ h1,h2,h3,h4,h5,h6 {
 }
 .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
   --bs-gutter-x: 3rem;
+}
+
+tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* เปลี่ยนสีแถวเมื่อ hover */
 }
 /*----------------------------------------------*/
 /* 6. SITE STRUCTURE */

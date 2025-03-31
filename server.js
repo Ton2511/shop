@@ -18,6 +18,10 @@ app.set("view engine", "ejs");
 app.use(expressLayouts); // ✅ เปิดใช้งาน Layouts
 app.set("layout", "layouts/main"); // ✅ กำหนด Layout หลัก
 
+app.get("/login", (req, res) => {
+  res.render("./auth/login", { title: "เข้าสู่ระบบ", layout: "layouts/main", isLoginPage: true });
+});
+
 // ✅ เชื่อมต่อ MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
