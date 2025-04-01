@@ -74,8 +74,10 @@ app.get("/", (req, res) => {
 // ✅ เชื่อมต่อ Routes
 const userRoutes = require("./src/routes/userRoutes");
 const authRoutes = require("./src/routes/authRoutes");
-
+const productRouter = require("./src/routes/productRouter");
 app.use("/users", requireAuth, userRoutes);
+
+app.use("/products", productRouter);
 //app.use("/users", userRoutes);
 app.use("/", authRoutes); // เส้นทาง `/login` และ `/logout`
 
