@@ -1,3 +1,4 @@
+//controllers/categoryController.js
 const Category = require("../models/categoryModel");
 const path = require("path");
 const fs = require("fs");

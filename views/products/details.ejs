@@ -1,0 +1,63 @@
+<div class="custom-container-lg mx-auto d-flex flex-column">
+    <div class="card mt-5 mb-5">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-cyan">Product Details</h1>
+                <div>
+                    <a href="/products" class="btn bg-info text-light">All Products</a>
+                    <% if (product.category) { %>
+                        <a href="/products/category/<%= product.category._id %>" class="btn bg-primary text-light">
+                            Back to <%= product.category.name %>
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="bg-light" width="20%">Product Name</th>
+                            <td><%= product.name %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Product Code</th>
+                            <td><%= product.code %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Category</th>
+                            <td><%= product.category ? product.category.name : 'ไม่มีหมวดหมู่' %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Price</th>
+                            <td><%= product.price %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Stock</th>
+                            <td><%= product.stock %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Description</th>
+                            <td><%= product.description || 'ไม่มีคำอธิบาย' %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Created At</th>
+                            <td><%= new Date(product.createdAt).toLocaleDateString('th-TH') %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Updated At</th>
+                            <td><%= new Date(product.updatedAt).toLocaleDateString('th-TH') %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+                <a href="/products/edit/<%= product._id %>" class="btn bg-warning text-light">Edit Product</a>
+                <form action="/products/delete/<%= product._id %>" method="POST" onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้หรือไม่?');">
+                    <button type="submit" class="btn bg-danger text-light">Delete Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

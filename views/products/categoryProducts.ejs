@@ -1,17 +1,18 @@
 <div class="custom-container-lg mx-auto d-flex flex-column mb-5">
     <div class="card mt-5 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-1 col-12">
-            <h1 class="text-cyan">Product Management</h1>
+            <h1 class="text-cyan">Products in <%= category.name %></h1>
             <div>
                 <a href="/categories" class="btn bg-info text-light">Categories</a>
-                <a href="/products/new" class="btn bg-teal text-light">Add New Product</a>
+                <a href="/products" class="btn bg-primary text-light">All Products</a>
+                <!-- แก้ไขลิงก์ Add New Product ให้ตรงกับ route ใหม่ -->
+                <a href="/products/category/<%= category._id %>/new" class="btn bg-teal text-light">Add New Product</a>
             </div>
         </div>
         <table class="table table-bordered text-center mb-5">
             <tr class="bg-dark text-center table-hover">
                 <th class="col-1">Code</th>
-                <th class="col-3">Name</th>
-                <th class="col-2">Category</th>
+                <th class="col-4">Name</th>
                 <th class="col-1">Price</th>
                 <th class="col-1">Stock</th>
                 <th class="col-4">Actions</th>
@@ -21,13 +22,12 @@
                     <tr class='text-center'>
                         <td><%= product.code %></td>
                         <td><%= product.name %></td>
-                        <td><%= product.category ? product.category.name : 'ไม่มีหมวดหมู่' %></td>
                         <td><%= product.price %></td>
                         <td><%= product.stock %></td>
                         <td>
                             <a href="/products/details/<%= product._id %>" class="btn bg-info text-light">Details</a> | 
                             <a href="/products/edit/<%= product._id %>" class="btn bg-warning text-light">Edit</a> | 
-                            <form action="/products/delete/<%= product._id %>" method="POST" style="display:inline;">
+                            <form action="/products/delete/<%= product._id %>?categoryId=<%= category._id %>" method="POST" style="display:inline;">
                                 <button type="submit" class="btn bg-danger">Delete</button>
                             </form>
                         </td>
@@ -35,7 +35,7 @@
                 <% }) %>
             <% } else { %>
                 <tr>
-                    <td colspan="6" class="text-center">ไม่มีสินค้าในระบบ</td>
+                    <td colspan="5" class="text-center">ไม่มีสินค้าในหมวดหมู่นี้</td>
                 </tr>
             <% } %>
         </table>
