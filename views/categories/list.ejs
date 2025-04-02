@@ -1,0 +1,61 @@
+<div class="custom-container-lg mx-auto d-flex flex-column mb-5">
+    <div class="card mt-5 mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-1 col-12">
+            <h1 class="text-cyan">Category Management</h1>
+            <a href="/categories/new" class="btn bg-teal text-light">Add New Category</a>
+        </div>
+        <table class="table table-bordered text-center mb-5">
+            <tr class="bg-dark text-center table-hover">
+                <th class="col-7">Name</th>
+                <th class="col-1">Products</th>
+                <th class="col-1">Image</th> <!-- คอลัมน์แสดงภาพ -->
+                <th class="col-3">Actions</th>
+            </tr>
+            <% categories.forEach(category => { %>
+                <tr class='text-center'>
+                    <td><%= category.name %></td>
+                    <td><%= category.products.length %></td> <!-- หรือจำนวนสินค้าของหมวดหมู่ -->
+                    <td>
+                        <% if (category.image) { %>
+                            <!-- ปุ่มเพื่อแสดงภาพ -->
+                            <button class="btn btn-info text-light" onclick="showImage('<%= category.image %>')">Image</button>
+                        <% } else { %>
+                            None
+                        <% } %>
+                    </td>
+                    <td>
+                        <a href="" class="btn bg-success text-light">Product</a> | 
+                        <a href="/categories/edit/<%= category._id %>" class="btn bg-warning text-light">Edit</a> | 
+                        <form action="/categories/delete/<%= category._id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="btn bg-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    </div>
+</div>
+
+<!-- Modal สำหรับแสดงภาพ -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Category Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="categoryImage" src="" alt="Category Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript เพื่อแสดงภาพใน modal -->
+<script>
+    function showImage(imageUrl) {
+        const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        document.getElementById('categoryImage').src = imageUrl; // ตั้งค่า src ของภาพ
+        imageModal.show();
+    }
+</script>

@@ -1,0 +1,27 @@
+<h1>Product Management</h1>
+<a href="/products/new">Add New Product</a>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Category</th>
+    <th>Price</th>
+    <th>Stock</th>
+    <th>Actions</th>
+  </tr>
+  <% products.forEach(product => { %>
+    <tr>
+      <td><%= product.name %></td>
+      <td><%= product.code %></td>
+      <td><%= product.category.name %></td>
+      <td><%= product.price %></td>
+      <td><%= product.stock %></td>
+      <td>
+        <a href="/products/edit/<%= product._id %>">Edit</a>
+        <form action="/products/delete/<%= product._id %>" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>

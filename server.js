@@ -9,18 +9,10 @@ const path = require("path");
 const expressLayouts = require("express-ejs-layouts");
 
 const app = express();
+
+// ✅ ตั้งค่า Static Files
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
-
-// ✅ ตั้งค่า View Engine
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-app.use(expressLayouts); // ✅ เปิดใช้งาน Layouts
-app.set("layout", "layouts/main"); // ✅ กำหนด Layout หลัก
-
-app.get("/login", (req, res) => {
-  res.render("./auth/login", { title: "เข้าสู่ระบบ", layout: "layouts/main", isLoginPage: true });
-});
 
 // ✅ เชื่อมต่อ MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -28,9 +20,17 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 });
 
+
+
 const db = mongoose.connection;
 db.once("open", () => console.log("✅ MongoDB Connected"));
 db.on("error", (err) => console.error("❌ MongoDB Error:", err));
+
+// ✅ ตั้งค่า View Engine
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.use(expressLayouts);
+app.set("layout", "layouts/main");
 
 // ✅ ตั้งค่า Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,11 +48,11 @@ app.use(
   })
 );
 
+// ✅ กำหนดตัวแปร Global
 app.use((req, res, next) => {
   res.locals.session = req.session;
   next();
 });
-
 
 // ✅ Middleware ตรวจสอบการล็อกอิน
 const requireAuth = (req, res, next) => {
@@ -62,34 +62,48 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
-
-
-
-// ✅ Route ไปหน้า Index
-app.get("/", (req, res) => {
-  res.render("index", { title: "หน้าแรก" }); // ✅ ใช้ Layout
+// ✅ Route ไปหน้า Login
+app.get("/login", (req, res) => {
+  res.render("./auth/login", { title: "เข้าสู่ระบบ", layout: "layouts/main", isLoginPage: true });
 });
+
 
 
 // ✅ เชื่อมต่อ Routes
 const userRoutes = require("./src/routes/userRoutes");
 const authRoutes = require("./src/routes/authRoutes");
-const productRouter = require("./src/routes/productRouter");
-const manageRouter = require("./src/routes/manageRouter");
-app.use("/users", requireAuth, userRoutes);
+const mainRoutes = require("./src/routes/mainRoutes");
+const categoryRoutes = require("./src/routes/categoryRoutes");
+const productRoutes = require("./src/routes/productRoutes");
 
-app.use("/products", productRouter);
-app.use("/manage", manageRouter);
-//app.use("/users", userRoutes);
-app.use("/", authRoutes); // เส้นทาง `/login` และ `/logout`
+const Category = require("./src/models/categoryModel"); // Import Model
 
-
-// ถ้าไม่พบ path ให้ redirect กลับไปที่หน้าแรก
-app.all("*", (req, res) => {
-  res.redirect("/");
+app.use(async (req, res, next) => {
+  try {
+    res.locals.categories = await Category.find(); // ทำให้ categories ใช้ได้ทุกหน้า
+  } catch (error) {
+    res.locals.categories = []; // ถ้า error ให้เป็น array ว่าง
+  }
+  next();
 });
 
 
+// ✅ Route ไปหน้า Index
+const categoryController = require("./src/controllers/categoryController"); // เพิ่มการ import
+app.get("/", categoryController.getCategoriesForIndex);
+
+app.use("/users", requireAuth, userRoutes);
+app.use("/categories",requireAuth, categoryRoutes);
+app.use("/products", productRoutes);
+app.use("/", authRoutes ,categoryRoutes); // เส้นทาง `/login` และ `/logout`
+// ดึงข้อมูลหมวดหมู่ทั้งหมดและแสดงในหน้าแรก
+
+
+
+// ✅ จัดการเส้นทางที่ไม่พบ
+app.all("*", (req, res) => {
+  res.redirect("/");
+});
 
 // ✅ เริ่มเซิร์ฟเวอร์
 const PORT = process.env.PORT || 5000;
