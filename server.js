@@ -72,7 +72,7 @@ const userRoutes = require("./src/routes/userRoutes");
 const authRoutes = require("./src/routes/authRoutes");
 const categoryRoutes = require("./src/routes/categoryRoutes");
 const productRoutes = require("./src/routes/productRoutes");
-
+const shopRoutes = require("./src/routes/shopRoutes");
 // ✅ Login routes - ใช้ authRoutes แทนการกำหนดตรงๆ
 app.use("/", authRoutes); // ให้ /login และ /logout ทำงานที่ root
 
@@ -83,6 +83,7 @@ app.get("/", categoryController.getCategoriesForIndex);
 app.use("/users", requireAuth, userRoutes);
 app.use("/categories", requireAuth, categoryRoutes);
 app.use("/products", productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ
+app.use("/shop", shopRoutes);
 
 // ✅ จัดการเส้นทางที่ไม่พบ
 app.all("*", (req, res) => {

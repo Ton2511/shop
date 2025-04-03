@@ -1,0 +1,46 @@
+<div class="container my-5">
+    <h1 class="text-center mb-4">หมวดหมู่สินค้า</h1>
+    
+    <div class="row">
+      <% if (categories && categories.length > 0) { %>
+        <% categories.forEach(category => { %>
+          <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 shadow-sm">
+              <% if (category.image) { %>
+                <img src="<%= category.image %>" class="card-img-top" alt="<%= category.name %>" style="height: 200px; object-fit: cover;">
+              <% } else { %>
+                <div class="bg-light text-center py-5">
+                  <i class="bi bi-collection fs-1"></i>
+                </div>
+              <% } %>
+              <div class="card-body">
+                <h5 class="card-title"><%= category.name %></h5>
+                <p class="card-text text-muted">
+                  <small>สินค้าในหมวดหมู่: <%= category.products.length %> รายการ</small>
+                </p>
+              </div>
+              <div class="card-footer bg-white border-top-0">
+                <a href="/shop/category/<%= category._id %>" class="btn btn-primary w-100">
+                  ดูสินค้าในหมวดหมู่นี้
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12 text-center py-5">
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            ยังไม่มีหมวดหมู่สินค้าในระบบ
+          </div>
+        </div>
+      <% } %>
+    </div>
+    
+    <div class="text-center mt-4">
+      <a href="/shop/products" class="btn btn-outline-primary">
+        <i class="bi bi-grid me-2"></i>
+        ดูสินค้าทั้งหมด
+      </a>
+    </div>
+  </div>
