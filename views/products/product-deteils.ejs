@@ -168,37 +168,28 @@
 
         <!-- รายละเอียดสินค้า -->
         <div class="col-6 ps-5">
-          <h3 class='text-dark mb-2 mt-5'><b><%= product.name %></b></h3>
+          <h3 class='text-dark mb-2'><b><%= product.name %></b></h3>
           <div class="d-flex justify-content-between align-items-center mb-1 col-12">
-            <h6 class='text-gray '>รหัสสินค้า : <%= product.code %></h6>
-            <h6 class='text-gray '>view : <%= displayViews || 0 %> <i class="fa-solid fa-eye"></i></h6>
+            <h6 class='text-gray mb-4'>รหัสสินค้า : <%= product.code %></h6>
+            <h6 class='text-gray mb-4'>view : <%= displayViews || 0 %> <i class="fa-solid fa-eye"></i></h6>
           </div>
-          <h2 class='text-cyan my-4'><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
-          <h4 class='mb-2 text-dark'>หมวดหมู่ :  <% if (product.category) { %>
-            <a href="/shop/category/<%= product.category._id %>" class="bg-gray text-decoration-none">
-              <%= product.category.name %>
-            </a>
-          <% } %><div class="mb-3">
-
-          </div></h4>
-          <h4 class='mb-3'>คงเหลือ : <span class="text-gray"><%= product.stock || 0 %> ชิ้น</span></h4>
-          <h4 class='mb-3 '>สถานะ : <span class ='text-gray'>พร้อมจัดส่ง</span></h4>
-
-          <hr class="my-5">
-
-          <div class="text-center mt">
+          <h2 class='text-warning mb-5'><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
+          <h3 class='mb-2'>หมวดหมู่ : <%= product.category ? product.category.name : 'ไม่ระบุหมวดหมู่' %></h3>
+          <h3 class='mb-4'>คงเหลือ : <%= product.stock || 0 %> ชิ้น</h3>
+          <hr>
+          <div class="text-center mt-5">
             <h3 class="text-dark">ติดต่อสั่งซื้อ |
-              <a href="#" class="btn bg-blackgreen btn-lg px-4">Line</a> |
-              <a href="#" class="btn bg-blue btn-lg px-4">Facebook</a>
+              <a href="#" class="btn bg-blackgreen btn-lg">Line</a> |
+              <a href="#" class="btn bg-blue btn-lg">Facebook</a>
             </h3>
           </div>
         </div>
       </div>
       
-
+      <hr class="m-5">
       
       <!-- รายละเอียดเพิ่มเติม -->
-      <h3 class="text-dark mt-5 mb-3"><b>รายละเอียดสินค้า </b></h3>
+      <h3 class="text-dark mb-3"><b>รายละเอียดสินค้า </b></h3>
       <div class="row">
         <div class="col-2">
           <h4 class="text-dark"><b>ข้อมูล |</b></h4>
@@ -218,13 +209,13 @@
           <h4 class="text-dark"><b>วิธีการจัดส่ง |</b></h4>
         </div>
         <div class="col-10 d-flex mb-3">
-          <h4 class="">------------------------------------</h4>
+          <h4 class="">รายละเอียดการจัดส่งสินค้าของร้านค้าสำหรับการสั่งซื้อสินค้า 1 ชิ้น</h4>
         </div>
       </div>
       
       <!-- สินค้าที่เกี่ยวข้อง -->
       <% if (relatedProducts && relatedProducts.length > 0) { %>
-        <div class="mt-5 ">
+        <div class="mt-5">
           <h3 class="text-dark mb-4"><b>สินค้าที่เกี่ยวข้อง</b></h3>
           <div class="row">
             <% relatedProducts.forEach(related => { %>
@@ -261,7 +252,7 @@
       <% } %>
       
       <div class="text-center mt-4">
-        <a href="/shop/category/<%= product.category ? product.category._id : '' %>" class="btn btn-outline bg-dark">
+        <a href="/shop/category/<%= product.category ? product.category._id : '' %>" class="btn btn-outline-primary">
           <i class="bi bi-arrow-left me-2"></i>
           กลับไปยังรายการสินค้า
         </a>

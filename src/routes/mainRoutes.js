@@ -1,8 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
+const mainController = require('../controllers/mainController');
 
-const categoryController = require("../controllers/categoryController");
-router.get("/index", categoryController.getCategoriesForIndex);
-
+// หน้าแรก
+router.get('/', mainController.getHomePage);
 
 module.exports = router;

@@ -68,6 +68,7 @@ app.use(async (req, res, next) => {
 });
 
 // ✅ เชื่อมต่อ Routes
+const mainRoutes = require('./src/routes/mainRoutes');
 const userRoutes = require("./src/routes/userRoutes");
 const authRoutes = require("./src/routes/authRoutes");
 const categoryRoutes = require("./src/routes/categoryRoutes");
@@ -79,7 +80,7 @@ app.use("/", authRoutes); // ให้ /login และ /logout ทำงาน�
 
 // ✅ กำหนด Routes - แยกกันให้ชัดเจน
 const categoryController = require("./src/controllers/categoryController");
-app.get("/", categoryController.getCategoriesForIndex);
+app.use('/', mainRoutes); // ใช้ mainRoutes สำหรับหน้าแรก
 app.use("/users", requireAuth, userRoutes);
 app.use("/categories", requireAuth, categoryRoutes);
 app.use("/products", productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ

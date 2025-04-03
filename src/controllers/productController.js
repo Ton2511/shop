@@ -5,10 +5,20 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
+const uploadDir = path.join(__dirname, '../../public/uploads/products');
+if (!fs.existsSync(path.join(__dirname, '../../public/uploads'))) {
+  fs.mkdirSync(path.join(__dirname, '../../public/uploads'));
+  console.log('Created uploads directory');
+}
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log('Created products directory');
+}
+
 // ตั้งค่า storage สำหรับ multer (รูปภาพสินค้า)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/products/"); // ตั้งค่าให้เก็บไฟล์ในโฟลเดอร์ uploads/products
+    cb(null, uploadDir); // ใช้ uploadDir ที่กำหนดไว้
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // ตั้งชื่อไฟล์เป็น timestamp + นามสกุลไฟล์
@@ -197,7 +207,14 @@ exports.updateProductImages = [
         imagesToDelete.forEach(img => {
           const imagePath = path.join(__dirname, '../../public', img.url);
           if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+            try {
+              fs.unlinkSync(imagePath);
+              console.log('Deleted image:', imagePath);
+            } catch (err) {
+              console.error('Error deleting image:', err);
+            }
+          } else {
+            console.log('Image file not found:', imagePath);
           }
         });
         
@@ -517,3 +534,4 @@ exports.deleteProduct = async (req, res) => {
     res.redirect("/products");
   }
 };
+

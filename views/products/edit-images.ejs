@@ -1,0 +1,73 @@
+<div class="custom-container-lg mx-auto d-flex flex-column">
+    <div class="card mt-5 mb-5">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="text-cyan">จัดการรูปภาพสินค้า: <%= product.name %></h1>
+          <div>
+            <a href="/products/details/<%= product._id %>" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> กลับไปยังรายละเอียดสินค้า
+            </a>
+          </div>
+        </div>
+  
+        <!-- แสดงรูปภาพปัจจุบัน -->
+        <% if (product.images && product.images.length > 0) { %>
+          <h4 class="mb-3">รูปภาพปัจจุบัน (<%= product.images.length %> รูป)</h4>
+          <form action="/products/images/<%= product._id %>" method="POST" enctype="multipart/form-data">
+            <div class="row mb-4">
+              <% product.images.forEach((image, index) => { %>
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100">
+                    <img src="<%= image.url %>" class="card-img-top" alt="<%= product.name %>" style="height: 200px; object-fit: contain;">
+                    <div class="card-body">
+                      <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" name="deleteImages" value="<%= index %>" id="delete-<%= index %>">
+                        <label class="form-check-label text-danger" for="delete-<%= index %>">
+                          ลบรูปภาพนี้
+                        </label>
+                      </div>
+                      <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="featured" value="<%= index %>" id="featured-<%= index %>" <%= image.isFeatured ? 'checked' : '' %>>
+                        <label class="form-check-label" for="featured-<%= index %>">
+                          ตั้งเป็นรูปหลัก
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label for="caption-<%= index %>" class="form-label">คำอธิบายภาพ:</label>
+                        <input type="text" class="form-control" id="caption-<%= index %>" name="captions[<%= index %>]" value="<%= image.caption || '' %>">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+  
+            <hr class="my-4">
+        <% } else { %>
+          <div class="alert alert-info mb-4">
+            <i class="bi bi-info-circle me-2"></i>
+            ยังไม่มีรูปภาพสำหรับสินค้านี้
+          </div>
+          <form action="/products/images/<%= product._id %>" method="POST" enctype="multipart/form-data">
+        <% } %>
+  
+        <!-- อัพโหลดรูปภาพใหม่ -->
+        <h4 class="mb-3">เพิ่มรูปภาพใหม่ (สูงสุด 5 รูป)</h4>
+        <div class="mb-4">
+          <label for="newImages" class="form-label">เลือกรูปภาพ (รองรับ: JPEG, JPG, PNG, GIF, WEBP | ขนาดสูงสุด: 5MB)</label>
+          <input class="form-control" type="file" id="newImages" name="newImages" multiple accept="image/jpeg,image/jpg,image/png,image/gif,image/webp">
+          <div class="form-text">คุณสามารถเลือกได้หลายรูปพร้อมกันโดยกด Ctrl (หรือ Command บน Mac) ขณะเลือกไฟล์</div>
+        </div>
+  
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> บันทึกการเปลี่ยนแปลง
+          </button>
+          <a href="/products/details/<%= product._id %>" class="btn btn-secondary">
+            ยกเลิก
+          </a>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>

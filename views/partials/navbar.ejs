@@ -35,24 +35,32 @@
         <div class="offcanvas-body">
           <div class="order-md-last">
             <h3 class="d-flex justify-content-between align-items-center ms-4  mb-3">
-              <span class="text-warning text-center" > <i class="fa-solid fa-gear">เครื่องมือจัดการทำงาน</i></span>
+              <span class="text-teal text-center" > <i class="fa-solid fa-gear">เครื่องมือจัดการทำงาน</i></span>
             </h3>
-            <ul class="list-group mb-3 ">
-              <li class=" d-flex mb-4 ms-3 justify-content-between lh-sm" style="border-bottom: dotted;">
+            <ul class="list-group mb-3">
+              <li class="d-flex mb-4 ms-3 justify-content-between lh-sm" style="border-bottom: 1px solid;">
                 <div>
-                  <a href = '/users/list' class="nav-link"><h5 class="my-0"><i class="fa-solid fa-user" ></i> จัดการผู้ใช้</h5></a>
+                  <a href='/users/list' class="nav-link">
+                    <h5 class="my-0 text-dark"><i class="fa-solid fa-user"> จัดการผู้ใช้</i></h5>
+                  </a>
                 </div>
               </li>
-              <li class=" d-flex mb-4 ms-3 justify-content-between lh-sm" style="border-bottom: dotted;">
+              <li class="d-flex mb-4 ms-3 justify-content-between lh-sm" style="border-bottom: 1px solid;">
                 <div>
-                  <a href = '/products/productList' class="nav-link"><h5 class="my-0"><i class="fa-solid fa-user" ></i> สินค้า</h5></a>
+                  <a href='/products/' class="nav-link">
+                    <h5 class="my-0 text-dark"><i class="fa-solid fa-cart-shopping"> หมวดหมู่</i></h5>
+                  </a>
                 </div>
               </li>
-              
-
-             
-    
+              <li class="d-flex mb-4 ms-3 justify-content-between lh-sm" style="border-bottom: 1px solid;">
+                <div>
+                  <a href='/products/' class="nav-link">
+                    <h5 class="my-0 text-dark"><i class="fa-solid fa-cart-shopping"> สินค้า</i></h5>
+                  </a>
+                </div>
+              </li>
             </ul>
+            
     
           </div>
         </div>
@@ -68,12 +76,12 @@
         <div class="offcanvas-body">
         
           <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-            <% if (typeof categories !== "undefined" && categories.length > 0) { %>
+            <% if (categories && categories.length > 0) { %>
               <% categories.forEach(category => { %>
 
                 <li class="nav-item border-dashed active">
-                  <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                    <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#fruits"></use></svg>
+                  <a href="/shop/category/<%= category._id %>" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+                    <i class="fa-solid fa-arrow-right"></i>
                     <span><%= category.name %></span>
                   </a>
                 </li>
@@ -84,12 +92,7 @@
                 <% } else { %>
                   <li>ปิดการใช้งาน</li>
                 <% } %>
-            <li class="nav-item border-dashed active">
-              <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#fruits"></use></svg>
-                <span>Fruits and vegetables</span>
-              </a>
-            </li>
+
 
 
             <!-- <li class="nav-item border-dashed">

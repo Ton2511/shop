@@ -16,6 +16,7 @@
                     <a href="/products/views/<%= product._id %>" class="btn btn-secondary me-2">
                         <i class="bi bi-eye"></i> จัดการยอดเข้าชม
                     </a>
+                    <a href="/products/edit/<%= product._id %>" class="btn bg-warning text-light me-2">แก้ไข</a>
                 </div>
             </div>
             
@@ -39,8 +40,8 @@
                                         <img src="<%= image.url %>" class="d-block w-100" alt="<%= image.caption || product.name %>" 
                                              style="height: 300px; object-fit: contain;">
                                         <% if (image.caption) { %>
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <p><%= image.caption %></p>
+                                            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                                                <p class="mb-0"><%= image.caption %></p>
                                             </div>
                                         <% } %>
                                     </div>
@@ -49,4 +50,123 @@
                             
                             <!-- ควบคุมสไลด์ -->
                             <button class="carousel-control-prev" type="button" data-bs-target="#productImages" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#productImages" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
+                        <!-- ภาพขนาดเล็ก (thumbnails) -->
+                        <div class="row mt-2">
+                            <% product.images.forEach((image, index) => { %>
+                                <div class="col-3 mb-2">
+                                    <img src="<%= image.url %>" class="img-thumbnail cursor-pointer" 
+                                         alt="thumbnail" style="height: 60px; object-fit: cover;"
+                                         onclick="$('#productImages').carousel(<%= index %>)">
+                                    <% if (image.isFeatured) { %>
+                                        <span class="badge bg-primary position-absolute" style="top: 0; right: 15px;">หลัก</span>
+                                    <% } %>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% } else { %>
+                        <div class="bg-light d-flex flex-column justify-content-center align-items-center py-5 rounded">
+                            <i class="bi bi-image fs-1 text-muted"></i>
+                            <p class="text-muted mt-2">ไม่มีรูปภาพ</p>
+                            <a href="/products/images/<%= product._id %>" class="btn btn-sm btn-primary mt-2">
+                                <i class="bi bi-plus-circle"></i> เพิ่มรูปภาพ
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <!-- รายละเอียดสินค้า -->
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="mb-3"><%= product.name %></h2>
+                            <% if (product.category) { %>
+                                <span class="badge bg-secondary mb-2"><%= product.category.name %></span>
+                            <% } %>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <!-- แสดงยอดเข้าชม -->
+                            <div class="text-muted">
+                                <i class="bi bi-eye"></i> ยอดเข้าชม: 
+                                <span class="badge bg-light text-dark"><%= product.views?.fake || 0 %></span>
+                                <br>
+                                <small>ยอดจริง: <%= product.views?.real || 0 %></small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table class="table table-bordered mt-3">
+                        <tr>
+                            <th class="bg-light" width="30%">รหัสสินค้า</th>
+                            <td><%= product.code %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">SKU</th>
+                            <td><%= product.sku || '-' %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">ราคา</th>
+                            <td><%= product.price || 'ไม่ระบุ' %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">คลังสินค้า</th>
+                            <td>
+                                <%= product.stock || 0 %> ชิ้น
+                                <% if (product.stock > 0) { %>
+                                    <span class="badge bg-success">มีสินค้า</span>
+                                <% } else { %>
+                                    <span class="badge bg-danger">สินค้าหมด</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">รายละเอียด</th>
+                            <td>
+                                <% if (product.description) { %>
+                                    <%= product.description %>
+                                <% } else { %>
+                                    <span class="text-muted">ไม่มีรายละเอียด</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">สร้างเมื่อ</th>
+                            <td><%= new Date(product.createdAt).toLocaleString('th-TH') %></td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">อัพเดทล่าสุด</th>
+                            <td><%= new Date(product.updatedAt).toLocaleString('th-TH') %></td>
+                        </tr>
+                    </table>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="/products/edit/<%= product._id %>" class="btn bg-warning text-light">
+                            <i class="bi bi-pencil"></i> แก้ไขสินค้า
+                        </a>
+                        <form action="/products/delete/<%= product._id %>" method="POST" onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้หรือไม่?');">
+                            <button type="submit" class="btn bg-danger text-light">
+                                <i class="bi bi-trash"></i> ลบสินค้า
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- เพิ่ม jQuery สำหรับควบคุม carousel ผ่าน thumbnail -->
+<script>
+    // ถ้ายังไม่มี jQuery ให้โหลดเข้ามา
+    if (typeof jQuery === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+    }
+</script>
