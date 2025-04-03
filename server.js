@@ -10,22 +10,6 @@ const expressLayouts = require("express-ejs-layouts");
 
 const app = express();
 
-// ✅ ตั้งค่า Static Files
-app.use(express.static("public"));
-app.use(express.static(path.join(__dirname, "public")));
-
-// ✅ เชื่อมต่อ MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-
-
-const db = mongoose.connection;
-db.once("open", () => console.log("✅ MongoDB Connected"));
-db.on("error", (err) => console.error("❌ MongoDB Error:", err));
-
 // ✅ ตั้งค่า View Engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -36,6 +20,16 @@ app.set("layout", "layouts/main");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
+
+// ✅ ตั้งค่า Static Files - ย้ายมาอยู่ก่อนการกำหนด routes
+app.use(express.static(path.join(__dirname, "public")));
+
+// ✅ เชื่อมต่อ MongoDB - ลบ options ที่ไม่จำเป็น
+mongoose.connect(process.env.MONGO_URI);
+
+const db = mongoose.connection;
+db.once("open", () => console.log("✅ MongoDB Connected"));
+db.on("error", (err) => console.error("❌ MongoDB Error:", err));
 
 // ✅ ตั้งค่า Session
 app.use(
@@ -62,43 +56,33 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
-// ✅ Route ไปหน้า Login
-app.get("/login", (req, res) => {
-  res.render("./auth/login", { title: "เข้าสู่ระบบ", layout: "layouts/main", isLoginPage: true });
-});
-
-
-
-// ✅ เชื่อมต่อ Routes
-const userRoutes = require("./src/routes/userRoutes");
-const authRoutes = require("./src/routes/authRoutes");
-const mainRoutes = require("./src/routes/mainRoutes");
-const categoryRoutes = require("./src/routes/categoryRoutes");
-const productRoutes = require("./src/routes/productRoutes");
-
-const Category = require("./src/models/categoryModel"); // Import Model
-
+// ✅ เตรียมข้อมูลหมวดหมู่สำหรับทุกหน้า
+const Category = require("./src/models/categoryModel");
 app.use(async (req, res, next) => {
   try {
-    res.locals.categories = await Category.find(); // ทำให้ categories ใช้ได้ทุกหน้า
+    res.locals.categories = await Category.find();
   } catch (error) {
-    res.locals.categories = []; // ถ้า error ให้เป็น array ว่าง
+    res.locals.categories = [];
   }
   next();
 });
 
+// ✅ เชื่อมต่อ Routes
+const userRoutes = require("./src/routes/userRoutes");
+const authRoutes = require("./src/routes/authRoutes");
+const categoryRoutes = require("./src/routes/categoryRoutes");
+const productRoutes = require("./src/routes/productRoutes");
 
-// ✅ Route ไปหน้า Index
-const categoryController = require("./src/controllers/categoryController"); // เพิ่มการ import
+// ✅ Login routes - ใช้ authRoutes แทนการกำหนดตรงๆ
+app.use("/", authRoutes); // ให้ /login และ /logout ทำงานที่ root
+
+
+// ✅ กำหนด Routes - แยกกันให้ชัดเจน
+const categoryController = require("./src/controllers/categoryController");
 app.get("/", categoryController.getCategoriesForIndex);
-
 app.use("/users", requireAuth, userRoutes);
-app.use("/categories",requireAuth, categoryRoutes);
-app.use("/products", productRoutes);
-app.use("/", authRoutes ,categoryRoutes); // เส้นทาง `/login` และ `/logout`
-// ดึงข้อมูลหมวดหมู่ทั้งหมดและแสดงในหน้าแรก
-
-
+app.use("/categories", requireAuth, categoryRoutes);
+app.use("/products", productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ
 
 // ✅ จัดการเส้นทางที่ไม่พบ
 app.all("*", (req, res) => {

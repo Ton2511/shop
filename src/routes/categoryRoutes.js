@@ -20,7 +20,7 @@ router.post("/edit/:id", categoryController.updateCategory);
 // เส้นทางลบหมวดหมู่
 router.post("/delete/:id", categoryController.deleteCategory);
 
-router.get("/", categoryController.getCategoriesForIndex);
-
+// ลบ route ซ้ำซ้อน
+// router.get("/", categoryController.getCategoriesForIndex);
 
 module.exports = router;

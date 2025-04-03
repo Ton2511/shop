@@ -4,7 +4,7 @@
           <h1 class="text-cyan mb-4">Add New Product</h1>
           
           <!-- แก้ไข action ของฟอร์มให้ตรงกับ route ใหม่ -->
-          <form action="<%= categoryId ? `/products/category/${categoryId}/new` : '/products/new' %>" method="POST">
+          <form action="<%= categoryId ? `/products/addto/${categoryId}` : '/products/new' %>" method="POST">
               <div class="mb-3">
                   <label for="name" class="form-label">Product Name</label>
                   <input type="text" class="form-control" id="name" name="name" required>

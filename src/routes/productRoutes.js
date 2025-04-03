@@ -2,34 +2,23 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 
-// แสดงรายการสินค้าทั้งหมด
+// ให้ตั้งค่า routes ที่มี pattern ตายตัวก่อน routes ที่มี parameter
+// 1. routes ทั่วไป
 router.get("/", productController.listProducts);
-
-// แสดงฟอร์มเพิ่มสินค้า - ย้ายมาไว้ก่อน route ที่มี parameter
 router.get("/new", productController.showNewProductForm);
-
-// บันทึกสินค้าใหม่ - ย้ายมาไว้ก่อน route ที่มี parameter
 router.post("/new", productController.saveProduct);
 
-// แสดงรายการสินค้าตามหมวดหมู่
+// 2. routes สำหรับดูสินค้าตามหมวดหมู่
 router.get("/category/:categoryId", productController.listProductsByCategory);
 
-// แสดงฟอร์มเพิ่มสินค้าในหมวดหมู่ที่กำหนด - เปลี่ยน pattern เป็น /category/:categoryId/new
-router.get("/category/:categoryId/new", productController.showNewProductForm);
+// 3. routes สำหรับเพิ่มสินค้าในหมวดหมู่
+router.get("/addto/:categoryId", productController.showNewProductForm);
+router.post("/addto/:categoryId", productController.saveProduct);
 
-// บันทึกสินค้าใหม่ในหมวดหมู่ที่กำหนด - เปลี่ยน pattern เป็น /category/:categoryId/new
-router.post("/category/:categoryId/new", productController.saveProduct);
-
-// แสดงฟอร์มแก้ไขสินค้า
-router.get("/edit/:id", productController.showEditProductForm);
-
-// อัพเดทสินค้า
-router.post("/edit/:id", productController.updateProduct);
-
-// ลบสินค้า
-router.post("/delete/:id", productController.deleteProduct);
-
-// แสดงรายละเอียดสินค้า
+// 4. routes สำหรับจัดการสินค้ารายการเดียว (ต้องอยู่หลังพวกที่มี /something/:parameter เพื่อป้องกันการ match ผิด)
 router.get("/details/:id", productController.showProductDetails);
+router.get("/edit/:id", productController.showEditProductForm);
+router.post("/edit/:id", productController.updateProduct);
+router.post("/delete/:id", productController.deleteProduct);
 
 module.exports = router;

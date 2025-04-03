@@ -26,7 +26,7 @@
                     <td>
                         <a href="/products/category/<%= category._id %>" class="btn bg-success text-light">Products</a> | 
                         <!-- เปลี่ยนลิงก์ Add Product ให้ตรงกับ route ใหม่ -->
-                        <a href="/products/category/<%= category._id %>/new" class="btn bg-primary text-light">Add Product</a> | 
+                        <a href="/products/addto/<%= category._id %>" class="btn bg-primary text-light">Add Product</a> | 
                         <a href="/categories/edit/<%= category._id %>" class="btn bg-warning text-light">Edit</a> | 
                         <form action="/categories/delete/<%= category._id %>" method="POST" style="display:inline;">
                             <button type="submit" class="btn bg-danger">Delete</button>
