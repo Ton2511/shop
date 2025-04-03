@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
-
+console.log('Available functions in productController:', Object.keys(productController));
 // ให้ตั้งค่า routes ที่มี pattern ตายตัวก่อน routes ที่มี parameter
 // 1. routes ทั่วไป
-router.get("/", productController.listProducts);
+router.get("/", productController.listProducts); //
 router.get("/new", productController.showNewProductForm);
 router.post("/new", productController.saveProduct);
 
@@ -15,7 +15,15 @@ router.get("/category/:categoryId", productController.listProductsByCategory);
 router.get("/addto/:categoryId", productController.showNewProductForm);
 router.post("/addto/:categoryId", productController.saveProduct);
 
-// 4. routes สำหรับจัดการสินค้ารายการเดียว (ต้องอยู่หลังพวกที่มี /something/:parameter เพื่อป้องกันการ match ผิด)
+// 4. routes สำหรับจัดการรูปภาพสินค้า
+router.get("/images/:id", productController.showEditProductImagesForm);
+router.post("/images/:id", productController.updateProductImages);
+
+// 5. routes สำหรับจัดการยอดเข้าชม
+router.get("/views/:id", productController.showManageViewsForm);
+router.post("/views/:id", productController.updateProductViews);
+
+// 6. routes สำหรับจัดการสินค้ารายการเดียว
 router.get("/details/:id", productController.showProductDetails);
 router.get("/edit/:id", productController.showEditProductForm);
 router.post("/edit/:id", productController.updateProduct);

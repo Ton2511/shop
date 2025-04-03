@@ -1,6 +1,7 @@
 const Category = require("../models/categoryModel");
 const Product = require("../models/productModel");
 const mongoose = require('mongoose');
+const productController = require('./productController'); // นำเข้า productController เพื่อใช้ฟังก์ชัน incrementProductViews
 
 // หน้าแสดงหมวดหมู่ทั้งหมดสำหรับลูกค้า
 exports.showCategories = async (req, res) => {
@@ -65,16 +66,20 @@ exports.showProductDetails = async (req, res) => {
       return res.redirect("/shop");
     }
     
+    // เพิ่มยอดเข้าชมจริง
+    await productController.incrementProductViews(productId);
+    
     // ดึงสินค้าที่เกี่ยวข้องอื่นๆ ในหมวดหมู่เดียวกัน (สูงสุด 4 รายการ)
     const relatedProducts = await Product.find({
-      category: product.category._id,
+      category: product.category ? product.category._id : null,
       _id: { $ne: product._id } // ไม่รวมสินค้าปัจจุบัน
     }).limit(4);
     
     res.render("shop/product-details", { 
       product,
       relatedProducts,
-      title: product.name
+      title: product.name,
+      displayViews: product.views.fake // ส่งยอดเข้าชมปลอมไปแสดงผล
     });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", err);

@@ -1,23 +1,33 @@
 <div class="custom-container-lg mx-auto d-flex flex-column">
     <div class="card mt-5 mb-5">
         <div class="card-body">
-            <h1 class="text-cyan mb-4">Edit Product</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="text-cyan">แก้ไขสินค้า</h1>
+                <div>
+                    <a href="/products/images/<%= product._id %>" class="btn btn-info text-white me-2">
+                        <i class="bi bi-images"></i> จัดการรูปภาพ
+                    </a>
+                    <a href="/products/views/<%= product._id %>" class="btn btn-secondary">
+                        <i class="bi bi-eye"></i> จัดการยอดเข้าชม
+                    </a>
+                </div>
+            </div>
             
             <form action="/products/edit/<%= product._id %>" method="POST">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Product Name</label>
+                    <label for="name" class="form-label">ชื่อสินค้า</label>
                     <input type="text" class="form-control" id="name" name="name" value="<%= product.name %>" required>
                 </div>
                 
                 <div class="mb-3">
-                    <label for="code" class="form-label">Product Code</label>
+                    <label for="code" class="form-label">รหัสสินค้า</label>
                     <input type="text" class="form-control" id="code" name="code" value="<%= product.code %>" required>
                 </div>
                 
                 <div class="mb-3">
-                    <label for="category" class="form-label">Category</label>
+                    <label for="category" class="form-label">หมวดหมู่</label>
                     <select class="form-select" id="category" name="category">
-                        <option value="">-- Select Category --</option>
+                        <option value="">-- เลือกหมวดหมู่ --</option>
                         <% categories.forEach(category => { %>
                             <option value="<%= category._id %>" <%= product.category && product.category.toString() === category._id.toString() ? 'selected' : '' %>>
                                 <%= category.name %>
@@ -27,23 +37,23 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="price" class="form-label">Price</label>
+                    <label for="price" class="form-label">ราคา</label>
                     <input type="text" class="form-control" id="price" name="price" value="<%= product.price %>">
                 </div>
                 
                 <div class="mb-3">
-                    <label for="stock" class="form-label">Stock</label>
+                    <label for="stock" class="form-label">คลังสินค้า</label>
                     <input type="number" class="form-control" id="stock" name="stock" value="<%= product.stock %>">
                 </div>
                 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows="3"><%= product.description %></textarea>
+                    <label for="description" class="form-label">รายละเอียดสินค้า</label>
+                    <textarea class="form-control" id="description" name="description" rows="5"><%= product.description %></textarea>
                 </div>
                 
                 <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn bg-teal text-light">Update Product</button>
-                    <a href="/products" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn bg-teal text-light">บันทึกการเปลี่ยนแปลง</button>
+                    <a href="/products" class="btn btn-secondary">ยกเลิก</a>
                 </div>
             </form>
         </div>
