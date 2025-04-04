@@ -1,5 +1,16 @@
-<div class="custom-container-lg mx-auto d-flex flex-column mb-5">
-    <div class="card mt-5 mb-5 p-4">
+<div class="custom-container-lg mx-auto d-flex flex-column mb-3">
+    <div class="mt-5">
+        <h4 aria-label="breadcrumb ">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item text-dark "><a class="a" href="/">หน้าแรก</a></li>
+            <li class="breadcrumb-item text-dark "><a class="a" href="/categories">จัดการหมวดหมู่</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">เพิ่มหมวดหมู่</li>
+    
+          </ol>
+        </h4>
+      </div>
+    <div class="card mb-5 p-4">
         <h1 class="text-cyan">Add New Category</h1>
 
         <form action="/categories/new" method="POST" enctype="multipart/form-data">

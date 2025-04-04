@@ -98,16 +98,21 @@
     }
 </style>
 
-<div class="bg-light">
-  <div class="container mx-auto d-flex flex-column">
+<div class="bg-light ">
+  <div class="container mx-auto d-flex flex-column ">
     <!-- Breadcrumb -->
-    <h3 class="text-dark mt-5">
-      <a href="/shop">หน้าแรก</a> > 
-      <% if (product.category) { %>
-        <a href="/shop/category/<%= product.category._id %>"><%= product.category.name %></a> > 
-      <% } %>
-      <%= product.name %>
-    </h3>
+
+    <div class="mt-5">
+    <h4 aria-label="breadcrumb ">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item text-dark "><a class="a" href="/">หมวดหมู่สินค้า</a></li>
+        <li class="breadcrumb-item text-dark "><a class="a" href="/shop/category/<%= product.category._id %>"><%= product.category.name %></a></li>
+        <li class="breadcrumb-item active" aria-current="page"><%= product.name %></li>
+
+      </ol>
+    </h4>
+  </div>
+
     
     <div class="mt-2 mb-5">
       <div class="row mt-3" style="height: auto">
@@ -175,7 +180,7 @@
           </div>
           <h2 class='text-cyan my-4'><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
           <h4 class='mb-2 text-dark'>หมวดหมู่ :  <% if (product.category) { %>
-            <a href="/shop/category/<%= product.category._id %>" class="bg-gray text-decoration-none">
+            <a href="/shop/category/<%= product.category._id %>" class="text-gray text-decoration-none">
               <%= product.category.name %>
             </a>
           <% } %><div class="mb-3">
@@ -222,43 +227,52 @@
         </div>
       </div>
       
-      <!-- สินค้าที่เกี่ยวข้อง -->
-      <% if (relatedProducts && relatedProducts.length > 0) { %>
-        <div class="mt-5 ">
-          <h3 class="text-dark mb-4"><b>สินค้าที่เกี่ยวข้อง</b></h3>
-          <div class="row">
-            <% relatedProducts.forEach(related => { %>
-              <div class="col-md-3 col-sm-6 mb-3">
-                <div class="card h-100 shadow-sm">
-                  <% if (related.images && related.images.length > 0) { %>
-                    <% 
-                      // หารูปที่เป็นรูปหลัก
-                      const featuredImage = related.images.find(img => img.isFeatured) || related.images[0];
-                    %>
-                    <img src="<%= featuredImage.url %>" class="card-img-top" alt="<%= related.name %>" 
-                        style="height: 180px; object-fit: contain;">
+<!-- สินค้าที่เกี่ยวข้อง -->
+<% if (relatedProducts && relatedProducts.length > 0) { %>
+  <div class="mt-5">
+    <h3 class="text-dark mb-4"><b>สินค้าที่เกี่ยวข้อง</b></h3>
+    <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+      <% relatedProducts.forEach(related => { %>
+        <div class="col">
+          <div class="product-item h-70 border shadow-sm rounded">
+            <a href="/shop/product/<%= related._id %>" title="<%= related.name %>" class="a">
+              <figure class="m-0 p-3 text-center">
+                <% if (related.images && related.images.length > 0) { %>
+                  <% 
+                    // หารูปที่เป็นรูปหลัก
+                    const featuredImage = related.images.find(img => img.isFeatured) || related.images[0];
+                  %>
+                  <img src="<%= featuredImage.url %>" alt="<%= related.name %>" class="tab-image" style="height: 180px; object-fit: contain;">
+                <% } else { %>
+                  <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
+                    <i class="bi bi-image fs-1 text-muted"></i>
+                  </div>
+                <% } %>
+              </figure>
+              <div class="d-flex flex-column text-center p-3 pt-0">
+                <h3 class="fs-6 fw-normal text-dark"><%= related.name %></h3>
+                <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
+                  <span class="text-dark fw-semibold"><%= related.price || 'ไม่ระบุราคา' %> ฿</span>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center gap-2">
+                  <% if (product.category) { %>
+                    <small class="badge bg-success"><%= product.category.name %></small>
                   <% } else { %>
-                    <div class="bg-light text-center py-4">
-                      <i class="bi bi-image fs-1 text-muted"></i>
-                    </div>
+                    <small class="text-muted">ไม่มีหมวดหมู่</small>
                   <% } %>
-                  <div class="card-body">
-                    <h5 class="card-title fs-6"><%= related.name %></h5>
-                    <p class="card-text">
-                      <strong>ราคา:</strong> <%= related.price || 'ไม่ระบุ' %> บาท
-                    </p>
-                  </div>
-                  <div class="card-footer bg-white">
-                    <a href="/shop/product/<%= related._id %>" class="btn btn-sm btn-primary w-100">
-                      ดูรายละเอียด
-                    </a>
-                  </div>
+                  <small class="text-dark">
+                    <i class="fa-solid fa-eye"></i> <%= product.views?.fake || 0 %>
+                  </small>
                 </div>
               </div>
-            <% }) %>
+            </a>
           </div>
         </div>
-      <% } %>
+      <% }) %>
+    </div>
+  </div>
+<% } %>
       
       <div class="text-center mt-4">
         <a href="/shop/category/<%= product.category ? product.category._id : '' %>" class="btn btn-outline bg-dark">
