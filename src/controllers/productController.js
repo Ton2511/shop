@@ -320,11 +320,28 @@ exports.updateProductViews = async (req, res) => {
 // ฟังก์ชันเพิ่มยอดเข้าชมจริงเมื่อมีการเข้าชมสินค้า (เรียกใช้จาก shopController)
 exports.incrementProductViews = async (productId) => {
   try {
+    // เพิ่มเฉพาะยอดเข้าชมจริง
     await Product.findByIdAndUpdate(productId, { 
       $inc: { 'views.real': 1 }
     });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชม:", err);
+  }
+};
+
+exports.incrementFakeViews = async (productId) => {
+  try {
+    // สุ่มตัวเลขระหว่าง 5-11
+    const randomIncrement = Math.floor(Math.random() * 7) + 5;
+    
+    await Product.findByIdAndUpdate(productId, { 
+      $inc: { 'views.fake': randomIncrement }
+    });
+    
+    return randomIncrement; // ส่งค่าจำนวนที่เพิ่มกลับไป
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชมปลอม:", err);
+    return 0;
   }
 };
 

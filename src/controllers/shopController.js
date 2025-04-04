@@ -1,7 +1,6 @@
 const Category = require("../models/categoryModel");
 const Product = require("../models/productModel");
 const mongoose = require('mongoose');
-const productController = require('./productController'); // นำเข้า productController เพื่อใช้ฟังก์ชัน incrementProductViews
 
 // หน้าแสดงหมวดหมู่ทั้งหมดสำหรับลูกค้า
 exports.showCategories = async (req, res) => {
@@ -67,19 +66,25 @@ exports.showProductDetails = async (req, res) => {
     }
     
     // เพิ่มยอดเข้าชมจริง
-    await productController.incrementProductViews(productId);
+    await incrementRealViews(productId);
+    
+    // สุ่มเพิ่มยอดเข้าชมปลอม
+    await incrementFakeViews(productId);
+    
+    // ดึงข้อมูลสินค้าอีกครั้งเพื่อให้ได้ข้อมูลยอดเข้าชมล่าสุด
+    const updatedProduct = await Product.findById(productId).populate('category');
     
     // ดึงสินค้าที่เกี่ยวข้องอื่นๆ ในหมวดหมู่เดียวกัน (สูงสุด 4 รายการ)
     const relatedProducts = await Product.find({
-      category: product.category ? product.category._id : null,
-      _id: { $ne: product._id } // ไม่รวมสินค้าปัจจุบัน
+      category: updatedProduct.category ? updatedProduct.category._id : null,
+      _id: { $ne: productId } // ไม่รวมสินค้าปัจจุบัน
     }).limit(4);
     
     res.render("shop/product-details", { 
-      product,
+      product: updatedProduct,
       relatedProducts,
-      title: product.name,
-      displayViews: product.views.fake // ส่งยอดเข้าชมปลอมไปแสดงผล
+      title: updatedProduct.name,
+      displayViews: updatedProduct.views.fake // ส่งยอดเข้าชมปลอมไปแสดงผล
     });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", err);
@@ -98,5 +103,32 @@ exports.showAllProducts = async (req, res) => {
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", err);
     res.redirect("/shop");
+  }
+};
+
+// ฟังก์ชันเพิ่มยอดเข้าชมจริง
+const incrementRealViews = async (productId) => {
+  try {
+    await Product.findByIdAndUpdate(productId, { 
+      $inc: { 'views.real': 1 }
+    });
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชมจริง:", err);
+  }
+};
+
+// ฟังก์ชันเพิ่มยอดเข้าชมปลอม (สุ่ม 5-11)
+const incrementFakeViews = async (productId) => {
+  try {
+    // สุ่มตัวเลขระหว่าง 5-11
+    const randomIncrement = Math.floor(Math.random() * 7) + 5;
+    
+    await Product.findByIdAndUpdate(productId, { 
+      $inc: { 'views.fake': randomIncrement }
+    });
+    
+    console.log(`เพิ่มยอดเข้าชมปลอม +${randomIncrement} สำหรับสินค้า ${productId}`);
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชมปลอม:", err);
   }
 };

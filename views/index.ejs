@@ -206,7 +206,7 @@
           <div class="col-md-12">
             <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
               <% if (featuredProducts && featuredProducts.length > 0) { %>
-                <% featuredProducts.forEach(product => { %>
+                <% featuredProducts.slice(0, 5).forEach(product => { %>
                   <div class="col mb-4">
                     <div class="product-item">
                       <a href="/shop/product/<%= product._id %>" class="a">
