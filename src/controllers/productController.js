@@ -78,6 +78,7 @@ exports.showProductDetails = async (req, res) => {
   }
 };
 
+
 // บันทึกสินค้าใหม่ (อัพเดทให้รองรับรูปภาพหลายรูป)
 exports.saveProduct = [
   // รับอัพโหลดไฟล์สูงสุด 5 ไฟล์
@@ -94,8 +95,9 @@ exports.saveProduct = [
         return res.redirect("/products");
       }
 
-      // สร้าง sku จาก code เพื่อป้องกันปัญหา sku: null
-      const sku = code || Date.now().toString();
+      // สร้าง sku ที่ไม่ซ้ำกันโดยใช้รหัสสินค้า (code) รวมกับ timestamp
+      const timestamp = Date.now();
+      const sku = code ? `${code}-${timestamp.toString().slice(-6)}` : timestamp.toString();
       
       // จัดการรูปภาพ
       const images = [];

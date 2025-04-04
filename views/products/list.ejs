@@ -1,5 +1,14 @@
 <div class="custom-container-lg mx-auto d-flex flex-column mb-5">
-    <div class="card mt-5 mb-5">
+    <div class="mt-5">
+        <h4 aria-label="breadcrumb ">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item text-dark "><a class="a" href="/">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ข้อมูลสินค้าทั้งหมด</li>
+    
+          </ol>
+        </h4>
+      </div>
+    <div class="card mt-3 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-1 col-12">
             <h1 class="text-cyan">Product Management</h1>
             <div>
@@ -14,6 +23,8 @@
                 <th class="col-2">Category</th>
                 <th class="col-1">Price</th>
                 <th class="col-1">Stock</th>
+                <th class="col-1">View</th>
+
                 <th class="col-4">Actions</th>
             </tr>
             <% if (products.length > 0) { %>
@@ -24,6 +35,7 @@
                         <td><%= product.category ? product.category.name : 'ไม่มีหมวดหมู่' %></td>
                         <td><%= product.price %></td>
                         <td><%= product.stock %></td>
+                        <td><%= product.views?.real %></td>
                         <td>
                             <a href="/products/details/<%= product._id %>" class="btn bg-info text-light">Details</a> | 
                             <a href="/products/edit/<%= product._id %>" class="btn bg-warning text-light">Edit</a> | 

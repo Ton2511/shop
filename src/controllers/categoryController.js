@@ -1,8 +1,16 @@
 //controllers/categoryController.js
+const mongoose = require('mongoose'); // เพิ่มการอิมพอร์ต mongoose
 const Category = require("../models/categoryModel");
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
+
+// ตรวจสอบและสร้างโฟลเดอร์ uploads ถ้ายังไม่มี
+const uploadsDir = path.join(__dirname, '../../public/uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Created uploads directory');
+}
 
 // ตั้งค่า storage สำหรับ multer
 const storage = multer.diskStorage({
@@ -15,12 +23,32 @@ const storage = multer.diskStorage({
 });
 
 // สร้างตัวแปร upload สำหรับ multer
-const upload = multer({ storage: storage });
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // จำกัดขนาดไฟล์ 5MB
+  fileFilter: (req, file, cb) => {
+    // ตรวจสอบนามสกุลไฟล์
+    const fileTypes = /jpeg|jpg|png|gif|webp/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+    
+    if (extname && mimetype) {
+      cb(null, true);
+    } else {
+      cb(new Error("รองรับเฉพาะไฟล์รูปภาพเท่านั้น"), false);
+    }
+  }
+});
 
 // แสดงรายการหมวดหมู่
 exports.listCategories = async (req, res) => {
-  const categories = await Category.find();
-  res.render("categories/list", { categories });
+  try {
+    const categories = await Category.find();
+    res.render("categories/list", { categories });
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่:", err);
+    res.redirect("/");
+  }
 };
 
 exports.getCategoriesForIndex = async (req, res) => {
@@ -33,8 +61,6 @@ exports.getCategoriesForIndex = async (req, res) => {
   }
 };
 
-
-
 // แสดงฟอร์มเพิ่มหมวดหมู่
 exports.showNewCategoryForm = (req, res) => {
   res.render("categories/new");
@@ -44,66 +70,148 @@ exports.showNewCategoryForm = (req, res) => {
 exports.saveCategory = [
   upload.single("image"), // Middleware สำหรับอัปโหลดไฟล์
   async (req, res) => {
-    const { name } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : ""; // เก็บ path ของไฟล์ภาพ
-    await Category.create({ name, image });
-    res.redirect("/categories");
+    try {
+      const { name } = req.body;
+      const image = req.file ? `/uploads/${req.file.filename}` : ""; // เก็บ path ของไฟล์ภาพ
+      await Category.create({ name, image });
+      res.redirect("/categories");
+    } catch (err) {
+      console.error("เกิดข้อผิดพลาดในการบันทึกหมวดหมู่:", err);
+      res.redirect("/categories");
+    }
   },
 ];
 
 // แสดงฟอร์มแก้ไขหมวดหมู่
 exports.showEditCategoryForm = async (req, res) => {
-  const category = await Category.findById(req.params.id);
-  res.render("categories/edit", { category });
+  try {
+    const categoryId = req.params.id;
+    
+    // ตรวจสอบความถูกต้องของ ID
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
+      return res.redirect("/categories");
+    }
+    
+    const category = await Category.findById(categoryId);
+    
+    // ตรวจสอบว่าพบหมวดหมู่หรือไม่
+    if (!category) {
+      console.error("ไม่พบหมวดหมู่ที่ระบุ");
+      return res.redirect("/categories");
+    }
+    
+    res.render("categories/edit", { category });
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่:", err);
+    res.redirect("/categories");
+  }
 };
 
 // อัปเดตหมวดหมู่พร้อมอัปโหลดภาพ
 exports.updateCategory = [
   upload.single("image"),
   async (req, res) => {
-    const { name } = req.body;
-    const updateData = { name };
-
-    // ถ้ามีไฟล์ใหม่ ให้บันทึก path ของไฟล์ใหม่
-    if (req.file) {
-      updateData.image = `/uploads/${req.file.filename}`;
+    try {
+      const categoryId = req.params.id;
+      
+      // ตรวจสอบความถูกต้องของ ID
+      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+        console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
+        return res.redirect("/categories");
+      }
+      
+      const { name, removeImage } = req.body;
+      const category = await Category.findById(categoryId);
+      
+      // ตรวจสอบว่าพบหมวดหมู่หรือไม่
+      if (!category) {
+        console.error("ไม่พบหมวดหมู่ที่ระบุ");
+        return res.redirect("/categories");
+      }
+      
+      const updateData = { name };
+      
+      // จัดการรูปภาพ
+      const oldImage = category.image;
+      
+      // กรณีต้องการลบรูปภาพเดิม
+      if (removeImage === 'yes') {
+        updateData.image = '';
+        
+        // ลบไฟล์รูปภาพเดิม (ถ้ามี)
+        if (oldImage) {
+          const imagePath = path.join(__dirname, '../../public', oldImage);
+          if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+            console.log('Old image deleted:', imagePath);
+          }
+        }
+      }
+      // กรณีอัพโหลดรูปภาพใหม่
+      else if (req.file) {
+        updateData.image = `/uploads/${req.file.filename}`;
+        
+        // ลบไฟล์รูปภาพเดิม (ถ้ามี)
+        if (oldImage) {
+          const imagePath = path.join(__dirname, '../../public', oldImage);
+          if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+            console.log('Old image replaced:', imagePath);
+          }
+        }
+      }
+      
+      // อัพเดทข้อมูลหมวดหมู่
+      await Category.findByIdAndUpdate(categoryId, updateData);
+      
+      res.redirect("/categories");
+    } catch (err) {
+      console.error("เกิดข้อผิดพลาดในการอัพเดทหมวดหมู่:", err);
+      res.redirect("/categories");
     }
-
-    await Category.findByIdAndUpdate(req.params.id, updateData);
-    res.redirect("/categories");
   },
 ];
 
 // ลบหมวดหมู่
 exports.deleteCategory = async (req, res) => {
-    try {
-      const category = await Category.findById(req.params.id);
-  
-      // ตรวจสอบว่า category มีภาพหรือไม่
-      if (category.image) {
-        // กำหนดเส้นทางที่เก็บไฟล์ภาพในโฟลเดอร์ public/uploads
-        const imagePath = path.join(__dirname, "/uploads", category.image); // เส้นทางใหม่ที่ถูกต้อง
-  
-        // ตรวจสอบว่าไฟล์มีอยู่จริงหรือไม่ก่อนลบ
-        if (fs.existsSync(imagePath)) {
-          // ลบไฟล์ภาพจากระบบไฟล์
-          fs.unlink(imagePath, (err) => {
-            if (err) {
-              console.error("ไม่สามารถลบไฟล์ภาพได้:", err);
-            } else {
-              console.log("ไฟล์ภาพถูกลบเรียบร้อยแล้ว");
-            }
-          });
-        } else {
-          console.log("ไม่พบไฟล์ภาพที่ต้องการลบ:", imagePath);
-        }
-      }
-  
-      // ลบหมวดหมู่จากฐานข้อมูล
-      await Category.findByIdAndDelete(req.params.id);
-      res.redirect("/categories");
-    } catch (err) {
-      console.error("เกิดข้อผิดพลาดในการลบหมวดหมู่:", err);
-      res.redirect("/categories");
+  try {
+    const categoryId = req.params.id;
+    
+    // ตรวจสอบความถูกต้องของ ID
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
+      return res.redirect("/categories");
     }
-  };
+    
+    const category = await Category.findById(categoryId);
+    
+    // ตรวจสอบว่าพบหมวดหมู่หรือไม่
+    if (!category) {
+      console.error("ไม่พบหมวดหมู่ที่ระบุ");
+      return res.redirect("/categories");
+    }
+    
+    // ตรวจสอบว่า category มีภาพหรือไม่
+    if (category.image) {
+      // กำหนดเส้นทางที่เก็บไฟล์ภาพในโฟลเดอร์ public
+      const imagePath = path.join(__dirname, '../../public', category.image);
+      
+      // ตรวจสอบว่าไฟล์มีอยู่จริงหรือไม่ก่อนลบ
+      if (fs.existsSync(imagePath)) {
+        // ลบไฟล์ภาพจากระบบไฟล์
+        fs.unlinkSync(imagePath);
+        console.log("ไฟล์ภาพถูกลบเรียบร้อยแล้ว:", imagePath);
+      } else {
+        console.log("ไม่พบไฟล์ภาพที่ต้องการลบ:", imagePath);
+      }
+    }
+    
+    // ลบหมวดหมู่จากฐานข้อมูล
+    await Category.findByIdAndDelete(categoryId);
+    res.redirect("/categories");
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการลบหมวดหมู่:", err);
+    res.redirect("/categories");
+  }
+};
