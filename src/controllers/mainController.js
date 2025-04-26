@@ -1,17 +1,22 @@
-const Category = require('../models/categoryModel');
-const Product = require('../models/productModel');
+// controllers/mainController.js
+const { Category, Product, ProductImage } = require('../models');
+const { Op } = require('sequelize');
 
 // หน้าแรก - แสดงหมวดหมู่และสินค้าขายดี
 exports.getHomePage = async (req, res) => {
   try {
     // ดึงข้อมูลหมวดหมู่ทั้งหมด
-    const categories = await Category.find();
+    const categories = await Category.findAll();
     
     // ดึงข้อมูลสินค้าที่เป็นสินค้าขายดี (ใช้สินค้าที่มียอดเข้าชมสูงสุดแทน) - จำกัด 5 รายการ
-    const featuredProducts = await Product.find()
-      .populate('category')
-      .sort({ 'views.fake': -1 }) // เรียงตามยอดเข้าชมปลอมจากมากไปน้อย
-      .limit(5); // จำกัดผลลัพธ์แค่ 5 รายการ
+    const featuredProducts = await Product.findAll({
+      include: [
+        { model: Category, as: 'category' },
+        { model: ProductImage, as: 'images' }
+      ],
+      order: [['fakeViews', 'DESC']], // เรียงตามยอดเข้าชมปลอมจากมากไปน้อย
+      limit: 5 // จำกัดผลลัพธ์แค่ 5 รายการ
+    });
     
     res.render('index', { 
       categories,

@@ -13,10 +13,9 @@
     <div class="card mt-3 mb-5 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="text-cyan">แก้ไขหมวดหมู่</h1>
-
         </div>
 
-        <form action="/categories/edit/<%= category._id %>" method="POST" enctype="multipart/form-data">
+        <form action="/categories/edit/<%= category.id %>" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">ชื่อหมวดหมู่</label>
                 <input type="text" name="name" class="form-control" value="<%= category.name %>" required>

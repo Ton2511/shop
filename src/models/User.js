@@ -1,17 +1,49 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+// models/User.js - โมเดลผู้ใช้
+const { sequelize } = require('../../db');
+const { DataTypes } = require('sequelize');
+const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true
+    }
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+}, {
+  tableName: 'users',
+  timestamps: true
 });
 
-// เข้ารหัสรหัสผ่านก่อนบันทึก
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
+// Hook สำหรับเข้ารหัสรหัสผ่านก่อนบันทึก
+User.beforeCreate(async (user) => {
+  user.password = await bcrypt.hash(user.password, 10);
 });
 
-module.exports = mongoose.model("User", userSchema);
+User.beforeUpdate(async (user) => {
+  if (user.changed('password')) {
+    user.password = await bcrypt.hash(user.password, 10);
+  }
+});
+
+// เพิ่มเมธอด instance สำหรับเปรียบเทียบรหัสผ่าน
+User.prototype.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+module.exports = User;

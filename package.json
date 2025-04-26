@@ -12,7 +12,7 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
-    "connect-mongo": "^5.1.0",
+    "connect-session-sequelize": "^7.1.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
@@ -20,8 +20,9 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.1",
     "method-override": "^3.0.0",
-    "mongoose": "^8.13.1",
-    "multer": "^1.4.5-lts.2"
+    "multer": "^1.4.5-lts.2",
+    "mysql2": "^3.14.0",
+    "sequelize": "^6.37.7"
   },
   "description": ""
 }

@@ -1,6 +1,5 @@
-//controllers/categoryController.js
-const mongoose = require('mongoose'); // เพิ่มการอิมพอร์ต mongoose
-const Category = require("../models/categoryModel");
+// controllers/categoryController.js
+const { Category, Product } = require('../models');
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
@@ -43,7 +42,7 @@ const upload = multer({
 // แสดงรายการหมวดหมู่
 exports.listCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.findAll();
     res.render("categories/list", { categories });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่:", err);
@@ -53,11 +52,11 @@ exports.listCategories = async (req, res) => {
 
 exports.getCategoriesForIndex = async (req, res) => {
   try {
-    const categories = await Category.find(); // ดึงข้อมูลหมวดหมู่จากฐานข้อมูล
-    res.render("index", { categories }); // ส่งข้อมูล categories ไปยัง view (index.ejs)
+    const categories = await Category.findAll();
+    res.render("index", { categories });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่:", err);
-    res.redirect("/");  // ถ้าเกิดข้อผิดพลาดให้ redirect ไปหน้าแรก
+    res.redirect("/");
   }
 };
 
@@ -72,7 +71,8 @@ exports.saveCategory = [
   async (req, res) => {
     try {
       const { name } = req.body;
-      const image = req.file ? `/uploads/${req.file.filename}` : ""; // เก็บ path ของไฟล์ภาพ
+      const image = req.file ? `/uploads/${req.file.filename}` : null;
+      
       await Category.create({ name, image });
       res.redirect("/categories");
     } catch (err) {
@@ -87,13 +87,7 @@ exports.showEditCategoryForm = async (req, res) => {
   try {
     const categoryId = req.params.id;
     
-    // ตรวจสอบความถูกต้องของ ID
-    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-      console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
-      return res.redirect("/categories");
-    }
-    
-    const category = await Category.findById(categoryId);
+    const category = await Category.findByPk(categoryId);
     
     // ตรวจสอบว่าพบหมวดหมู่หรือไม่
     if (!category) {
@@ -114,15 +108,9 @@ exports.updateCategory = [
   async (req, res) => {
     try {
       const categoryId = req.params.id;
-      
-      // ตรวจสอบความถูกต้องของ ID
-      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-        console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
-        return res.redirect("/categories");
-      }
-      
       const { name, removeImage } = req.body;
-      const category = await Category.findById(categoryId);
+      
+      const category = await Category.findByPk(categoryId);
       
       // ตรวจสอบว่าพบหมวดหมู่หรือไม่
       if (!category) {
@@ -137,7 +125,7 @@ exports.updateCategory = [
       
       // กรณีต้องการลบรูปภาพเดิม
       if (removeImage === 'yes') {
-        updateData.image = '';
+        updateData.image = null;
         
         // ลบไฟล์รูปภาพเดิม (ถ้ามี)
         if (oldImage) {
@@ -163,7 +151,7 @@ exports.updateCategory = [
       }
       
       // อัพเดทข้อมูลหมวดหมู่
-      await Category.findByIdAndUpdate(categoryId, updateData);
+      await category.update(updateData);
       
       res.redirect("/categories");
     } catch (err) {
@@ -178,18 +166,19 @@ exports.deleteCategory = async (req, res) => {
   try {
     const categoryId = req.params.id;
     
-    // ตรวจสอบความถูกต้องของ ID
-    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-      console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
-      return res.redirect("/categories");
-    }
-    
-    const category = await Category.findById(categoryId);
+    const category = await Category.findByPk(categoryId);
     
     // ตรวจสอบว่าพบหมวดหมู่หรือไม่
     if (!category) {
       console.error("ไม่พบหมวดหมู่ที่ระบุ");
       return res.redirect("/categories");
+    }
+    
+    // ตรวจสอบว่ามีสินค้าในหมวดหมู่นี้หรือไม่
+    const productCount = await Product.count({ where: { categoryId } });
+    if (productCount > 0) {
+      console.error("ไม่สามารถลบหมวดหมู่ได้เนื่องจากมีสินค้าในหมวดหมู่นี้");
+      return res.redirect("/categories"); // ควรมีการแจ้งเตือนผู้ใช้ด้วย
     }
     
     // ตรวจสอบว่า category มีภาพหรือไม่
@@ -208,7 +197,7 @@ exports.deleteCategory = async (req, res) => {
     }
     
     // ลบหมวดหมู่จากฐานข้อมูล
-    await Category.findByIdAndDelete(categoryId);
+    await category.destroy();
     res.redirect("/categories");
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการลบหมวดหมู่:", err);

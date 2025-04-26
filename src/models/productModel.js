@@ -1,39 +1,60 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+// models/productModel.js - โมเดลสินค้า
+const { sequelize } = require('../../db');
+const { DataTypes } = require('sequelize');
 
-// สร้าง Schema สำหรับรูปภาพสินค้า
-const productImageSchema = new Schema({
-  url: { type: String, required: true },
-  isFeatured: { type: Boolean, default: false }, // รูปภาพหลักหรือไม่
-  order: { type: Number, default: 0 }, // ลำดับการแสดงผล
-  caption: { type: String } // คำอธิบายภาพ (ถ้ามี)
-});
-
-const productSchema = new Schema({
-  name: { type: String, required: true },
-  code: { type: String, required: true },
-  sku: { type: String }, // ลบ sparse: true เพื่อให้ไม่ใช้เป็น unique index
-  category: { type: Schema.Types.ObjectId, ref: 'Category' }, // เชื่อมโยงกับ Category
-  price: { type: String },
-  stock: { type: Number, default: 0 },
-  description: { type: String },
-  
-  // เพิ่มฟิลด์สำหรับรูปภาพหลายรูป
-  images: [productImageSchema],
-  
-  // เพิ่มฟิลด์สำหรับยอดการเข้าชม
-  views: {
-    real: { type: Number, default: 0 }, // ยอดการเข้าชมจริง
-    fake: { type: Number, default: 0 }  // ยอดการเข้าชมที่แสดงผลกับลูกค้า
+const Product = sequelize.define('Product', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   },
-  
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  code: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  sku: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  categoryId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'categories',
+      key: 'id'
+    }
+  },
+  price: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: 0
+  },
+  stock: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  realViews: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  },
+  fakeViews: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  }
+}, {
+  tableName: 'products',
+  timestamps: true
 });
-
-// ลบการสร้าง index ที่มีปัญหา
-// productSchema.index({ sku: 1 }, { unique: true, sparse: true });
-
-const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;

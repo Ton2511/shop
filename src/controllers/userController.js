@@ -1,32 +1,51 @@
-const User = require("../models/User");
+// controllers/userController.js
+const { User } = require('../models');
+const bcrypt = require('bcryptjs');
 
-// 📌 GET: แสดง Users ทั้งหมด
+// แสดงรายการผู้ใช้ทั้งหมด
 exports.getAllUsers = async (req, res) => {
-  const users = await User.find();
-  res.render("users/list", { title: "รายชื่อผู้ใช้", users, content: "users/list" });
+  try {
+    const users = await User.findAll();
+    res.render("users/list", { 
+      title: "รายชื่อผู้ใช้", 
+      users, 
+      content: "users/list" 
+    });
+  } catch (err) {
+    console.error("❌ Error fetching users:", err);
+    res.status(500).send("Internal Server Error");
+  }
 };
 
-// 📌 GET: ฟอร์มเพิ่ม User
+// แสดงฟอร์มเพิ่มผู้ใช้
 exports.newUserForm = (req, res) => {
   res.render("users/new");
 };
 
-// 📌 POST: เพิ่ม User
+// สร้างผู้ใช้ใหม่
 exports.createUser = async (req, res) => {
-  const { name, email, password } = req.body;
   try {
+    const { name, email, password } = req.body;
+    
+    // สร้างผู้ใช้ใหม่ (รหัสผ่านจะถูกเข้ารหัสโดยอัตโนมัติผ่าน hooks)
     await User.create({ name, email, password });
-    res.redirect("/users/list"); // เปลี่ยนเส้นทางไป list
+    
+    res.redirect("/users/list");
   } catch (err) {
     console.error("❌ Error creating user:", err);
     res.status(500).send("Internal Server Error");
   }
 };
 
-// 📌 GET: ฟอร์มแก้ไข User
+// แสดงฟอร์มแก้ไขผู้ใช้
 exports.editUserForm = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findByPk(req.params.id);
+    
+    if (!user) {
+      return res.redirect("/users/list");
+    }
+    
     res.render("users/edit", { user });
   } catch (err) {
     console.error("❌ Error fetching user:", err);
@@ -34,19 +53,29 @@ exports.editUserForm = async (req, res) => {
   }
 };
 
-const bcrypt = require("bcryptjs"); // เพิ่ม bcrypt
-// 📌 PUT: อัปเดต User
+// อัพเดทข้อมูลผู้ใช้
 exports.updateUser = async (req, res) => {
-  const { name, email, password } = req.body;
   try {
-    const updatedData = { name, email };
-
-    // ถ้ามีการเปลี่ยนรหัสผ่าน ให้แฮชก่อนบันทึก
-    if (password) {
-      updatedData.password = await bcrypt.hash(password, 10);
+    const { name, email, password } = req.body;
+    const userId = req.params.id;
+    
+    const user = await User.findByPk(userId);
+    
+    if (!user) {
+      return res.redirect("/users/list");
     }
-
-    await User.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+    
+    // เตรียมข้อมูลที่จะอัพเดท
+    const updateData = { name, email };
+    
+    // ถ้ามีการเปลี่ยนรหัสผ่าน
+    if (password) {
+      updateData.password = password; // จะถูกเข้ารหัสโดยอัตโนมัติผ่าน hooks
+    }
+    
+    // อัพเดทข้อมูล
+    await user.update(updateData);
+    
     res.redirect("/users/list");
   } catch (err) {
     console.error("❌ Error updating user:", err);
@@ -54,10 +83,17 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// 📌 DELETE: ลบ User
+// ลบผู้ใช้
 exports.deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
+    const userId = req.params.id;
+    
+    const user = await User.findByPk(userId);
+    
+    if (user) {
+      await user.destroy();
+    }
+    
     res.redirect("/users/list");
   } catch (err) {
     console.error("❌ Error deleting user:", err);

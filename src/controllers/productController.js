@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const Product = require("../models/productModel");
-const Category = require("../models/categoryModel");
-const multer = require("multer");
+// controllers/productController.js
+const { Product, Category, ProductImage } = require('../models');
+const { Op } = require('sequelize');
 const path = require("path");
 const fs = require("fs");
+const multer = require("multer");
 
 const uploadDir = path.join(__dirname, '../../public/uploads/products');
 if (!fs.existsSync(path.join(__dirname, '../../public/uploads'))) {
@@ -18,19 +18,18 @@ if (!fs.existsSync(uploadDir)) {
 // ตั้งค่า storage สำหรับ multer (รูปภาพสินค้า)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir); // ใช้ uploadDir ที่กำหนดไว้
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // ตั้งชื่อไฟล์เป็น timestamp + นามสกุลไฟล์
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
 // สร้างตัวแปร upload สำหรับ multer
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // จำกัดขนาดไฟล์ 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    // ตรวจสอบนามสกุลไฟล์
     const fileTypes = /jpeg|jpg|png|gif|webp/;
     const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = fileTypes.test(file.mimetype);
@@ -43,9 +42,15 @@ const upload = multer({
   }
 });
 
+// แสดงรายการสินค้าทั้งหมด
 exports.listProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category');
+    const products = await Product.findAll({
+      include: [
+        { model: Category, as: 'category' },
+        { model: ProductImage, as: 'images' }
+      ]
+    });
     res.render("products/list", { products });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", err);
@@ -53,18 +58,17 @@ exports.listProducts = async (req, res) => {
   }
 };
 
-// แสดงรายละเอียดสินค้า (สำหรับผู้ดูแลระบบ)
+// แสดงรายละเอียดสินค้า
 exports.showProductDetails = async (req, res) => {
   try {
     const productId = req.params.id;
     
-    // ตรวจสอบว่า productId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-      return res.redirect("/products");
-    }
-    
-    const product = await Product.findById(productId).populate('category');
+    const product = await Product.findByPk(productId, {
+      include: [
+        { model: Category, as: 'category' },
+        { model: ProductImage, as: 'images' }
+      ]
+    });
     
     if (!product) {
       console.error("ไม่พบสินค้าที่ระบุ");
@@ -78,10 +82,8 @@ exports.showProductDetails = async (req, res) => {
   }
 };
 
-
-// บันทึกสินค้าใหม่ (อัพเดทให้รองรับรูปภาพหลายรูป)
+// บันทึกสินค้าใหม่
 exports.saveProduct = [
-  // รับอัพโหลดไฟล์สูงสุด 5 ไฟล์
   upload.array('images', 5),
   
   async (req, res) => {
@@ -89,28 +91,9 @@ exports.saveProduct = [
       const { name, code, price, stock, description, fakeViews } = req.body;
       let categoryId = req.params.categoryId || req.body.category;
       
-      // ตรวจสอบว่า categoryId ถูกต้องหรือไม่ (ถ้ามี)
-      if (categoryId && !mongoose.Types.ObjectId.isValid(categoryId)) {
-        console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
-        return res.redirect("/products");
-      }
-
-      // สร้าง sku ที่ไม่ซ้ำกันโดยใช้รหัสสินค้า (code) รวมกับ timestamp
+      // สร้าง sku ที่ไม่ซ้ำกัน
       const timestamp = Date.now();
       const sku = code ? `${code}-${timestamp.toString().slice(-6)}` : timestamp.toString();
-      
-      // จัดการรูปภาพ
-      const images = [];
-      if (req.files && req.files.length > 0) {
-        req.files.forEach((file, index) => {
-          images.push({
-            url: `/uploads/products/${file.filename}`,
-            isFeatured: index === 0, // รูปแรกเป็นรูปหลัก
-            order: index,
-            caption: ""
-          });
-        });
-      }
       
       // กำหนดยอดเข้าชมปลอมเริ่มต้น (ถ้ามี)
       const initialFakeViews = fakeViews ? parseInt(fakeViews) : Math.floor(Math.random() * 100);
@@ -120,23 +103,25 @@ exports.saveProduct = [
         name,
         code,
         sku,
-        category: categoryId ? categoryId : null,
+        categoryId: categoryId || null,
         price,
-        stock: parseInt(stock),
+        stock: parseInt(stock) || 0,
         description,
-        images,
-        views: {
-          real: 0,
-          fake: initialFakeViews
-        }
+        fakeViews: initialFakeViews,
+        realViews: 0
       });
 
-      // อัพเดทหมวดหมู่ โดยเพิ่ม reference ไปยังสินค้า
-      if (categoryId) {
-        await Category.findByIdAndUpdate(
-          categoryId,
-          { $push: { products: newProduct._id } }
-        );
+      // บันทึกรูปภาพ (ถ้ามี)
+      if (req.files && req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          await ProductImage.create({
+            productId: newProduct.id,
+            url: `/uploads/products/${req.files[i].filename}`,
+            isFeatured: i === 0, // รูปแรกเป็นรูปหลัก
+            order: i,
+            caption: ""
+          });
+        }
       }
 
       if (req.params.categoryId) {
@@ -156,13 +141,9 @@ exports.showEditProductImagesForm = async (req, res) => {
   try {
     const productId = req.params.id;
     
-    // ตรวจสอบว่า productId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-      return res.redirect("/products");
-    }
-    
-    const product = await Product.findById(productId);
+    const product = await Product.findByPk(productId, {
+      include: [{ model: ProductImage, as: 'images' }]
+    });
     
     if (!product) {
       console.error("ไม่พบสินค้าที่ระบุ");
@@ -178,7 +159,6 @@ exports.showEditProductImagesForm = async (req, res) => {
 
 // อัพเดทรูปภาพสินค้า
 exports.updateProductImages = [
-  // รับอัพโหลดไฟล์สูงสุด 5 ไฟล์
   upload.array('newImages', 5),
   
   async (req, res) => {
@@ -186,13 +166,9 @@ exports.updateProductImages = [
       const productId = req.params.id;
       const { deleteImages, featured, captions } = req.body;
       
-      // ตรวจสอบว่า productId ถูกต้องหรือไม่
-      if (!mongoose.Types.ObjectId.isValid(productId)) {
-        console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-        return res.redirect("/products");
-      }
-      
-      const product = await Product.findById(productId);
+      const product = await Product.findByPk(productId, {
+        include: [{ model: ProductImage, as: 'images' }]
+      });
       
       if (!product) {
         console.error("ไม่พบสินค้าที่ระบุ");
@@ -200,64 +176,60 @@ exports.updateProductImages = [
       }
       
       // ลบรูปภาพที่เลือก (ถ้ามี)
-      let updatedImages = [...product.images];
       if (deleteImages && Array.isArray(deleteImages)) {
-        // ดึงข้อมูลรูปภาพที่จะลบ
-        const imagesToDelete = updatedImages.filter((img, idx) => deleteImages.includes(idx.toString()));
-        
-        // ลบไฟล์รูปภาพจากระบบไฟล์
-        imagesToDelete.forEach(img => {
-          const imagePath = path.join(__dirname, '../../public', img.url);
-          if (fs.existsSync(imagePath)) {
-            try {
+        for (const imageId of deleteImages) {
+          const image = await ProductImage.findByPk(imageId);
+          if (image) {
+            // ลบไฟล์จากระบบไฟล์
+            const imagePath = path.join(__dirname, '../../public', image.url);
+            if (fs.existsSync(imagePath)) {
               fs.unlinkSync(imagePath);
               console.log('Deleted image:', imagePath);
-            } catch (err) {
-              console.error('Error deleting image:', err);
             }
-          } else {
-            console.log('Image file not found:', imagePath);
+            // ลบจากฐานข้อมูล
+            await image.destroy();
           }
-        });
-        
-        // อัพเดทอาร์เรย์รูปภาพ
-        updatedImages = updatedImages.filter((img, idx) => !deleteImages.includes(idx.toString()));
+        }
       }
       
       // อัพเดทรูปภาพหลัก (ถ้ามี)
-      if (featured && updatedImages.length > 0) {
-        updatedImages = updatedImages.map((img, idx) => ({
-          ...img,
-          isFeatured: idx.toString() === featured
-        }));
+      if (featured) {
+        // เคลียร์ isFeatured ของรูปภาพทั้งหมด
+        await ProductImage.update(
+          { isFeatured: false },
+          { where: { productId } }
+        );
+        
+        // กำหนดรูปหลักใหม่
+        await ProductImage.update(
+          { isFeatured: true },
+          { where: { id: featured } }
+        );
       }
       
       // อัพเดทคำอธิบายภาพ (ถ้ามี)
       if (captions && typeof captions === 'object') {
-        Object.keys(captions).forEach(idx => {
-          if (updatedImages[idx]) {
-            updatedImages[idx].caption = captions[idx];
-          }
-        });
+        for (const [imageId, caption] of Object.entries(captions)) {
+          await ProductImage.update(
+            { caption },
+            { where: { id: imageId } }
+          );
+        }
       }
       
       // เพิ่มรูปภาพใหม่ (ถ้ามี)
+      const currentImagesCount = await ProductImage.count({ where: { productId } });
       if (req.files && req.files.length > 0) {
-        const newImages = req.files.map((file, index) => ({
-          url: `/uploads/products/${file.filename}`,
-          isFeatured: updatedImages.length === 0 && index === 0, // ถ้าไม่มีรูปเก่าเลย ให้รูปแรกเป็นรูปหลัก
-          order: updatedImages.length + index,
-          caption: ""
-        }));
-        
-        updatedImages = [...updatedImages, ...newImages];
+        for (let i = 0; i < req.files.length; i++) {
+          await ProductImage.create({
+            productId,
+            url: `/uploads/products/${req.files[i].filename}`,
+            isFeatured: currentImagesCount === 0 && i === 0, // ถ้าไม่มีรูปเก่าเลย ให้รูปแรกเป็นรูปหลัก
+            order: currentImagesCount + i,
+            caption: ""
+          });
+        }
       }
-      
-      // อัพเดทข้อมูลสินค้า
-      await Product.findByIdAndUpdate(productId, { 
-        images: updatedImages,
-        updatedAt: Date.now()
-      });
       
       res.redirect(`/products/details/${productId}`);
     } catch (err) {
@@ -272,13 +244,7 @@ exports.showManageViewsForm = async (req, res) => {
   try {
     const productId = req.params.id;
     
-    // ตรวจสอบว่า productId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-      return res.redirect("/products");
-    }
-    
-    const product = await Product.findById(productId);
+    const product = await Product.findByPk(productId);
     
     if (!product) {
       console.error("ไม่พบสินค้าที่ระบุ");
@@ -298,17 +264,10 @@ exports.updateProductViews = async (req, res) => {
     const productId = req.params.id;
     const { fakeViews } = req.body;
     
-    // ตรวจสอบว่า productId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-      return res.redirect("/products");
-    }
-    
-    // อัพเดทยอดเข้าชม
-    await Product.findByIdAndUpdate(productId, { 
-      'views.fake': parseInt(fakeViews),
-      updatedAt: Date.now()
-    });
+    await Product.update(
+      { fakeViews: parseInt(fakeViews) },
+      { where: { id: productId } }
+    );
     
     res.redirect(`/products/details/${productId}`);
   } catch (err) {
@@ -317,28 +276,26 @@ exports.updateProductViews = async (req, res) => {
   }
 };
 
-// ฟังก์ชันเพิ่มยอดเข้าชมจริงเมื่อมีการเข้าชมสินค้า (เรียกใช้จาก shopController)
+// ฟังก์ชันเพิ่มยอดเข้าชมจริง
 exports.incrementProductViews = async (productId) => {
   try {
-    // เพิ่มเฉพาะยอดเข้าชมจริง
-    await Product.findByIdAndUpdate(productId, { 
-      $inc: { 'views.real': 1 }
-    });
+    await Product.increment('realViews', { by: 1, where: { id: productId } });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชม:", err);
   }
 };
 
+// ฟังก์ชันเพิ่มยอดเข้าชมปลอม
 exports.incrementFakeViews = async (productId) => {
   try {
-    // สุ่มตัวเลขระหว่าง 5-11
     const randomIncrement = Math.floor(Math.random() * 7) + 5;
     
-    await Product.findByIdAndUpdate(productId, { 
-      $inc: { 'views.fake': randomIncrement }
+    await Product.increment('fakeViews', { 
+      by: randomIncrement, 
+      where: { id: productId } 
     });
     
-    return randomIncrement; // ส่งค่าจำนวนที่เพิ่มกลับไป
+    return randomIncrement;
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชมปลอม:", err);
     return 0;
@@ -353,13 +310,7 @@ exports.showNewProductForm = async (req, res) => {
     
     // ถ้ามี categoryId ให้ดึงข้อมูลหมวดหมู่นั้นมา
     if (categoryId) {
-      // ตรวจสอบว่า categoryId ถูกต้องหรือไม่
-      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-        console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
-        return res.redirect("/categories");
-      }
-      
-      selectedCategory = await Category.findById(categoryId);
+      selectedCategory = await Category.findByPk(categoryId);
       
       if (!selectedCategory) {
         console.error("ไม่พบหมวดหมู่ที่ระบุ");
@@ -374,7 +325,7 @@ exports.showNewProductForm = async (req, res) => {
     }
     
     // กรณีไม่ได้ระบุหมวดหมู่ ให้ดึงรายการหมวดหมู่ทั้งหมดมาให้เลือก
-    const categories = await Category.find();
+    const categories = await Category.findAll();
     res.render("products/new", { 
       categories, 
       selectedCategory: null,
@@ -391,20 +342,17 @@ exports.listProductsByCategory = async (req, res) => {
   try {
     const categoryId = req.params.categoryId;
     
-    // ตรวจสอบว่า categoryId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
-      console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", categoryId);
-      return res.redirect("/categories");
-    }
-    
-    const category = await Category.findById(categoryId);
+    const category = await Category.findByPk(categoryId);
     
     if (!category) {
       console.error("ไม่พบหมวดหมู่ที่ระบุ");
       return res.redirect("/categories");
     }
     
-    const products = await Product.find({ category: categoryId });
+    const products = await Product.findAll({
+      where: { categoryId },
+      include: [{ model: ProductImage, as: 'images' }]
+    });
     
     res.render("products/categoryProducts", { 
       category, 
@@ -422,20 +370,14 @@ exports.showEditProductForm = async (req, res) => {
   try {
     const productId = req.params.id;
     
-    // ตรวจสอบว่า productId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-      return res.redirect("/products");
-    }
-    
-    const product = await Product.findById(productId);
+    const product = await Product.findByPk(productId);
     
     if (!product) {
       console.error("ไม่พบสินค้าที่ระบุ");
       return res.redirect("/products");
     }
     
-    const categories = await Category.find();
+    const categories = await Category.findAll();
     res.render("products/edit", { product, categories });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", err);
@@ -449,57 +391,22 @@ exports.updateProduct = async (req, res) => {
     const productId = req.params.id;
     const { name, code, category, price, stock, description } = req.body;
     
-    // ตรวจสอบว่า productId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-      return res.redirect("/products");
-    }
+    const product = await Product.findByPk(productId);
     
-    // ดึงข้อมูลสินค้าเดิมเพื่อตรวจสอบการเปลี่ยนแปลงหมวดหมู่
-    const oldProduct = await Product.findById(productId);
-    
-    if (!oldProduct) {
+    if (!product) {
       console.error("ไม่พบสินค้าที่ระบุ");
       return res.redirect("/products");
     }
     
-    const oldCategoryId = oldProduct.category;
-    
     // อัพเดทข้อมูลสินค้า
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
-      {
-        name,
-        code,
-        category,
-        price,
-        stock: parseInt(stock),
-        description,
-        updatedAt: Date.now()
-      },
-      { new: true }
-    );
-
-    // ถ้ามีการเปลี่ยนหมวดหมู่
-    if (oldCategoryId && category && oldCategoryId.toString() !== category) {
-      // ลบ reference จากหมวดหมู่เดิม
-      await Category.findByIdAndUpdate(
-        oldCategoryId,
-        { $pull: { products: productId } }
-      );
-      
-      // เพิ่ม reference ไปยังหมวดหมู่ใหม่
-      await Category.findByIdAndUpdate(
-        category,
-        { $push: { products: productId } }
-      );
-    } else if (!oldCategoryId && category) {
-      // ถ้าสินค้าไม่เคยมีหมวดหมู่แต่ตอนนี้มี
-      await Category.findByIdAndUpdate(
-        category,
-        { $push: { products: productId } }
-      );
-    }
+    await product.update({
+      name,
+      code,
+      categoryId: category,
+      price,
+      stock: parseInt(stock) || 0,
+      description
+    });
 
     res.redirect("/products");
   } catch (err) {
@@ -513,37 +420,32 @@ exports.deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     
-    // ตรวจสอบว่า productId ถูกต้องหรือไม่
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      console.error("รูปแบบของ productId ไม่ถูกต้อง:", productId);
-      return res.redirect("/products");
-    }
-    
-    const product = await Product.findById(productId);
+    const product = await Product.findByPk(productId, {
+      include: [{ model: ProductImage, as: 'images' }]
+    });
     
     if (!product) {
       console.error("ไม่พบสินค้าที่ระบุ");
       return res.redirect("/products");
     }
     
-    // ถ้าสินค้ามีหมวดหมู่ ให้ลบ reference ออกจากหมวดหมู่ด้วย
-    if (product.category) {
-      await Category.findByIdAndUpdate(
-        product.category,
-        { $pull: { products: productId } }
-      );
+    // ลบรูปภาพของสินค้า
+    if (product.images && product.images.length > 0) {
+      for (const image of product.images) {
+        // ลบไฟล์จากระบบไฟล์
+        const imagePath = path.join(__dirname, '../../public', image.url);
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+          console.log('Deleted image:', imagePath);
+        }
+      }
     }
     
-    // ลบสินค้าจากฐานข้อมูล
-    await Product.findByIdAndDelete(productId);
+    // ลบสินค้า (รูปภาพจะถูกลบอัตโนมัติด้วย cascade)
+    await product.destroy();
     
     // ถ้ามาจากหน้าหมวดหมู่ ให้กลับไปที่หน้าแสดงสินค้าในหมวดหมู่นั้น
     if (req.query.categoryId) {
-      // ตรวจสอบว่า categoryId ถูกต้องหรือไม่
-      if (!mongoose.Types.ObjectId.isValid(req.query.categoryId)) {
-        console.error("รูปแบบของ categoryId ไม่ถูกต้อง:", req.query.categoryId);
-        return res.redirect("/products");
-      }
       res.redirect(`/products/category/${req.query.categoryId}`);
     } else {
       res.redirect("/products");
@@ -553,4 +455,3 @@ exports.deleteProduct = async (req, res) => {
     res.redirect("/products");
   }
 };
-
