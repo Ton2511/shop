@@ -1,61 +1,61 @@
 <div class="custom-container-lg mx-auto d-flex flex-column">
-    <div class="card mt-5 mb-5">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h1 class="text-cyan">จัดการยอดเข้าชมสินค้า: <%= product.name %></h1>
-          <div>
-            <a href="/products/details/<%= product._id %>" class="btn btn-secondary">
-              <i class="bi bi-arrow-left"></i> กลับไปยังรายละเอียดสินค้า
-            </a>
+  <div class="card mt-5 mb-5">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-cyan">จัดการยอดเข้าชมสินค้า: <%= product.name %></h1>
+        <div>
+          <a href="/products/details/<%= product.id %>" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> กลับไปยังรายละเอียดสินค้า
+          </a>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0">ยอดเข้าชมจริง</h5>
+            </div>
+            <div class="card-body">
+              <h2 class="display-4 text-center"><%= product.realViews || 0 %></h2>
+              <p class="text-muted text-center">ยอดเข้าชมนี้เกิดจากการที่ผู้ใช้เข้าชมสินค้าจริงๆ</p>
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                ยอดเข้าชมจริงไม่สามารถแก้ไขได้ จะเพิ่มขึ้นเมื่อมีผู้ใช้เข้าชมสินค้าเท่านั้น
+              </div>
+            </div>
           </div>
         </div>
-  
-        <div class="row mb-4">
-          <div class="col-md-6">
-            <div class="card h-100">
-              <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">ยอดเข้าชมจริง</h5>
-              </div>
-              <div class="card-body">
-                <h2 class="display-4 text-center"><%= product.views?.real || 0 %></h2>
-                <p class="text-muted text-center">ยอดเข้าชมนี้เกิดจากการที่ผู้ใช้เข้าชมสินค้าจริงๆ</p>
-                <div class="alert alert-info">
-                  <i class="bi bi-info-circle me-2"></i>
-                  ยอดเข้าชมจริงไม่สามารถแก้ไขได้ จะเพิ่มขึ้นเมื่อมีผู้ใช้เข้าชมสินค้าเท่านั้น
+
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-success text-white">
+              <h5 class="mb-0">ยอดเข้าชมที่แสดงผล</h5>
+            </div>
+            <div class="card-body">
+              <form action="/products/views/<%= product.id %>" method="POST">
+                <div class="mb-3">
+                  <label for="fakeViews" class="form-label">ตั้งค่ายอดเข้าชมที่แสดงผลกับลูกค้า:</label>
+                  <input type="number" class="form-control form-control-lg" id="fakeViews" name="fakeViews" 
+                         value="<%= product.fakeViews || 0 %>" min="0" required>
+                  <div class="form-text">นี่คือยอดเข้าชมที่จะแสดงให้ลูกค้าเห็นเมื่อเข้าชมสินค้านี้</div>
                 </div>
-              </div>
-            </div>
-          </div>
-  
-          <div class="col-md-6">
-            <div class="card h-100">
-              <div class="card-header bg-success text-white">
-                <h5 class="mb-0">ยอดเข้าชมที่แสดงผล</h5>
-              </div>
-              <div class="card-body">
-                <form action="/products/views/<%= product._id %>" method="POST">
-                  <div class="mb-3">
-                    <label for="fakeViews" class="form-label">ตั้งค่ายอดเข้าชมที่แสดงผลกับลูกค้า:</label>
-                    <input type="number" class="form-control form-control-lg" id="fakeViews" name="fakeViews" 
-                           value="<%= product.views?.fake || 0 %>" min="0" required>
-                    <div class="form-text">นี่คือยอดเข้าชมที่จะแสดงให้ลูกค้าเห็นเมื่อเข้าชมสินค้านี้</div>
-                  </div>
-  
-                  <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-success btn-lg">
-                      <i class="bi bi-save"></i> บันทึกการเปลี่ยนแปลง
-                    </button>
-                  </div>
-                </form>
-              </div>
+
+                <div class="d-grid mt-4">
+                  <button type="submit" class="btn btn-success btn-lg">
+                    <i class="bi bi-save"></i> บันทึกการเปลี่ยนแปลง
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-  
-        <div class="alert alert-warning">
-          <i class="bi bi-exclamation-triangle me-2"></i>
-          <strong>คำแนะนำ:</strong> ใช้ยอดเข้าชมที่แสดงผลด้วยความระมัดระวัง การตั้งค่ายอดเข้าชมที่สูงเกินไปอาจทำให้ลูกค้าสงสัยได้
-        </div>
+      </div>
+
+      <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <strong>คำแนะนำ:</strong> ใช้ยอดเข้าชมที่แสดงผลด้วยความระมัดระวัง การตั้งค่ายอดเข้าชมที่สูงเกินไปอาจทำให้ลูกค้าสงสัยได้
       </div>
     </div>
   </div>
+</div>

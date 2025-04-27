@@ -15,13 +15,13 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="text-cyan">รายละเอียดสินค้า</h1>
                 <div>
-                    <a href="/products/images/<%= product._id %>" class="btn btn-success text-white me-2">
+                    <a href="/products/images/<%= product.id %>" class="btn btn-success text-white me-2">
                         <i class="bi bi-images"></i> จัดการรูปภาพ
                     </a>
-                    <a href="/products/views/<%= product._id %>" class="btn btn-secondary me-2">
+                    <a href="/products/views/<%= product.id %>" class="btn btn-secondary me-2">
                         <i class="bi bi-eye"></i> จัดการยอดเข้าชม
                     </a>
-                    <a href="/products/edit/<%= product._id %>" class="btn bg-warning text-light me-2">แก้ไข</a>
+                    <a href="/products/edit/<%= product.id %>" class="btn bg-warning text-light me-2">แก้ไข</a>
                     
                 </div>
             </div>
@@ -82,7 +82,7 @@
                         <div class="bg-light d-flex flex-column justify-content-center align-items-center py-5 rounded">
                             <i class="bi bi-image fs-1 text-muted"></i>
                             <p class="text-muted mt-2">ไม่มีรูปภาพ</p>
-                            <a href="/products/images/<%= product._id %>" class="btn btn-sm btn-primary mt-2">
+                            <a href="/products/images/<%= product.id %>" class="btn btn-sm btn-primary mt-2">
                                 <i class="bi bi-plus-circle"></i> เพิ่มรูปภาพ
                             </a>
                         </div>
@@ -102,9 +102,9 @@
                             <!-- แสดงยอดเข้าชม -->
                             <div class="text-muted">
                                 <i class="bi bi-eye"></i> ยอดเข้าชม: 
-                                <span class="badge bg-light text-dark"><%= product.views?.fake || 0 %></span>
+                                <span class="badge bg-light text-dark"><%= product.fakeViews || 0 %></span>
                                 <br>
-                                <small>ยอดจริง: <%= product.views?.real || 0 %></small>
+                                <small>ยอดจริง: <%= product.realViews || 0 %></small>
                             </div>
                         </div>
                     </div>
@@ -155,7 +155,7 @@
                     
                     <div class="d-flex justify-content-between mt-4">
 
-                        <form action="/products/delete/<%= product._id %>" method="POST" onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้หรือไม่?');">
+                        <form action="/products/delete/<%= product.id %>" method="POST" onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้หรือไม่?');">
                             <button type="submit" class="btn bg-danger text-light">
                                 <i class="bi bi-trash"></i> ลบสินค้า
                             </button>

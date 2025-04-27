@@ -95,6 +95,16 @@
         width: 100%;
         z-index: 10;
     }
+    
+    .bg-blackgreen {
+        background-color: #25D366;
+        color: white;
+    }
+    
+    .bg-blue {
+        background-color: #1877F2;
+        color: white;
+    }
 </style>
 
 <div class="bg-light">
@@ -107,24 +117,21 @@
                     <!-- กลุ่มภาพที่เลื่อนในแนวตั้ง -->
                     <div class="carousel-container">
                         <div class="carousel-inner" id="carouselItems">
-                            <div class="carousel-item">
-                                <img src="/images/product-thumb-1.png" alt="Product Thumbnail" class="custom-size">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="/images/product-thumb-2.png" alt="Product Thumbnail" class="custom-size">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="/images/product-thumb-3.png" alt="Product Thumbnail" class="custom-size">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="/images/product-thumb-4.png" alt="Product Thumbnail" class="custom-size">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="/images/product-thumb-5.png" alt="Product Thumbnail" class="custom-size">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="/images/product-thumb-6.png" alt="Product Thumbnail" class="custom-size">
-                            </div>
+                            <% if (product && product.images && product.images.length > 0) { %>
+                                <% product.images.forEach((image, index) => { %>
+                                    <div class="carousel-item">
+                                        <img src="<%= image.url %>" alt="Product Thumbnail" class="custom-size"
+                                             onclick="setMainImage('<%= image.url %>', <%= index %>)">
+                                    </div>
+                                <% }) %>
+                            <% } else { %>
+                                <div class="carousel-item">
+                                    <div class="text-center p-2">
+                                        <i class="bi bi-image fs-1 text-muted"></i>
+                                        <p class="small text-muted">ไม่มีรูปภาพ</p>
+                                    </div>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
 
@@ -140,19 +147,30 @@
 
             <div class="col-5 ">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img src="/images/product-thumb-15.png" alt="Product Thumbnail" class="custom-size-main">
+                    <% if (product && product.images && product.images.length > 0) { %>
+                        <% 
+                            // หารูปที่เป็นรูปหลัก
+                            const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
+                        %>
+                        <img id="mainImage" src="<%= featuredImage.url %>" alt="<%= product.name %>" class="custom-size-main">
+                    <% } else { %>
+                        <div class="bg-light d-flex flex-column justify-content-center align-items-center py-5 rounded">
+                            <i class="bi bi-image fs-1 text-muted"></i>
+                            <p class="text-muted mt-2">ไม่มีรูปภาพ</p>
+                        </div>
+                    <% } %>
                 </div>
             </div>
 
             <div class="col-6 ps-5">
-                <h3 class='text-dark mb-2'><b>ถังใส่น้ำกลั่นพร้อมก๊อกเปิด-ปิด ทรงสี่เหลี่ยม (Aspirator bottle)</b></h3>
+                <h3 class='text-dark mb-2'><b><%= product ? product.name : 'ถังใส่น้ำกลั่นพร้อมก๊อกเปิด-ปิด ทรงสี่เหลี่ยม (Aspirator bottle)' %></b></h3>
                 <div class="d-flex justify-content-between align-items-center  mb-1 col-12">
-                    <h6 class='text-gray mb-4'>รหัสสินค้า : INS-OCT200.230</h6>
-                    <h6 class='text-gray mb-4'>view : 5K <i class="fa-solid fa-eye"></i></h6>
+                    <h6 class='text-gray mb-4'>รหัสสินค้า : <%= product ? product.code : 'INS-OCT200.230' %></h6>
+                    <h6 class='text-gray mb-4'>view : <%= product ? (product.fakeViews || '0') : '5K' %> <i class="fa-solid fa-eye"></i></h6>
                 </div>
-                <h2 class='text-warning mb-5'><b>2500 - 5000 บาท</b></h2>
-                <h3 class=' mb-2'>หมวดหมู่ : เครื่องมือวิทยาศาสตร์</h3>
-                <h3 class=' mb-4'>คงเหลือ : 999 ชิ้น</h3>
+                <h2 class='text-warning mb-5'><b><%= product ? (product.price || 'ไม่ระบุราคา') : '2500 - 5000' %> บาท</b></h2>
+                <h3 class='mb-2'>หมวดหมู่ : <%= product && product.category ? product.category.name : 'เครื่องมือวิทยาศาสตร์' %></h3>
+                <h3 class='mb-4'>คงเหลือ : <%= product ? (product.stock || '0') : '999' %> ชิ้น</h3>
                 <hr>
                 <div class="text-center mt-5">
                     <h3 class="text-dark">ติดต่อสั่งซื้อ |
@@ -169,15 +187,15 @@
                 <h4 class="text-dark"><b>ข้อมูล |</b></h4>
             </div>
             <div class="col-10 d-flex mb-3">
-                <h4 class=""><b class="text-dark">คงเหลือ </b> 999</h4>
-                <h4 class="ms-5"><b class="text-dark">วันลงสินค้า </b> 9/5/5</h4>
-                <h4 class="ms-5"><b class="text-dark">แก้ไขล่าสุด </b> 9/5/5</h4>
+                <h4 class=""><b class="text-dark">คงเหลือ </b> <%= product ? (product.stock || '0') : '999' %></h4>
+                <h4 class="ms-5"><b class="text-dark">วันลงสินค้า </b> <%= product ? new Date(product.createdAt).toLocaleDateString('th-TH') : '9/5/5' %></h4>
+                <h4 class="ms-5"><b class="text-dark">แก้ไขล่าสุด </b> <%= product ? new Date(product.updatedAt).toLocaleDateString('th-TH') : '9/5/5' %></h4>
             </div>
             <div class="col-2">
                 <h4 class="text-dark"><b>รายละเอียด |</b></h4>
             </div>
             <div class="col-10 d-flex mb-3">
-                <h4 class=""> ถังใส่น้ำกลั่น แบบมีก๊อกเปิด-ปิด ทรงสี่เหลี่ยม (Aspirator bottle with spicot) ยี่ห้อ LP, italyสำหรับคนที่ชอบพื้นที่จัดเก็บง่าย  ประหยัดพื้นที่  วางเข้ามุมสะดวก ขอแนะนำ rectangular stroage bottle with tap ,HDPE  ถังทรงสี่เหลี่ยมปากกว้างพร้อมก๊อกเปิด-ปิด</h4>
+                <h4 class=""><%= product ? (product.description || 'ไม่มีรายละเอียด') : 'ถังใส่น้ำกลั่น แบบมีก๊อกเปิด-ปิด ทรงสี่เหลี่ยม (Aspirator bottle with spicot) ยี่ห้อ LP, italyสำหรับคนที่ชอบพื้นที่จัดเก็บง่าย  ประหยัดพื้นที่  วางเข้ามุมสะดวก ขอแนะนำ rectangular stroage bottle with tap ,HDPE  ถังทรงสี่เหลี่ยมปากกว้างพร้อมก๊อกเปิด-ปิด' %></h4>
             </div>
             <div class="col-2">
                 <h4 class="text-dark"><b>วิธีการจัดส่ง |</b></h4>
@@ -185,10 +203,8 @@
             <div class="col-10 d-flex mb-3">
                 <h4 class="">รายละเอียดการจัดส่งสินค้าของร้านค้าสำหรับการสั่งซื้อสินค้า 1 ชิ้น </h4>
             </div>
-
         </div>
     </div>
-
 </div>
 </div>
 <script>
@@ -198,6 +214,9 @@
     function moveCarousel(direction) {
         const items = document.querySelectorAll('.carousel-item');
         const totalItems = items.length;
+        
+        if (totalItems <= 1) return; // ถ้ามีรูปเดียวหรือไม่มีเลย ไม่ต้องเลื่อน
+        
         const carouselInner = document.getElementById('carouselItems');
 
         currentIndex += direction;
@@ -211,5 +230,10 @@
         // เลื่อน carousel
         const offset = -currentIndex * 150; // ขนาดของแต่ละภาพ
         carouselInner.style.transform = `translateY(${offset}px)`;
+    }
+    
+    // ฟังก์ชันเปลี่ยนรูปหลัก
+    function setMainImage(imageUrl, index) {
+        document.getElementById('mainImage').src = imageUrl;
     }
 </script>

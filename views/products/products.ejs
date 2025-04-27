@@ -104,7 +104,7 @@
     <h3 class="text-dark mt-5">
       <a href="/">หน้าแรก</a> > 
       <% if (product.category) { %>
-        <a href="/products/category/<%= product.category._id %>"><%= product.category.name %></a> > 
+        <a href="/products/category/<%= product.category.id %>"><%= product.category.name %></a> > 
       <% } %>
       <%= product.name %>
     </h3>
@@ -150,7 +150,7 @@
               <div class="bg-light d-flex flex-column justify-content-center align-items-center py-5 rounded" style="height: 400px; width: 100%;">
                 <i class="bi bi-image fs-1 text-muted"></i>
                 <p class="text-muted mt-2">ไม่มีรูปภาพ</p>
-                <a href="/products/images/<%= product._id %>" class="btn btn-sm btn-primary mt-2">
+                <a href="/products/images/<%= product.id %>" class="btn btn-sm btn-primary mt-2">
                   <i class="bi bi-plus-circle"></i> เพิ่มรูปภาพ
                 </a>
               </div>
@@ -163,7 +163,7 @@
           <h3 class='text-dark mb-2'><b><%= product.name %></b></h3>
           <div class="d-flex justify-content-between align-items-center mb-1 col-12">
             <h6 class='text-gray mb-4'>รหัสสินค้า : <%= product.code %></h6>
-            <h6 class='text-gray mb-4'>view : <%= product.views?.fake || 0 %> <i class="fa-solid fa-eye"></i></h6>
+            <h6 class='text-gray mb-4'>view : <%= product.fakeViews || 0 %> <i class="fa-solid fa-eye"></i></h6>
           </div>
           <h2 class='text-warning mb-5'><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
           <h3 class='mb-2'>หมวดหมู่ : <%= product.category ? product.category.name : 'ไม่ระบุหมวดหมู่' %></h3>
@@ -211,18 +211,18 @@
           <a href="/products" class="btn btn-secondary btn-lg me-2">
             <i class="bi bi-arrow-left"></i> กลับไปยังรายการสินค้า
           </a>
-          <a href="/products/images/<%= product._id %>" class="btn btn-success btn-lg me-2">
+          <a href="/products/images/<%= product.id %>" class="btn btn-success btn-lg me-2">
             <i class="bi bi-images"></i> จัดการรูปภาพ
           </a>
         </div>
         <div>
-          <a href="/products/views/<%= product._id %>" class="btn btn-info btn-lg me-2">
+          <a href="/products/views/<%= product.id %>" class="btn btn-info btn-lg me-2">
             <i class="bi bi-eye"></i> จัดการยอดเข้าชม
           </a>
-          <a href="/products/edit/<%= product._id %>" class="btn btn-warning btn-lg me-2">
+          <a href="/products/edit/<%= product.id %>" class="btn btn-warning btn-lg me-2">
             <i class="bi bi-pencil"></i> แก้ไขสินค้า
           </a>
-          <form action="/products/delete/<%= product._id %>" method="POST" style="display:inline;" 
+          <form action="/products/delete/<%= product.id %>" method="POST" style="display:inline;" 
                 onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้หรือไม่?');">
             <button type="submit" class="btn btn-danger btn-lg">
               <i class="bi bi-trash"></i> ลบสินค้า
