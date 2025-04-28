@@ -44,7 +44,7 @@
           <% products.forEach(product => { %>
             <div class="col">
               <div class="product-item h-70 border shadow-sm rounded">
-                <a href="/shop/product/<%= product._id %>" title="<%= product.name %>" class="a">
+                <a href="/shop/product/<%= product.id %>" title="<%= product.name %>" class="a">
                   <figure class="m-0 p-3 text-center">
                     <% if (product.images && product.images.length > 0) { %>
                       <% 
@@ -71,7 +71,7 @@
                         <small class="text-muted">ไม่มีหมวดหมู่</small>
                       <% } %>
                       <small class="text-dark">
-                        <i class="fa-solid fa-eye"></i> <%= product.views?.fake || 0 %>
+                        <i class="fa-solid fa-eye"></i> <%= product.fakeViews || 0 %>
                       </small>
                     </div>
                   </div>

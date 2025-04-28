@@ -36,7 +36,7 @@
           <% categories.forEach(category => { %>
             <div class="col">
               <div class="product-item h-70 border shadow-sm rounded">
-                <a href="/shop/category/<%= category._id %>" title="<%= category.name %>" class="a">
+                <a href="/shop/category/<%= category.id %>" title="<%= category.name %>" class="a">
                   <figure class="m-0 p-3 text-center">
                     <% if (category.image) { %>
                       <img src="<%= category.image %>" alt="<%= category.name %>" class="tab-image" style="height: 180px; object-fit: contain;">
@@ -49,7 +49,14 @@
                   <div class="d-flex flex-column text-center p-3 pt-0">
                     <h3 class="fs-5 fw-normal text-dark"><%= category.name %></h3>
                     <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
-                      <span class="text-dark">สินค้า: <%= category.products.length %> รายการ</span>
+                      <span class="text-dark">สินค้า: 
+                        <% if (Array.isArray(category.products)) { %>
+                          <%= category.products.length %> 
+                        <% } else { %>
+                          0
+                        <% } %>
+                        รายการ
+                      </span>
                     </div>
                   </div>
                 </a>

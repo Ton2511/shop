@@ -106,9 +106,8 @@
     <h4 aria-label="breadcrumb ">
       <ol class="breadcrumb">
         <li class="breadcrumb-item text-dark "><a class="a" href="/">หมวดหมู่สินค้า</a></li>
-        <li class="breadcrumb-item text-dark "><a class="a" href="/shop/category/<%= product.category._id %>"><%= product.category.name %></a></li>
+        <li class="breadcrumb-item text-dark "><a class="a" href="/shop/category/<%= product.category.id %>"><%= product.category.name %></a></li>
         <li class="breadcrumb-item active" aria-current="page"><%= product.name %></li>
-
       </ol>
     </h4>
   </div>
@@ -180,7 +179,7 @@
           </div>
           <h2 class='text-cyan my-4'><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
           <h4 class='mb-2 text-dark'>หมวดหมู่ :  <% if (product.category) { %>
-            <a href="/shop/category/<%= product.category._id %>" class="text-gray text-decoration-none">
+            <a href="/shop/category/<%= product.category.id %>" class="text-gray text-decoration-none">
               <%= product.category.name %>
             </a>
           <% } %><div class="mb-3">
@@ -235,7 +234,7 @@
       <% relatedProducts.forEach(related => { %>
         <div class="col">
           <div class="product-item h-70 border shadow-sm rounded">
-            <a href="/shop/product/<%= related._id %>" title="<%= related.name %>" class="a">
+            <a href="/shop/product/<%= related.id %>" title="<%= related.name %>" class="a">
               <figure class="m-0 p-3 text-center">
                 <% if (related.images && related.images.length > 0) { %>
                   <% 
@@ -262,7 +261,7 @@
                     <small class="text-muted">ไม่มีหมวดหมู่</small>
                   <% } %>
                   <small class="text-dark">
-                    <i class="fa-solid fa-eye"></i> <%= product.views?.fake || 0 %>
+                    <i class="fa-solid fa-eye"></i> <%= related.fakeViews || 0 %>
                   </small>
                 </div>
               </div>
@@ -275,7 +274,7 @@
 <% } %>
       
       <div class="text-center mt-4">
-        <a href="/shop/category/<%= product.category ? product.category._id : '' %>" class="btn btn-outline bg-dark">
+        <a href="/shop/category/<%= product.category ? product.category.id : '' %>" class="btn btn-outline bg-dark">
           <i class="bi bi-arrow-left me-2"></i>
           กลับไปยังรายการสินค้า
         </a>
