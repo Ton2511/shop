@@ -11,7 +11,7 @@ const sessionStore = new SequelizeStore({
   checkExpirationInterval: 15 * 60 * 1000 // ตรวจสอบการหมดอายุทุก 15 นาที
 });
 
-// ฟังก์ชันสำหรับสร้างตารางเซสชั่น (ถ้ายังไม่มี)
+// ฟังก์ชันสำหรับสร้างตารางเซสชัน (ถ้ายังไม่มี)
 const initSessionStore = async () => {
   await sessionStore.sync();
   console.log('Session store initialized');
@@ -24,9 +24,10 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   store: sessionStore,
   cookie: { 
-    maxAge: 1000 * 60 * 60, // 1 hour
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' // Add this line
+    maxAge: 1000 * 60 * 60, // 1 ชั่วโมง
+    secure: false, // เปลี่ยนเป็น false เพื่อทดสอบก่อน
+    httpOnly: true,
+    sameSite: 'lax' // เพิ่มตัวเลือกนี้เพื่อความเข้ากันได้กับบราวเซอร์สมัยใหม่
   }
 });
 

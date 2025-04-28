@@ -23,6 +23,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session Data:', req.session);
+  console.log('Session User:', req.session.user);
+  next();
+});
+
 // ตั้งค่า Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -38,6 +45,20 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   console.log('Session ID:', req.sessionID);
   console.log('Session Data:', req.session);
+  next();
+});
+
+app.use((req, res, next) => {
+  // ตรวจสอบและกำหนดค่า session อย่างชัดเจน
+  res.locals.session = req.session || {};
+  
+  // ตรวจสอบว่ามีข้อมูลผู้ใช้ในเซสชันหรือไม่
+  if (req.session && req.session.user) {
+    console.log("User in session:", req.session.user);
+  } else {
+    console.log("No user in session");
+  }
+  
   next();
 });
 
@@ -86,23 +107,24 @@ const PORT = process.env.PORT || 5000;
 // ฟังก์ชันสำหรับเริ่มแอปพลิเคชัน
 const startApp = async () => {
   try {
-    // Connect to database
+    // เชื่อมต่อฐานข้อมูล
     await connectDB();
     
-    // Sync all models with database (create tables if they don't exist)
-    await sequelize.sync({ alter: true });
+    // ซิงค์โมเดลทั้งหมดกับฐานข้อมูล (สร้างตารางถ้ายังไม่มี)
+    await sequelize.sync({ force: false, alter: true });  // เปลี่ยนเป็น force: false เพื่อป้องกันการลบข้อมูล
     console.log('✅ Database tables synchronized');
     
-    // Initialize session store
+    // เตรียม session store - ต้องทำหลังจากซิงค์ฐานข้อมูลแล้ว
     await initSessionStore();
-    console.log('✅ Session store initialized');
+    console.log('✅ Session store initialized and synced');
     
-    // Start server
+    // เริ่มเซิร์ฟเวอร์
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error('❌ Error starting server:', error);
+    console.error(error.stack); // แสดง stack trace เพื่อดีบัก
     process.exit(1);
   }
 };

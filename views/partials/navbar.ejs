@@ -228,7 +228,25 @@
           </div>
         </div>
       </header>
+      
 </nav>
+<!-- เพิ่มส่วนนี้ในไฟล์ navbar.ejs ที่ตำแหน่งใดก็ได้ที่ไม่ส่งผลกระทบต่อการแสดงผล -->
+<% if (typeof locals !== 'undefined') { %>
+  <!-- local variables exist -->
+  <% if (typeof locals.session !== 'undefined') { %>
+      <!-- Session exists -->
+      <% if (typeof locals.session.user !== 'undefined') { %>
+          <!-- User exists in session -->
+          <script>console.log('Session user found:', <%= JSON.stringify(locals.session.user) %>);</script>
+      <% } else { %>
+          <script>console.log('No user in session');</script>
+      <% } %>
+  <% } else { %>
+      <script>console.log('No session in locals');</script>
+  <% } %>
+<% } else { %>
+  <script>console.log('No locals variable');</script>
+<% } %>
 <script src="js/jquery-1.11.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>

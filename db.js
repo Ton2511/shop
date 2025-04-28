@@ -54,13 +54,22 @@ const sequelize = new Sequelize(
 );
 
 // ฟังก์ชันสำหรับทดสอบการเชื่อมต่อ
+// ฟังก์ชันสำหรับทดสอบการเชื่อมต่อ
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
     console.log("✅ SQL Database Connected...");
+    
+    // ทดสอบการอ่านเขียนข้อมูล
+    try {
+      const [results, metadata] = await sequelize.query("SELECT 1+1 as result");
+      console.log("✅ SQL Query test successful:", results);
+    } catch (queryErr) {
+      console.error("❌ SQL Query test failed:", queryErr);
+    }
   } catch (err) {
     console.error("❌ SQL Database Connection Error:", err);
-    process.exit(1);
+    throw err; // โยนข้อผิดพลาดต่อไปเพื่อให้จัดการในระดับบน
   }
 };
 
