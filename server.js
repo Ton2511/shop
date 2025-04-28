@@ -74,6 +74,14 @@ app.all("*", (req, res) => {
   res.redirect("/");
 });
 
+// ตั้งค่า Express ให้เชื่อถือ Proxy (สำคัญเมื่อใช้งานกับ NGINX)
+app.set('trust proxy', 1);
+
+// ตั้งค่า Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(methodOverride("_method"));
+
 // เริ่มเซิร์ฟเวอร์และซิงค์ฐานข้อมูล
 const PORT = process.env.PORT || 5000;
 

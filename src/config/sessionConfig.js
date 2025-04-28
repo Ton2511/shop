@@ -21,7 +21,7 @@ const initSessionStore = async () => {
   }
 };
 
-// ตั้งค่า middleware สำหรับ session
+
 // ตั้งค่า middleware สำหรับ session
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET || 'myshopsecret',
@@ -30,9 +30,11 @@ const sessionMiddleware = session({
   store: sessionStore,
   cookie: { 
     maxAge: 1000 * 60 * 60, // 1 ชั่วโมง
-    secure: process.env.NODE_ENV === 'production'
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax', // เพิ่มตัวเลือกนี้
+    path: '/' // ระบุพาธให้ชัดเจน
   },
-  name: 'shop.sid'
+  proxy: true // เพิ่มตัวเลือกนี้เมื่อใช้งานกับ NGINX
 });
 
 // เพิ่ม log เพื่อตรวจสอบ session
