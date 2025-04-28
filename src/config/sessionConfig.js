@@ -24,8 +24,9 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   store: sessionStore,
   cookie: { 
-    maxAge: 1000 * 60 * 60, // 1 ชั่วโมง
-    secure: process.env.NODE_ENV === 'production'
+    maxAge: 1000 * 60 * 60, // 1 hour
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' // Add this line
   }
 });
 

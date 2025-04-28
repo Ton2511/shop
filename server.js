@@ -35,6 +35,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session Data:', req.session);
+  next();
+});
+
 // Middleware ตรวจสอบการล็อกอิน
 const requireAuth = (req, res, next) => {
   if (!req.session.user) {
@@ -80,17 +86,18 @@ const PORT = process.env.PORT || 5000;
 // ฟังก์ชันสำหรับเริ่มแอปพลิเคชัน
 const startApp = async () => {
   try {
-    // เชื่อมต่อฐานข้อมูล
+    // Connect to database
     await connectDB();
     
-    // ซิงค์โมเดลทั้งหมดกับฐานข้อมูล (สร้างตารางถ้ายังไม่มี)
-    await sequelize.sync({ alter: true });  // ใช้ alter: true เพื่อปรับโครงสร้างตารางที่มีอยู่แล้ว
+    // Sync all models with database (create tables if they don't exist)
+    await sequelize.sync({ alter: true });
     console.log('✅ Database tables synchronized');
     
-    // เตรียม session store
+    // Initialize session store
     await initSessionStore();
+    console.log('✅ Session store initialized');
     
-    // เริ่มเซิร์ฟเวอร์
+    // Start server
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
