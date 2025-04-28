@@ -80,14 +80,19 @@ const PORT = process.env.PORT || 5000;
 // ฟังก์ชันสำหรับเริ่มแอปพลิเคชัน
 const startApp = async () => {
   try {
+    console.log('Starting application...');
+    
     // เชื่อมต่อฐานข้อมูล
+    console.log('Connecting to database...');
     await connectDB();
     
     // ซิงค์โมเดลทั้งหมดกับฐานข้อมูล (สร้างตารางถ้ายังไม่มี)
-    await sequelize.sync({ alter: true });  // ใช้ alter: true เพื่อปรับโครงสร้างตารางที่มีอยู่แล้ว
+    console.log('Synchronizing database tables...');
+    await sequelize.sync({ alter: true });
     console.log('✅ Database tables synchronized');
     
     // เตรียม session store
+    console.log('Initializing session store...');
     await initSessionStore();
     
     // เริ่มเซิร์ฟเวอร์
