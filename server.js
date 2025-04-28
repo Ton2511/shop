@@ -12,6 +12,9 @@ const { Category } = require("./src/models");
 // เริ่มแอพพลิเคชัน Express
 const app = express();
 
+// ตั้งค่า Trust Proxy เมื่อรันกับ NGINX/Passenger
+app.set('trust proxy', 1);
+
 // ตั้งค่า View Engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -63,10 +66,10 @@ const shopRoutes = require("./src/routes/shopRoutes");
 
 // กำหนด Routes
 app.use('/', mainRoutes);
-app.use("/", authRoutes); // ให้ /login และ /logout ทำงานที่ root
+app.use("/", authRoutes);
 app.use("/users", requireAuth, userRoutes);
 app.use("/categories", requireAuth, categoryRoutes);
-app.use("/products", productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ
+app.use("/products", productRoutes);
 app.use("/shop", shopRoutes);
 
 // จัดการเส้นทางที่ไม่พบ
@@ -74,39 +77,28 @@ app.all("*", (req, res) => {
   res.redirect("/");
 });
 
-// ตั้งค่า Express ให้เชื่อถือ Proxy (สำคัญเมื่อใช้งานกับ NGINX)
-app.set('trust proxy', 1);
-
-// ตั้งค่า Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(methodOverride("_method"));
-
 // เริ่มเซิร์ฟเวอร์และซิงค์ฐานข้อมูล
 const PORT = process.env.PORT || 5000;
 
 // ฟังก์ชันสำหรับเริ่มแอปพลิเคชัน
 const startApp = async () => {
   try {
-    console.log('Starting application...');
-    
     // เชื่อมต่อฐานข้อมูล
-    console.log('Connecting to database...');
     await connectDB();
     
     // ซิงค์โมเดลทั้งหมดกับฐานข้อมูล (สร้างตารางถ้ายังไม่มี)
-    console.log('Synchronizing database tables...');
     await sequelize.sync({ alter: true });
     console.log('✅ Database tables synchronized');
     
     // เตรียม session store
-    console.log('Initializing session store...');
     await initSessionStore();
     
     // เริ่มเซิร์ฟเวอร์
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      app.listen(PORT, () => {
+        console.log(`🚀 Server running on port ${PORT}`);
+      });
+    }
   } catch (error) {
     console.error('❌ Error starting server:', error);
     process.exit(1);
@@ -115,3 +107,6 @@ const startApp = async () => {
 
 // เรียกใช้ฟังก์ชันเริ่มแอปพลิเคชัน
 startApp();
+
+// สำหรับ Passenger
+module.exports = app;

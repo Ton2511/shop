@@ -43,7 +43,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST || 'localhost',
     dialect: 'mysql',
-    logging: console.log,
+    logging: false, // เปลี่ยนเป็น false ในโหมด production
     pool: {
       max: 5,
       min: 0,
@@ -60,7 +60,7 @@ const connectDB = async () => {
     console.log("✅ SQL Database Connected...");
   } catch (err) {
     console.error("❌ SQL Database Connection Error:", err);
-    process.exit(1);
+    throw err; // ส่งต่อข้อผิดพลาดเพื่อให้จัดการในชั้นบน
   }
 };
 
