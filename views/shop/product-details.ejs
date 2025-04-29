@@ -2,6 +2,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <style>
+    
+
     .carousel-wrapper {
         position: relative;
     }
@@ -193,7 +195,7 @@
           <div class="text-center mt">
             <h3 class="text-dark">ติดต่อสั่งซื้อ |
               <a href="#" class="btn bg-blackgreen btn-lg px-4">Line</a> |
-              <a href="#" class="btn bg-blue btn-lg px-4">Facebook</a>
+              <a href="https://www.facebook.com/profile.php?id=61570979126029" target="_blank" class="btn bg-blue btn-lg px-4">Facebook</a>
             </h3>
           </div>
         </div>
@@ -204,25 +206,33 @@
       <!-- รายละเอียดเพิ่มเติม -->
       <h3 class="text-dark mt-5 mb-3"><b>รายละเอียดสินค้า </b></h3>
       <div class="row">
-        <div class="col-2">
+        <div class="col-3">
           <h4 class="text-dark"><b>ข้อมูล |</b></h4>
         </div>
-        <div class="col-10 d-flex mb-3">
+        <div class="col-9 d-flex mb-3">
           <h4 class=""><b class="text-dark">คงเหลือ </b> <%= product.stock || 0 %></h4>
           <h4 class="ms-5"><b class="text-dark">วันลงสินค้า </b> <%= new Date(product.createdAt).toLocaleDateString('th-TH') %></h4>
           <h4 class="ms-5"><b class="text-dark">แก้ไขล่าสุด </b> <%= new Date(product.updatedAt).toLocaleDateString('th-TH') %></h4>
         </div>
-        <div class="col-2">
+        <div class="col-3 d-flex">
           <h4 class="text-dark"><b>รายละเอียด |</b></h4>
         </div>
-        <div class="col-10 d-flex mb-3">
+        <div class="col-9 d-flex mb-3">
           <h4 class=""><%= product.description || 'ไม่มีรายละเอียด' %></h4>
         </div>
-        <div class="col-2">
+        <div class="col-3">
+          <h4 class="text-dark"><b>วิธีการสั่งซื้อสินค้า |</b></h4>
+        </div>
+        <div class="col-9 d-flex mb-3">
+          <h4 class="">สำนักงาน 043-393939 </h4>
+          <h4 class="">มือถือ 086-4562964  </h4>
+          <h4 class="">ID line :0864562964</h4>
+        </div>
+        <div class="col-3">
           <h4 class="text-dark"><b>วิธีการจัดส่ง |</b></h4>
         </div>
-        <div class="col-10 d-flex mb-3">
-          <h4 class="">------------------------------------</h4>
+        <div class="col-9 d-flex mb-3">
+          <h4 class="">บริการขนส่งของรัฐและเอกชน เช่น ไปรษณีย์, Inter express ,Kerry express </h4>
         </div>
       </div>
       
@@ -289,11 +299,12 @@
   const itemsPerPage = 3; // จำนวนรูปที่แสดงใน carousel
 
   function moveCarousel(direction) {
+    
     const items = document.querySelectorAll('.carousel-item');
     const totalItems = items.length;
     
     if (totalItems <= itemsPerPage) return; // ถ้ามีรูปน้อยกว่าหรือเท่ากับที่แสดงได้ ไม่ต้องเลื่อน
-    
+    if (window.innerWidth <= 768) return; // ไม่ทำงานในมือถือ
     const carouselInner = document.getElementById('carouselItems');
 
     currentIndex += direction;
