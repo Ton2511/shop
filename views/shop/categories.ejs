@@ -1,3 +1,4 @@
+<!-- views/shop/categories.ejs -->
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -24,24 +25,23 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-<div class="container my-5">
-  
 
+<div class="container my-5">
   <h1 class="my-4 text-dark">หมวดหมู่สินค้า</h1>
   
   <div class="row">
     <div class="col-md-12">
       <% if (categories && categories.length > 0) { %>
-        <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+        <div class="product-grid row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
           <% categories.forEach(category => { %>
-            <div class="col">
-              <div class="product-item h-70 border shadow-sm rounded">
+            <div class="col mb-4">
+              <div class="product-item h-100 border shadow-sm rounded">
                 <a href="/shop/category/<%= category.id %>" title="<%= category.name %>" class="a">
                   <figure class="m-0 p-3 text-center">
                     <% if (category.image) { %>
-                      <img src="<%= category.image %>" alt="<%= category.name %>" class="tab-image" style="height: 180px; object-fit: contain;">
+                      <img src="<%= category.image %>" alt="<%= category.name %>" class="tab-image" style="height: 150px; object-fit: contain;">
                     <% } else { %>
-                      <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
+                      <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 150px;">
                         <i class="bi bi-collection fs-1 text-muted"></i>
                       </div>
                     <% } %>
@@ -49,7 +49,7 @@
                   <div class="d-flex flex-column text-center p-3 pt-0">
                     <h3 class="fs-5 fw-normal text-dark"><%= category.name %></h3>
                     <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
-                      <span class="text-dark">สินค้า: 
+                      <span class="text-dark small">สินค้า: 
                         <% if (Array.isArray(category.products)) { %>
                           <%= category.products.length %> 
                         <% } else { %>
@@ -75,7 +75,7 @@
     </div>
   </div>
   
-  <div class="text-center mt-5">
+  <div class="text-center mt-4 mb-5">
     <a href="/shop/products" class="btn btn-outline-primary">
       <i class="bi bi-grid me-2"></i>
       ดูสินค้าทั้งหมด
@@ -87,11 +87,21 @@
   .product-item {
     transition: all 0.3s ease;
     border: 1px solid #f0f0f0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
   
   .product-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+  
+  .product-item figure {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .tab-image {
@@ -100,12 +110,47 @@
     object-fit: contain;
   }
   
-  .fs-7 {
-    font-size: 0.9rem;
+  .product-item a {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
   
   .a {
     text-decoration: none;
     color: inherit;
+  }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 576px) {
+    .carousel-item img {
+      height: 180px;
+      object-fit: cover;
+    }
+    
+    .product-item {
+      height: 250px;
+    }
+    
+    .product-item figure {
+      height: 120px;
+    }
+    
+    .tab-image {
+      height: 100px !important;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    .fs-5 {
+      font-size: 1rem !important;
+    }
+    
+    .container {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 </style>

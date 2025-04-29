@@ -381,6 +381,95 @@ tr:hover {
   max-width: 1600px;
 }
 */
+/* Global Responsive Styles */
+@media (max-width: 768px) {
+  /* General responsive adjustments */
+  .custom-container-lg {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  h1, h2, h3 {
+    word-wrap: break-word;
+  }
+  
+  /* Fix for the thumbnails carousel in product-details.ejs */
+  .carousel-wrapper {
+    display: none; /* Hide vertical carousel on mobile */
+  }
+  
+  /* Adjust product images and details layout */
+  .custom-size-main {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Adjust spacing */
+  .ps-5 {
+    padding-left: 1rem !important;
+  }
+  
+  .ms-5 {
+    margin-left: 1.5rem !important;
+  }
+  
+  /* Fix for product grid */
+  .product-grid .col {
+    margin-bottom: 20px;
+  }
+  
+  /* Responsive tables */
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  /* Adjust product details layout */
+  .product-details-section {
+    flex-direction: column;
+  }
+  
+  /* Adjust footer display */
+  footer .row > div {
+    margin-bottom: 20px;
+  }
+}
+
+/* Small devices (phones) */
+@media (max-width: 576px) {
+  .carousel-item img {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .product-item {
+    margin-bottom: 15px;
+  }
+  
+  /* Further reduce margins and paddings */
+  .ps-5, .ms-5 {
+    padding-left: 0.5rem !important;
+    margin-left: 0.5rem !important;
+  }
+  
+  /* Stack buttons vertically */
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .d-flex.justify-content-between > a,
+  .d-flex.justify-content-between > button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+
 @media (min-width: 1400px) {
   .container-lg {
       max-width: 1600px;

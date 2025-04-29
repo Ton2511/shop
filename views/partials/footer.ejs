@@ -1,68 +1,164 @@
-<footer class="py-5  bg-teal">
-  <div class="container-lg ">
+<!-- views/partials/footer.ejs (with responsive improvements) -->
+<footer class="py-5 bg-teal">
+  <div class="container-lg">
     <div class="row">
-
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <!-- Company information -->
+      <div class="col-lg-3 col-md-6 col-sm-6 mb-4 mb-lg-0">
         <div class="footer-menu">
-
-          <!-- <img src="/images/logo.png" width="240" height="70" alt="logo"> -->
           <h1 class="fw-bold">R.P.C</h1>
-          <div>กิจการจำหน่ายสินค้าอุปกรณ์ทางการแพทย์</div>
-
+          <div class="mb-3">กิจการจำหน่ายสินค้าอุปกรณ์ทางการแพทย์</div>
         </div>
       </div>
 
-      <div class="col-md-3 col-sm-6">
+      <!-- Social media links -->
+      <div class="col-md-3 col-sm-6 mb-4 mb-lg-0">
         <div class="footer-menu">
-          <h5 class="widget-title fw-bold">Social Media</h5>
+          <h5 class="widget-title fw-bold mb-3">Social Media</h5>
           <ul class="menu-list list-unstyled">
-            <li class="menu-item mt-3">
-              <a href="https://www.facebook.com/profile.php?id=61570979126029" class="a" target="_blank"
+            <li class="menu-item mb-2">
+              <a href="https://www.facebook.com/profile.php?id=61570979126029" class="a d-flex align-items-center gap-2" target="_blank"
                 rel="noopener noreferrer">
-                Facebook : หจก.อาร์ พี ซี อินเตอร์เทรด
+                <i class="fab fa-facebook"></i>
+                <span>หจก.อาร์ พี ซี อินเตอร์เทรด</span>
               </a>
-
             </li>
-            <li class="menu-item mt-2">
-              <a href="#" class="a">ID Line : 0864562964 </a>
+            <li class="menu-item mb-2">
+              <a href="#" class="a d-flex align-items-center gap-2">
+                <i class="fab fa-line"></i>
+                <span>ID Line: 0864562964</span>
+              </a>
             </li>
-
           </ul>
         </div>
       </div>
-      <div class="col-md-2 col-sm-6">
+
+      <!-- Quick links -->
+      <div class="col-md-3 col-sm-6 mb-4 mb-lg-0">
         <div class="footer-menu">
-          <h5 class="widget-title fw-bold">Quick Link</h5>
+          <h5 class="widget-title fw-bold mb-3">Quick Links</h5>
           <ul class="menu-list list-unstyled">
-            <li class="menu-item mt-3">
-              <a href="/shop/products" class="a">Products</a>
+            <li class="menu-item mb-2">
+              <a href="/shop/products" class="a d-flex align-items-center gap-2">
+                <i class="fas fa-box"></i>
+                <span>Products</span>
+              </a>
             </li>
-            <li class="menu-item mt-2">
-              <a href="/shop" class="a">Categories</a>
+            <li class="menu-item mb-2">
+              <a href="/shop" class="a d-flex align-items-center gap-2">
+                <i class="fas fa-th-large"></i>
+                <span>Categories</span>
+              </a>
             </li>
-            <li class="menu-item mt-2">
-              <a href="/about-us" class="a">About Us</a>
+            <li class="menu-item mb-2">
+              <a href="/about-us" class="a d-flex align-items-center gap-2">
+                <i class="fas fa-info-circle"></i>
+                <span>About Us</span>
+              </a>
             </li>
-
           </ul>
         </div>
       </div>
+
+      <!-- Contact information -->
       <div class="col-md-3 col-sm-6">
         <div class="footer-menu">
-          <h5 class="widget-title">Contact Us</h5>
+          <h5 class="widget-title fw-bold mb-3">Contact Us</h5>
           <ul class="menu-list list-unstyled">
-            <li class="menu-item mt-3">
-              <a href="#" class="a">Email : rpcintertrade2010@gmail.com</a>
-              <h3></h3>
+            <li class="menu-item mb-2">
+              <a href="mailto:rpcintertrade2010@gmail.com" class="a d-flex align-items-center gap-2">
+                <i class="fas fa-envelope"></i>
+                <span>rpcintertrade2010@gmail.com</span>
+              </a>
             </li>
-            <li class="menu-item mt-2">
-              <a href="#" class="a">Phone Number : 086-4562964  </a>
+            <li class="menu-item mb-2">
+              <a href="tel:0864562964" class="a d-flex align-items-center gap-2">
+                <i class="fas fa-phone"></i>
+                <span>086-4562964</span>
+              </a>
             </li>
-           
+            <li class="menu-item mb-2">
+              <span class="d-flex align-items-center gap-2">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>555/813 หมู่ 2 ตำบลศิลา อำเภอเมืองขอนแก่น จังหวัดขอนแก่น 40000</span>
+              </span>
+            </li>
           </ul>
         </div>
       </div>
+    </div>
 
+    <!-- Copyright section -->
+    <div class="row mt-4 pt-3 border-top">
+      <div class="col-12 text-center">
+        <p class="mb-0 text-white">© <%= new Date().getFullYear() %> R.P.C Intertrade. All rights reserved.</p>
+      </div>
     </div>
   </div>
 </footer>
+
+<style>
+  footer {
+    color: white;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  footer a:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .widget-title {
+    margin-bottom: 1rem;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .menu-list li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-menu h1 {
+      font-size: 1.8rem;
+    }
+    
+    .widget-title {
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .menu-item span {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .footer-menu h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    
+    .footer-menu > div {
+      text-align: center;
+    }
+    
+    .widget-title {
+      text-align: center;
+    }
+    
+    .menu-list {
+      padding-left: 0;
+    }
+    
+    .menu-item a, .menu-item span {
+      justify-content: center;
+    }
+    
+    .menu-item {
+      font-size: 0.8rem;
+    }
+  }
+</style>
