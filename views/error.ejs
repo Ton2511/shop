@@ -1,0 +1,35 @@
+<!-- views/error.ejs -->
+<div class="container my-5">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card border-danger">
+          <div class="card-header bg-danger text-white">
+            <h1 class="h4 mb-0">Server Error</h1>
+          </div>
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 64px;"></i>
+            </div>
+            <h2 class="text-center mb-4">We're sorry, but something went wrong on our end.</h2>
+            <p class="text-center">Our team has been notified of this issue and we're working to fix it as soon as possible.</p>
+            
+            <div class="text-center mt-4">
+              <a href="/" class="btn btn-primary">Return to Home Page</a>
+            </div>
+            
+            <% if (showDetails && error) { %>
+              <div class="mt-5">
+                <h3 class="border-bottom pb-2">Technical Details</h3>
+                <div class="bg-light p-3 rounded">
+                  <h4 class="text-danger"><%= error.message || 'Unknown error' %></h4>
+                  <% if (error.stack) { %>
+                    <pre class="text-muted small mt-3" style="max-height: 300px; overflow-y: auto;"><%= error.stack %></pre>
+                  <% } %>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
