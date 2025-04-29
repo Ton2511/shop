@@ -142,3 +142,37 @@ const incrementFakeViews = async (productId) => {
     console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชมปลอม:", err);
   }
 };
+
+exports.searchProducts = async (req, res) => {
+  try {
+    const searchQuery = req.query.q || '';
+    
+    if (!searchQuery.trim()) {
+      return res.redirect('/shop/products');
+    }
+    
+    // Search products by name, code, or description
+    const products = await Product.findAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${searchQuery}%` } },
+          { code: { [Op.like]: `%${searchQuery}%` } },
+          { description: { [Op.like]: `%${searchQuery}%` } }
+        ]
+      },
+      include: [
+        { model: Category, as: 'category' },
+        { model: ProductImage, as: 'images' }
+      ]
+    });
+    
+    res.render("shop/search-results", { 
+      products,
+      searchQuery,
+      title: `ผลการค้นหา: ${searchQuery}`
+    });
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการค้นหาสินค้า:", err);
+    res.redirect("/shop");
+  }
+};
