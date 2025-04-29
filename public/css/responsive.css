@@ -1,0 +1,291 @@
+/* Global Responsive CSS - public/css/responsive.css */
+
+/* Base responsive styling */
+@media (max-width: 768px) {
+    /* General adjustments */
+    .container, .container-lg {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+    }
+    
+    h3 {
+      font-size: 1.3rem;
+    }
+    
+    h4 {
+      font-size: 1.1rem;
+    }
+    
+    /* Text handling */
+    h1, h2, h3, h4, h5, h6, p {
+      word-wrap: break-word;
+    }
+    
+    /* Carousel adjustments */
+    .carousel-item img {
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    /* Thumbnails carousel - hide vertical version on mobile */
+    .carousel-wrapper {
+      display: none;
+    }
+    
+    /* Mobile thumbnails */
+    .mobile-thumbnails {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 10px 0;
+    }
+    
+    .mobile-thumbnails img {
+      height: 60px;
+      width: 60px;
+      object-fit: cover;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    /* Product image adjustments */
+    .custom-size-main {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Grid adjustments */
+    .col-1, .col-5, .col-6 {
+      width: 100%;
+      flex: 0 0 100%;
+      max-width: 100%;
+      padding: 10px;
+    }
+    
+    .col-3, .col-9 {
+      width: 100%;
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    
+    /* Spacing adjustments */
+    .ps-5 {
+      padding-left: 1rem !important;
+    }
+    
+    .ms-5 {
+      margin-left: 1.5rem !important;
+    }
+    
+    /* Fix product grid */
+    .product-grid .col {
+      margin-bottom: 20px;
+    }
+    
+    /* Make tables responsive */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    /* Adjust product details layout */
+    .product-details-section {
+      flex-direction: column;
+    }
+    
+    /* Fix for detailed product information display */
+    .d-flex.mb-3 {
+      flex-direction: column;
+    }
+    
+    .ms-5 {
+      margin-left: 0 !important;
+      margin-top: 10px;
+    }
+    
+    /* Social button adjustments */
+    .social-buttons {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    
+    .social-buttons .btn {
+      width: 100%;
+      margin: 5px 0;
+    }
+    
+    /* Navbar specific adjustments */
+    .navbar-brand h2 {
+      font-size: 1.5rem;
+    }
+    
+    .search-bar {
+      width: 100%;
+      margin: 10px 0;
+    }
+    
+    .offcanvas {
+      width: 80% !important;
+    }
+    
+    /* Footer adjustments */
+    footer .row > div {
+      margin-bottom: 20px;
+    }
+    
+    .footer-menu h1 {
+      font-size: 1.8rem;
+    }
+    
+    .widget-title {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+    }
+  }
+  
+  /* Small devices (phones) */
+  @media (max-width: 576px) {
+    /* Header elements */
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    h2 {
+      font-size: 1.3rem;
+    }
+    
+    h3 {
+      font-size: 1.1rem;
+    }
+    
+    /* Carousel */
+    .carousel-item img {
+      height: 150px;
+    }
+    
+    /* Product display */
+    .product-grid {
+      margin-left: -5px;
+      margin-right: -5px;
+    }
+    
+    .product-grid .col {
+      padding-left: 5px;
+      padding-right: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .product-item {
+      min-height: 250px;
+    }
+    
+    .product-item figure {
+      height: 120px;
+      padding: 5px !important;
+    }
+    
+    .tab-image {
+      height: 100px !important;
+    }
+    
+    .product-item .p-3 {
+      padding: 0.5rem !important;
+    }
+    
+    /* Text sizing */
+    .fs-6 {
+      font-size: 0.9rem !important;
+    }
+    
+    .badge {
+      font-size: 0.6rem;
+    }
+    
+    /* Spacing */
+    .container, .container-lg {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    
+    .ps-5, .ms-5 {
+      padding-left: 0.5rem !important;
+      margin-left: 0.5rem !important;
+    }
+    
+    /* Button arrangement */
+    .d-flex.justify-content-between {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .d-flex.justify-content-between > a,
+    .d-flex.justify-content-between > button {
+      width: 100%;
+      margin: 5px 0;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb {
+      font-size: 0.8rem;
+    }
+    
+    .breadcrumb-item+.breadcrumb-item::before {
+      padding-right: 0.3rem;
+      padding-left: 0.3rem;
+    }
+    
+    /* Navbar elements */
+    .navbar-brand h2 {
+      font-size: 1.2rem;
+    }
+    
+    .search-bar input {
+      height: 40px;
+    }
+    
+    .nav-item .nav-link {
+      font-size: 0.9rem;
+      padding: 5px 0;
+    }
+    
+    /* Footer elements */
+    .footer-menu h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    
+    .footer-menu > div {
+      text-align: center;
+    }
+    
+    .widget-title {
+      text-align: center;
+      font-size: 1rem;
+    }
+    
+    .menu-list {
+      padding-left: 0;
+    }
+    
+    .menu-item a, .menu-item span {
+      justify-content: center;
+    }
+    
+    .menu-item {
+      font-size: 0.8rem;
+    }
+    
+    /* Search results title */
+    .search-title {
+      font-size: 1.3rem;
+      word-break: break-word;
+    }
+  }
