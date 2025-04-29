@@ -66,88 +66,73 @@
     <section style="background-image: url('/images/banner-1.png');background-repeat: no-repeat;background-size: cover;">
       <div class="custom-container-lg mx-auto">
         <div class="row">
-          <div class="col-lg-6 pt-5 mt-5">
+          <div class="col-lg-6 pt-5 mt-3">
+            <h2 class="display-1 ls-1"><span class="fw-bold text-dark">R.P.C </span></h2>
             <h2 class="display-1 ls-1"><span class="fw-bold text-dark">Intertrade Limited </span> <span class="fw-bold text-light">Partnership</span></h2>
-            <p class="fs-4 text-dark">------ content -------</p>
+            <p class="fs-4 text-dark fw-bold">A Business Specializing in the Distribution of Medical Equipment and Supplies</p>
             <div class="d-flex gap-3">
               <a href="/shop/products" class="btn btn-success text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Start Shopping</a>
               <a href="/shop" class="btn bg-dark  text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Category</a>
             </div>
-            <div class="row my-5">
-              <div class="col">
-                <div class="row text-dark">
-                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">14k+</p></div>
-                  <div class="col"><p class="text-uppercase lh-sm mb-0">Product Varieties</p></div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="row text-dark">
-                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">50k+</p></div>
-                  <div class="col"><p class="text-uppercase lh-sm mb-0">Happy Customers</p></div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="row text-dark">
-                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">10+</p></div>
-                  <div class="col"><p class="text-uppercase lh-sm mb-0">Store Locations</p></div>
-                </div>
-              </div>
+            <div class="row my-4">
+              
             </div>
           </div>
         </div>
         
         <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center">
           <div class="col">
-            <div class="card border-0 bg-dark rounded-0 p-4 text-light">
-              <div class="row">
+            <div class="card h-100 border-0 bg-dark rounded-0 p-4 text-light">
+              <div class="row align-items-center h-100">
                 <div class="col-md-3 text-center">
-                  <svg width="60" height="60"><use xlink:href="#fresh"></use></svg>
+                  <i class="fa-brands fa-product-hunt fa-3x"></i>
                 </div>
                 <div class="col-md-9">
                   <div class="card-body p-0">
-                    <h5 class="text-light">Content-1</h5>
-                    <p class="card-text">---------------------------------------------------------------------------------------------------------------</p>
+                    <h5 class="text-light">Premium Quality Products</h5>
+                    <p class="card-text">Carefully selected from internationally certified manufacturers to ensure safety and reliability.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col">
-            <div class="card border-0 bg-teal rounded-0 p-4 text-light">
-              <div class="row">
+            <div class="card h-100 border-0 bg-teal rounded-0 p-4 text-light">
+              <div class="row align-items-center h-100">
                 <div class="col-md-3 text-center">
-                  <svg width="60" height="60"><use xlink:href="#organic"></use></svg>
+                  <i class="fa-solid fa-truck fa-3x"></i>
                 </div>
                 <div class="col-md-9">
                   <div class="card-body p-0">
-                    <h5 class="text-light">Content-2</h5>
-                    <p class="card-text">----------------------------------------------------------------------------------------------------------------</p>
+                    <h5 class="text-light">On-Time Delivery</h5>
+                    <p class="card-text">On-Time Delivery Fast shipping with real-time tracking to ensure timely arrival.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col">
-            <div class="card border-0 bg-cyan rounded-0 p-4 text-light">
-              <div class="row">
+            <div class="card h-100 border-0 bg-cyan rounded-0 p-4 text-light">
+              <div class="row align-items-center h-100">
                 <div class="col-md-3 text-center">
-                  <svg width="60" height="60"><use xlink:href="#delivery"></use></svg>
+                  <i class="fa-solid fa-user-tie fa-3x"></i>
                 </div>
                 <div class="col-md-9">
                   <div class="card-body p-0">
-                    <h5 class="text-light">Content-3</h5>
-                    <p class="card-text">----------------------------------------------------------------------------------------------------------------</p>
+                    <h5 class="text-light">Comprehensive Service</h5>
+                    <p class="card-text">We offer expert consultation, usage guidance, and dedicated after-sales support.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        
       
       </div>
     </section>
 
-    <section class="py-5 overflow-hidden">
+    <section class="mt-5 pb-2 overflow-hidden">
       <div class="container-lg">
         <div class="row">
           <div class="col-md-12">
@@ -170,7 +155,7 @@
               <div class="swiper-wrapper">
                 <% if (categories && categories.length > 0) { %>
                   <% categories.forEach(category => { %>
-                    <a href="/shop/category/<%= category._id %>" class="nav-link swiper-slide text-center">
+                    <a href="/shop/category/<%= category.id %>" class="nav-link swiper-slide text-center">
                       <% if (category.image) { %>
                         <img src="<%= category.image %>" class="rounded-circle category-thumbnail" alt="<%= category.name %>">
                       <% } else { %>
@@ -209,7 +194,7 @@
                 <% featuredProducts.slice(0, 5).forEach(product => { %>
                   <div class="col mb-4">
                     <div class="product-item">
-                      <a href="/shop/product/<%= product._id %>" class="a">
+                      <a href="/shop/product/<%= product.id %>" class="a">
                         <figure class="m-0 p-3 text-center">
                           <% if (product.images && product.images.length > 0) { %>
                             <% 
@@ -300,7 +285,7 @@
       </div>
     </section>
 
-    <section class="pb-5">
+    <section class="">
       <div class="container-lg">
         <div class="row">
           <div class="col-md-12">
@@ -320,7 +305,7 @@
                 <% featuredProducts.forEach(product => { %>
                   <div class="col mb-4">
                     <div class="product-item">
-                      <a href="/shop/product/<%= product._id %>" class="a">
+                      <a href="/shop/product/<%= product.id %>" class="a">
                         <figure class="m-0 p-3 text-center">
                           <% if (product.images && product.images.length > 0) { %>
                             <% 
@@ -360,12 +345,12 @@
                 </div>
               <% } %>
             </div>
-            <!-- / product-grid -->
+
           </div>
         </div>
       </div>
     </section>
-
+<!--
     <section>
       <div class="container-lg">
 
@@ -593,6 +578,7 @@
         </div>
       </div>
     </section>
+    -->
     <script>
  
     </script>

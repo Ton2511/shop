@@ -1,5 +1,5 @@
 <head>
-    <title>I.L.P</title>
+    <title>R.P.C</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -91,7 +91,7 @@
               <% categories.forEach(category => { %>
 
                 <li class="nav-item border-dashed active">
-                  <a href="/shop/category/<%= category._id %>" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+                  <a href="/shop/category/<%= category.id %>" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
                     <i class="fa-solid fa-arrow-right"></i>
                     <span><%= category.name %></span>
                   </a>
@@ -137,7 +137,7 @@
               <div class="d-flex align-items-center my-3 my-sm-0">
                 <a href="/" class="nav-link">
                   <!-- <img src="images/logo.svg" alt="logo" class="img-fluid"> -->
-                   <h2 class="text-light ms-4"><i class="fa-solid fa-heart-pulse"></i> I.L.P</h2>
+                   <h2 class="text-light ms-4"><i class="fa-solid fa-heart-pulse"></i> R.P.C</h2>
                 </a>
     
               </div>
@@ -182,7 +182,10 @@
                 <li class="nav-item text-light">
                   <a href="/shop" class="nav-link">Shop</a>
                 </li>
-                <li class="nav-item dropdown text-light">
+                <li class="nav-item text-light">
+                  <a href="/about-us" class="nav-link">ABOUT US</a>
+                </li>
+                <!-- <li class="nav-item dropdown text-light">
                   <a class="nav-link dropdown-toggle pe-3" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
                   <ul class="dropdown-menu border-0 p-3 rounded-0 shadow" aria-labelledby="pages">
                     <li><a href="index.html" class="dropdown-item">About Us </a></li>
@@ -198,7 +201,7 @@
                     <li><a href="index.html" class="dropdown-item">My Account </a></li>
                     <li><a href="index.html" class="dropdown-item">404 Error </a></li>
                   </ul>
-                </li>
+                </li> -->
               </ul>
             </div>
             
