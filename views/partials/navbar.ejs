@@ -121,28 +121,30 @@
               </ul>
             </div>
             
-            <div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end ">
-              <ul class="d-flex justify-content-end list-unstyled m-0 me-3">
-    
-                
-                <% if (locals.session && locals.session.user) { %>
-                  <li>
-                      <a href="#" class="p-2 mx-1 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                          <i class="fa-solid fa-user-tie"> Admin</i>
-                      </a>
-                  </li>
-                  
-                  <li><a href="/logout" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?')" class="p-2 mx-1 text-light"><i class="fa-solid fa-right-from-bracket">Logout</i></a></li>
-                <% } else { %>
-                  <li>
-                      <a href="/login" class="p-2 mx-1 text-light" >
-                          <i class="fa-solid fa-right-to-bracket"> Login</i>
-                      </a>
-                  </li>
-                <% } %>
-                
-              </ul>
-            </div>
+
+<div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end ">
+  <ul class="d-flex justify-content-end list-unstyled m-0 me-3">
+      
+      <% if (locals.isLoggedIn) { %>
+        <li>
+            <a href="#" class="p-2 mx-1 text-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                <i class="fa-solid fa-user-tie"> Admin</i>
+            </a>
+        </li>
+        
+        <li><a href="/logout" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?')" class="p-2 mx-1 text-light"><i class="fa-solid fa-right-from-bracket">Logout</i></a></li>
+      <% } else { %>
+        <li>
+            <a href="/login" class="p-2 mx-1 text-light" >
+                <i class="fa-solid fa-right-to-bracket"> Login</i>
+            </a>
+        </li>
+      <% } %>
+      
+  </ul>
+</div>
+
+<!-- ... rest of the navbar code ... -->
     
           </div>
         </div>

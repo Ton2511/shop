@@ -1,7 +1,12 @@
-// controllers/authController.js
+// src/controllers/authController.js
 const { User } = require('../models');
+const { generateToken } = require('../utils/jwtAuth');
 
 exports.getLoginPage = (req, res) => {
+    // Check if user is already logged in (has valid token)
+    if (req.cookies?.authToken) {
+        return res.redirect('/');
+    }
     res.render("auth/login");
 };
 
@@ -17,12 +22,15 @@ exports.postLogin = async (req, res) => {
             return res.send("❌ อีเมลหรือรหัสผ่านไม่ถูกต้อง!");
         }
         
-        // เก็บข้อมูลผู้ใช้ใน session
-        req.session.user = {
-            id: user.id,
-            name: user.name,
-            email: user.email
-        };
+        // Generate JWT token
+        const token = generateToken(user);
+        
+        // Set token in cookie
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
         
         res.redirect("/");
     } catch (error) {
@@ -32,7 +40,7 @@ exports.postLogin = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-    req.session.destroy(() => {
-        res.redirect("/login");
-    });
+    // Clear the auth token cookie
+    res.clearCookie('authToken');
+    res.redirect("/login");
 };

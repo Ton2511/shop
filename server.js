@@ -4,10 +4,11 @@ const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const path = require("path");
 const expressLayouts = require("express-ejs-layouts");
+const cookieParser = require("cookie-parser");
 
 const { sequelize, connectDB } = require("./db");
-const { sessionMiddleware, initSessionStore } = require("./src/config/sessionConfig");
 const { Category } = require("./src/models");
+const { authMiddleware } = require("./src/utils/jwtAuth");
 
 // เริ่มแอพพลิเคชัน Express
 const app = express();
@@ -22,26 +23,21 @@ app.set("layout", "layouts/main");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
+app.use(cookieParser()); // Add cookie parser middleware
 
 // ตั้งค่า Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
-// ตั้งค่า Session
-app.use(sessionMiddleware);
-
 // กำหนดตัวแปร Global
 app.use((req, res, next) => {
-  res.locals.session = req.session;
+  // Check for auth token
+  const token = req.cookies?.authToken;
+  res.locals.isLoggedIn = !!token;
   next();
 });
 
 // Middleware ตรวจสอบการล็อกอิน
-const requireAuth = (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
-  next();
-};
+const requireAuth = authMiddleware;
 
 // เตรียมข้อมูลหมวดหมู่สำหรับทุกหน้า
 app.use(async (req, res, next) => {
@@ -86,9 +82,6 @@ const startApp = async () => {
     // ซิงค์โมเดลทั้งหมดกับฐานข้อมูล (สร้างตารางถ้ายังไม่มี)
     await sequelize.sync({ alter: true });  // ใช้ alter: true เพื่อปรับโครงสร้างตารางที่มีอยู่แล้ว
     console.log('✅ Database tables synchronized');
-    
-    // เตรียม session store
-    await initSessionStore();
     
     // เริ่มเซิร์ฟเวอร์
     app.listen(PORT, () => {
