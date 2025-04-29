@@ -43,13 +43,26 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST || 'localhost',
     dialect: 'mysql',
-    logging: console.log,
+    logging: (process.env.NODE_ENV === 'production') ? false : console.log,
     pool: {
-      max: 5,
+      max: 10,
       min: 0,
-      acquire: 30000,
+      acquire: 60000,
       idle: 10000
-    }
+    },
+    // เพิ่มตัวเลือกสำหรับการเชื่อมต่อที่เสถียรมากขึ้น
+    dialectOptions: {
+      connectTimeout: 60000,
+      // แก้ไขปัญหา SSL (สำหรับบางโฮสต์)
+      ssl: process.env.NODE_ENV === 'production' ? {
+        require: false,
+        rejectUnauthorized: false
+      } : false,
+      // เพิ่มการรองรับ timezone
+      timezone: '+07:00' // เวลาประเทศไทย
+    },
+    // ตั้งค่า timezone
+    timezone: '+07:00'
   }
 );
 
@@ -58,9 +71,22 @@ const connectDB = async () => {
   try {
     await sequelize.authenticate();
     console.log("✅ SQL Database Connected...");
+    return true;
   } catch (err) {
     console.error("❌ SQL Database Connection Error:", err);
-    process.exit(1);
+    
+    // พยายามเชื่อมต่ออีกครั้งหลังจาก 5 วินาที
+    console.log("Retrying connection in 5 seconds...");
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    try {
+      await sequelize.authenticate();
+      console.log("✅ SQL Database Connected on retry...");
+      return true;
+    } catch (retryErr) {
+      console.error("❌ SQL Database Connection Error on retry:", retryErr);
+      process.exit(1);
+    }
   }
 };
 

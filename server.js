@@ -32,14 +32,20 @@ app.use(sessionMiddleware);
 // กำหนดตัวแปร Global
 app.use((req, res, next) => {
   res.locals.session = req.session;
+  
+  // Debug: แสดงข้อมูล session
+  console.log('Current session state:', req.session && req.session.user ? 'User logged in' : 'No user in session');
+  
   next();
 });
 
 // Middleware ตรวจสอบการล็อกอิน
 const requireAuth = (req, res, next) => {
   if (!req.session.user) {
+    console.log('Authentication required, redirecting to login');
     return res.redirect("/login");
   }
+  console.log('Authentication successful, continuing');
   next();
 };
 
@@ -48,6 +54,7 @@ app.use(async (req, res, next) => {
   try {
     res.locals.categories = await Category.findAll();
   } catch (error) {
+    console.error('Error fetching categories:', error);
     res.locals.categories = [];
   }
   next();
@@ -82,17 +89,20 @@ const startApp = async () => {
   try {
     // เชื่อมต่อฐานข้อมูล
     await connectDB();
+    console.log('✅ Database connection established');
     
     // ซิงค์โมเดลทั้งหมดกับฐานข้อมูล (สร้างตารางถ้ายังไม่มี)
-    await sequelize.sync({ alter: true });  // ใช้ alter: true เพื่อปรับโครงสร้างตารางที่มีอยู่แล้ว
+    await sequelize.sync({ alter: true });
     console.log('✅ Database tables synchronized');
     
     // เตรียม session store
     await initSessionStore();
+    console.log('✅ Session store initialized');
     
     // เริ่มเซิร์ฟเวอร์
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
   } catch (error) {
     console.error('❌ Error starting server:', error);
