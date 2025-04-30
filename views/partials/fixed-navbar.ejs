@@ -23,7 +23,7 @@
           <!-- เมนูบนเดสก์ท็อป - ซ่อนบนมือถือ -->
           <ul class="navbar-nav d-none d-lg-flex flex-row align-items-center gap-4 me-3">
             <li class="nav-item">
-              <a href="/" class="nav-link text-light">หน้าแรก</a>
+              <a href="/" class="nav-link text-light">home</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link text-light dropdown-toggle" href="#" role="button" 
@@ -87,7 +87,7 @@
       <div class="collapse w-100 py-2" id="mobileSearchCollapse">
         <form action="/shop/search" method="get">
           <div class="input-group">
-            <input type="text" class="form-control" name="q" placeholder="ค้นหาสินค้า..."
+            <input type="text" class="form-control" name="q" placeholder="Search for products..."
                   aria-label="Search products">
             <button class="btn btn-light" type="submit">
               <i class="fas fa-search"></i>
@@ -101,7 +101,7 @@
         <form action="/shop/search" method="get" class="mx-auto" style="max-width: 600px;">
           <div class="input-group">
             <input type="text" class="form-control rounded-start" name="q" 
-                  placeholder="ค้นหาสินค้า..." aria-label="Search products">
+                  placeholder="Search for products..." aria-label="Search products">
             <button class="btn btn-light rounded-end" type="submit">
               <i class="fas fa-search"></i>
             </button>
@@ -115,14 +115,14 @@
   <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileNavOffcanvas" 
        aria-labelledby="mobileNavOffcanvasLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="mobileNavOffcanvasLabel">เมนู</h5>
+      <h5 class="offcanvas-title" id="mobileNavOffcanvasLabel">MENU</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body p-0">
       <!-- เมนูหลัก -->
       <div class="list-group list-group-flush">
         <a href="/" class="list-group-item list-group-item-action">
-          <i class="fa-solid fa-home me-2"></i> หน้าแรก
+          <i class="fa-solid fa-home me-2"></i> home
         </a>
         <a href="/shop" class="list-group-item list-group-item-action">
           <i class="fa-solid fa-store me-2"></i> หมวดหมู่สินค้า
