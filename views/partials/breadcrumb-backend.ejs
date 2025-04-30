@@ -1,0 +1,44 @@
+<!-- views/partials/breadcrumb-backend.ejs -->
+
+<div class="breadcrumb-wrapper">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-backend">
+      <% items.forEach(function(item, index) { %>
+        <% if (item.active) { %>
+          <li class="breadcrumb-item active" aria-current="page">
+            <% if (item.icon) { %><i class="<%= item.icon %> breadcrumb-item-icon"></i><% } %>
+            <%= item.name %>
+          </li>
+        <% } else { %>
+          <li class="breadcrumb-item">
+            <a href="<%= item.url %>">
+              <% if (item.icon) { %><i class="<%= item.icon %> breadcrumb-item-icon"></i><% } %>
+              <%= item.name %>
+            </a>
+          </li>
+        <% } %>
+      <% }); %>
+      
+      <!-- Optional Admin Quick Actions Dropdown -->
+      <% if (typeof actions !== 'undefined' && actions.length > 0) { %>
+        <li class="ms-auto">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="breadcrumbActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-bolt"></i> Quick Actions
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="breadcrumbActionsDropdown">
+              <% actions.forEach(function(action) { %>
+                <li>
+                  <a class="dropdown-item" href="<%= action.url %>">
+                    <% if (action.icon) { %><i class="<%= action.icon %> me-2"></i><% } %>
+                    <%= action.name %>
+                  </a>
+                </li>
+              <% }); %>
+            </ul>
+          </div>
+        </li>
+      <% } %>
+    </ol>
+  </nav>
+</div>

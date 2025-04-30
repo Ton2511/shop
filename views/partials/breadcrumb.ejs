@@ -1,0 +1,260 @@
+
+<style>
+  /* พื้นฐาน Breadcrumb */
+  .breadcrumb-container {
+    margin: 1rem 0 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  /* ลบเส้นใต้ทั้งหมดสำหรับทุกลิงก์ใน breadcrumb */
+  .breadcrumb-container a, .breadcrumb-container .go-back {
+    text-decoration: none !important;
+    cursor: pointer; /* เพิ่ม cursor pointer สำหรับปุ่มย้อนกลับ */
+  }
+
+  .breadcrumb-container a:hover,
+  .breadcrumb-container a:focus,
+  .breadcrumb-container .go-back:hover,
+  .breadcrumb-container .go-back:focus {
+    text-decoration: none !important;
+  }
+
+  /* รูปแบบ Classic */
+  .breadcrumb-classic {
+    background-color: #f8f9fa;
+    border-radius: 0.4rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem;
+  }
+  
+  .breadcrumb-classic .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #adb5bd;
+  }
+  
+  .breadcrumb-classic .breadcrumb-item.active {
+    color: #495057;
+    font-weight: 600;
+  }
+  
+  .breadcrumb-classic a:hover, .breadcrumb-classic .go-back:hover {
+    color: #343a40;
+  }
+  
+  /* รูปแบบ Modern */
+  .breadcrumb-modern {
+    background-color: #ffffff;
+    border-radius: 50px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    padding: 0.7rem 1.5rem;
+    border-left: 4px solid #008080;
+  }
+
+  .breadcrumb-modern .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #adb5bd;
+  }
+  
+
+  
+  .breadcrumb-modern .breadcrumb-item.active {
+    color: #008080;
+    font-weight: 600;
+  }
+  
+  .breadcrumb-modern .breadcrumb-item a, 
+  .breadcrumb-modern .breadcrumb-item .go-back {
+    color: #6c757d;
+    transition: all 0.2s ease;
+  }
+  
+  .breadcrumb-modern .breadcrumb-item a:hover,
+  .breadcrumb-modern .breadcrumb-item .go-back:hover {
+    color: #008080;
+  }
+  
+  /* รูปแบบ Minimal */
+  .breadcrumb-minimal {
+    background-color: transparent;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .breadcrumb-minimal .breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    color: #ced4da;
+  }
+  
+  .breadcrumb-minimal .breadcrumb-item.active {
+    color: #343a40;
+    font-weight: 500;
+  }
+  
+  .breadcrumb-minimal .breadcrumb-item a,
+  .breadcrumb-minimal .breadcrumb-item .go-back {
+    color: #6c757d;
+  }
+  
+  .breadcrumb-minimal .breadcrumb-item a:hover,
+  .breadcrumb-minimal .breadcrumb-item .go-back:hover {
+    opacity: 0.8;
+  }
+  
+  /* รูปแบบ Gradient */
+  .breadcrumb-gradient {
+    background: linear-gradient(90deg, #008080, #20b2aa);
+    border-radius: 0.4rem;
+    box-shadow: 0 3px 15px rgba(0, 128, 128, 0.2);
+    padding: 0.8rem 1.2rem;
+  }
+  
+  .breadcrumb-gradient .breadcrumb-item {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .breadcrumb-gradient .breadcrumb-item.active {
+    color: white;
+    font-weight: 600;
+  }
+  
+  .breadcrumb-gradient .breadcrumb-item a,
+  .breadcrumb-gradient .breadcrumb-item .go-back {
+    color: white;
+  }
+  
+  .breadcrumb-gradient .breadcrumb-item a:hover,
+  .breadcrumb-gradient .breadcrumb-item .go-back:hover {
+    opacity: 0.9;
+  }
+  
+  .breadcrumb-gradient .breadcrumb-item + .breadcrumb-item::before {
+    content: "•";
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  /* รูปแบบ Accent */
+  .breadcrumb-accent {
+    background-color: #f8f9fa;
+    border-radius: 0.4rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 3px solid #008080;
+  }
+  
+  .breadcrumb-accent .breadcrumb-item.active {
+    background-color: #008080;
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 50px;
+  }
+  
+  .breadcrumb-accent .breadcrumb-item + .breadcrumb-item::before {
+    content: "→";
+    color: #8c8c8c;
+  }
+  
+  .breadcrumb-accent .breadcrumb-item a,
+  .breadcrumb-accent .breadcrumb-item .go-back {
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .breadcrumb-accent .breadcrumb-item a:hover,
+  .breadcrumb-accent .breadcrumb-item .go-back:hover {
+    color: #008080;
+  }
+  
+  /* ไอคอน */
+  .breadcrumb-icon {
+    margin-right: 0.35rem;
+    font-size: 0.9em;
+  }
+  
+  /* ลูกเล่นเพิ่มเติม - Animations */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .breadcrumb-container {
+    animation: fadeInDown 0.3s ease-out;
+  }
+  
+  /* ลูกเล่นเพิ่มเติม - Hover Effects */
+  .breadcrumb-modern .breadcrumb-item a:hover,
+  .breadcrumb-accent .breadcrumb-item a:hover,
+  .breadcrumb-modern .breadcrumb-item .go-back:hover,
+  .breadcrumb-accent .breadcrumb-item .go-back:hover {
+    transform: translateY(-2px);
+    display: inline-block;
+  }
+  
+  /* การปรับให้เหมาะกับมือถือ */
+  @media (max-width: 767px) {
+    .breadcrumb-container {
+      font-size: 0.85rem;
+    }
+    
+    .breadcrumb-modern {
+      border-radius: 0.3rem;
+      padding: 0.6rem 1rem;
+    }
+  }
+</style>
+
+<div class="breadcrumb-container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-<%= style %>">
+      <% for (let i = 0; i < items.length; i++) { %>
+        <% if (i === items.length - 1 || items[i].active) { %>
+          <li class="breadcrumb-item active" aria-current="page">
+            <% if (items[i].icon) { %><i class="<%= items[i].icon %> breadcrumb-icon"></i><% } %>
+            <%= items[i].name %>
+          </li>
+        <% } else if (items[i].goBack) { %>
+          <li class="breadcrumb-item">
+            <span class="go-back" onclick="history.back()">
+              <% if (items[i].icon) { %><i class="<%= items[i].icon %> breadcrumb-icon"></i><% } %>
+              <%= items[i].name %>
+            </span>
+          </li>
+        <% } else { %>
+          <li class="breadcrumb-item">
+            <a href="<%= items[i].url %>">
+              <% if (items[i].icon) { %><i class="<%= items[i].icon %> breadcrumb-icon"></i><% } %>
+              <%= items[i].name %>
+            </a>
+          </li>
+        <% } %>
+      <% } %>
+      
+      <% if (typeof showLastUpdate !== 'undefined' && showLastUpdate) { %>
+        <li class="ms-auto" style="font-size: 0.75rem; color: #6c757d; display: flex; align-items: center;">
+          <i class="fa-regular fa-clock me-1"></i> อัปเดตล่าสุด: <%= new Date().toLocaleDateString('th-TH') %>
+        </li>
+      <% } %>
+    </ol>
+  </nav>
+</div>
+
+<script>
+  // ตรวจสอบว่ามีการใช้ history.back() หรือไม่ และปรับเปลี่ยนเป็น referrer ถ้าทำได้
+  document.addEventListener('DOMContentLoaded', function() {
+    // ถ้ามีการกดปุ่มย้อนกลับแต่ไม่มีประวัติการใช้งาน จะกลับไปที่หน้าหลัก
+    const goBackElements = document.querySelectorAll('.go-back');
+    goBackElements.forEach(function(element) {
+      element.addEventListener('click', function(e) {
+        // ถ้าไม่มีประวัติการใช้งานย้อนกลับ (เช่น เปิดลิงก์โดยตรง) ให้ไปที่หน้าหลัก
+        if (window.history.length <= 1) {
+          e.preventDefault();
+          window.location.href = '/';
+        }
+      });
+    });
+  });
+</script>

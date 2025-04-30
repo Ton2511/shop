@@ -265,15 +265,14 @@
   <div class="container mx-auto d-flex flex-column">
     <!-- Breadcrumb -->
     <div class="mt-4 mt-md-5">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/" class="text-decoration-none">หน้าแรก</a></li>
-          <% if (product.category) { %>
-            <li class="breadcrumb-item"><a href="/shop/category/<%= product.category.id %>" class="text-decoration-none"><%= product.category.name %></a></li>
-          <% } %>
-          <li class="breadcrumb-item active text-truncate" aria-current="page"><%= product.name %></li>
-        </ol>
-      </nav>
+      <%- include('../partials/breadcrumb', { 
+        items: [
+          { name: 'หน้าแรก', url: '/', icon: 'fa-solid fa-home' },
+          { name: 'สินค้าทั้งหมด', url: '/shop/products', icon: 'fab fa-product-hunt' },
+          { name: product.name,icon:'fas fa-box', active: true }
+        ],
+        style: 'modern'
+      }) %>
     </div>
 
     <div class="mt-2 mb-5">

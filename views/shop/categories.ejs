@@ -27,12 +27,14 @@
 </div>
 
 <div class="container my-4">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-dark">หน้าแรก</a></li>
-      <li class="breadcrumb-item active" aria-current="page">หมวดหมู่สินค้า</li>
-    </ol>
-  </nav>
+
+  <%- include('../partials/breadcrumb', { 
+    items: [
+      { name: 'หน้าแรก', url: '/', icon: 'fa-solid fa-home' },
+      { name: 'หมวดหมู่สินค้า', active: true, icon: 'fa-solid fa-tags' }
+    ],
+    style: 'modern' // เลือก: 'classic', 'modern', 'minimal', 'gradient', 'accent'
+  }) %>
 
   <h1 class="mb-4 text-dark fs-2">หมวดหมู่สินค้า</h1>
   

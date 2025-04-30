@@ -27,12 +27,17 @@
 </div>
 
 <div class="container my-4">
-  <h4 aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item text-dark"><a class="a" href="/">หน้าแรก</a></li>
-      <li class="breadcrumb-item active" aria-current="page"><%= category.name %></li>
-    </ol>
-  </h4>
+    <!-- Breadcrumb -->
+    <div class="mt-4 mt-md-5">
+      <%- include('../partials/breadcrumb', { 
+        items: [
+          { name: 'หน้าแรก', url: '/', icon: 'fa-solid fa-home' },
+          { name: 'หมวดหมู่สินค้า', url: '/shop', icon: 'fa-solid fa-tags' },
+          { name: category.name, active: true }
+        ],
+        style: 'modern'
+      }) %>
+    </div>
   
   <h1 class="mb-4 text-dark fs-2"><%= category.name %></h1>
   

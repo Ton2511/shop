@@ -1,0 +1,22 @@
+
+<div class="breadcrumb-wrapper">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb <%= fancy ? 'breadcrumb-fancy' : 'breadcrumb-frontend' %>">
+      <% items.forEach(function(item, index) { %>
+        <% if (item.active) { %>
+          <li class="breadcrumb-item active" aria-current="page">
+            <% if (item.icon) { %><i class="<%= item.icon %> breadcrumb-item-icon"></i><% } %>
+            <%= item.name %>
+          </li>
+        <% } else { %>
+          <li class="breadcrumb-item">
+            <a href="<%= item.url %>">
+              <% if (item.icon) { %><i class="<%= item.icon %> breadcrumb-item-icon"></i><% } %>
+              <%= item.name %>
+            </a>
+          </li>
+        <% } %>
+      <% }); %>
+    </ol>
+  </nav>
+</div>
