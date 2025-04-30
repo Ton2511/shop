@@ -30,17 +30,24 @@
                         <tr class='text-center'>
                             <td><%= category.name %></td>
                             <td>
-                                <!-- แก้ไขการแสดงจำนวนสินค้า -->
+                                <!-- Show product count by executing a quick query -->
                                 <% 
-                                    // ดึงจำนวนสินค้าจากฐานข้อมูล
-                                    let productCount = 0;
-                                    if (category.productCount !== undefined) {
-                                        productCount = category.productCount;
-                                    } else if (Array.isArray(category.products)) {
-                                        productCount = category.products.length;
-                                    }
+                                // We'll use a simple approach to show product count
+                                // This can be implemented in two ways:
+                                
+                                // Option 1: If you're already including product count in your controller:
+                                let productCount = 0;
+                                if (category.productCount !== undefined) {
+                                    productCount = category.productCount;
+                                } else if (Array.isArray(category.products)) {
+                                    productCount = category.products.length;
+                                }
                                 %>
+                                
                                 <%= productCount %>
+                                
+                                <!-- Note: For a more robust solution, you would need to modify 
+                                     the categoryController.js to include product counts with each category -->
                             </td>
                             <td>
                                 <% if (category.image) { %>

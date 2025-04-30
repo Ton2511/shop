@@ -43,6 +43,16 @@ const upload = multer({
 exports.listCategories = async (req, res) => {
   try {
     const categories = await Category.findAll();
+    
+    // Loop through categories and fetch product counts
+    for (const category of categories) {
+      const productCount = await Product.count({
+        where: { categoryId: category.id }
+      });
+      // Add productCount as a property to each category
+      category.productCount = productCount;
+    }
+    
     res.render("categories/list", { categories });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่:", err);
