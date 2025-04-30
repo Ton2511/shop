@@ -278,12 +278,31 @@
           <div class="text-center mt social-buttons">
             <h3 class="text-dark">ติดต่อสั่งซื้อ</h3>
             <div class="d-flex flex-wrap justify-content-center gap-2 mt-2">
-              <a href="#" class="btn bg-blackgreen btn-lg px-4">Line</a>
+              <a href="#" class="btn bg-blackgreen btn-lg px-4" data-bs-toggle="modal" data-bs-target="#lineModal">Line</a>
               <a href="https://www.facebook.com/profile.php?id=61570979126029" target="_blank" class="btn bg-blue btn-lg px-4">Facebook</a>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Modal -->
+<div class="modal fade" id="lineModal" tabindex="-1" aria-labelledby="lineModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lineModalLabel">ติดต่อผ่าน Line Ruk2</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+      </div>
+      <div class="modal-body text-center">
+        <!-- QR Code -->
+        <img src="/images/qrcodeline.jpg" alt="QR Code Line" class="img-fluid" style="max-width: 300px;">
+        <!-- Line ID -->
+        <p class="mt-2">Line ID: <strong>0864562964</strong></p>
+        
+      </div>
+    </div>
+  </div>
+</div>
       
       <!-- รายละเอียดเพิ่มเติม -->
       <h3 class="text-dark mt-5 mb-3"><b>รายละเอียดสินค้า</b></h3>

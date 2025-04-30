@@ -50,540 +50,462 @@
     color: #333;
   }
   
+  /* Banner Blocks Styling */
+  .banner-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+  }
+  
+  .banner-ad {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .block-1 {
+    grid-column: span 3;
+  }
+  
   /* Swiper Customization */
   .swiper-wrapper {
     padding: 10px 0;
   }
   
   .swiper-slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: auto;
+  }
+  
+  /* Mobile responsive improvements */
+  @media (max-width: 767px) {
+    .display-1 {
+      font-size: 2.2rem;
+    }
+    .fs-4 {
+      font-size: 1rem !important;
+    }
+    .banner-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .block-1, .block-2, .block-3 {
+      width: 100%;
+    }
+    .swiper-buttons {
+      margin-left: 10px;
+    }
+    .tab-image {
+      height: 120px !important;
+    }
+    .product-item .p-3 {
+      padding: 0.5rem !important;
+    }
+    .category-thumbnail {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .display-1 {
+      font-size: 1.8rem;
+    }
+    .fs-6 {
+      font-size: 0.8rem !important;
+    }
+    .gap-3 {
+      gap: 0.5rem !important;
+    }
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 10px;
+    }
+    .section-header .d-flex {
+      width: 100%;
+      justify-content: space-between !important;
+    }
   }
 </style>
     
     
-    <section style="background-image: url('/images/banner-1.png');background-repeat: no-repeat;background-size: cover;">
-      <div class="custom-container-lg mx-auto">
-        <div class="row">
-          <div class="col-lg-6 pt-5 mt-3">
-            <h2 class="display-1 ls-1"><span class="fw-bold text-dark">R.P.C </span></h2>
-            <h2 class="display-1 ls-1"><span class="fw-bold text-dark">Intertrade Limited </span> <span class="fw-bold text-light">Partnership</span></h2>
-            <p class="fs-4 text-dark fw-bold">A Business Specializing in the Distribution of Medical Equipment and Supplies</p>
-            <div class="d-flex gap-3">
-              <a href="/shop/products" class="btn btn-success text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Start Shopping</a>
-              <a href="/shop" class="btn bg-dark  text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Category</a>
-            </div>
-            <div class="row my-4">
-              
-            </div>
-          </div>
+<section class="hero-section text-white d-flex align-items-center" style="background-image: url('/images/banner-1.png'); background-repeat: no-repeat; background-size: cover; background-position: center; min-height: 80vh;">
+  <div class="custom-container-lg mx-auto px-3">
+    <div class="row">
+      <div class="col-12 col-md-10 col-lg-6 pt-5 mt-3 text-center text-lg-start">
+        <h2 class="display-1 ls-1"><span class="fw-bold text-dark">R.P.C </span></h2>
+        <h2 class="display-1 ls-1"><span class="fw-bold text-dark">Intertrade Limited </span> <span class="fw-bold text-light">Partnership</span></h2>
+        <p class="fs-4 text-dark fw-bold">A Business Specializing in the Distribution of Medical Equipment and Supplies</p>
+        <div class="d-flex gap-3 flex-wrap justify-content-center justify-content-lg-start">
+          <a href="/shop/products" class="btn btn-success text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Start Shopping</a>
+          <a href="/shop" class="btn bg-dark text-light text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Category</a>
         </div>
-        
-        <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center">
-          <div class="col">
-            <div class="card h-100 border-0 bg-dark rounded-0 p-4 text-light">
-              <div class="row align-items-center h-100">
-                <div class="col-md-3 text-center">
-                  <i class="fa-brands fa-product-hunt fa-3x"></i>
-                </div>
-                <div class="col-md-9">
-                  <div class="card-body p-0">
-                    <h5 class="text-light">Premium Quality Products</h5>
-                    <p class="card-text">Carefully selected from internationally certified manufacturers to ensure safety and reliability.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 border-0 bg-teal rounded-0 p-4 text-light">
-              <div class="row align-items-center h-100">
-                <div class="col-md-3 text-center">
-                  <i class="fa-solid fa-truck fa-3x"></i>
-                </div>
-                <div class="col-md-9">
-                  <div class="card-body p-0">
-                    <h5 class="text-light">On-Time Delivery</h5>
-                    <p class="card-text">On-Time Delivery Fast shipping with real-time tracking to ensure timely arrival.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 border-0 bg-cyan rounded-0 p-4 text-light">
-              <div class="row align-items-center h-100">
-                <div class="col-md-3 text-center">
-                  <i class="fa-solid fa-user-tie fa-3x"></i>
-                </div>
-                <div class="col-md-9">
-                  <div class="card-body p-0">
-                    <h5 class="text-light">Comprehensive Service</h5>
-                    <p class="card-text">We offer expert consultation, usage guidance, and dedicated after-sales support.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-      
       </div>
-    </section>
+    </div>
+    
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 mt-5">
 
-    <section class="mt-5 pb-2 overflow-hidden">
-      <div class="container-lg">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="section-header d-flex flex-wrap justify-content-between mb-5">
-              <h2 class="section-title text-dark">Category</h2>
-  
-              <div class="d-flex align-items-center">
-                <a href="/shop" class="btn bg-teal me-2">View All</a>
-                <div class="swiper-buttons">
-                  <button class="swiper-prev category-carousel-prev btn bg-teal">❮</button>
-                  <button class="swiper-next category-carousel-next btn bg-teal">❯</button>
-                </div>
+      <div class="col">
+        <div class="card h-100 border-0 bg-dark rounded-0 p-4 text-light">
+          <div class="row align-items-center h-100">
+            <div class="col-md-3 text-center">
+              <i class="fa-brands fa-product-hunt fa-3x"></i>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <h5 class="text-light">Premium Quality Products</h5>
+                <p class="card-text">Carefully selected from internationally certified manufacturers to ensure safety and reliability.</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="category-carousel swiper">
-              <div class="swiper-wrapper">
-                <% if (categories && categories.length > 0) { %>
-                  <% categories.forEach(category => { %>
-                    <a href="/shop/category/<%= category.id %>" class="nav-link swiper-slide text-center">
-                      <% if (category.image) { %>
-                        <img src="<%= category.image %>" class="rounded-circle category-thumbnail" alt="<%= category.name %>">
-                      <% } else { %>
-                        <div class="rounded-circle bg-light d-flex justify-content-center align-items-center category-thumbnail">
-                          <i class="bi bi-collection fs-1 text-muted"></i>
+      </div>
+      <div class="col">
+        <div class="card h-100 border-0 bg-teal rounded-0 p-4 text-light">
+          <div class="row align-items-center h-100">
+            <div class="col-md-3 text-center">
+              <i class="fa-solid fa-truck fa-3x"></i>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <h5 class="text-light">On-Time Delivery</h5>
+                <p class="card-text">On-Time Delivery Fast shipping with real-time tracking to ensure timely arrival.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 border-0 bg-cyan rounded-0 p-4 text-light">
+          <div class="row align-items-center h-100">
+            <div class="col-md-3 text-center">
+              <i class="fa-solid fa-user-tie fa-3x"></i>
+            </div>
+            <div class="col-md-9">
+              <div class="card-body p-0">
+                <h5 class="text-light">Comprehensive Service</h5>
+                <p class="card-text">We offer expert consultation, usage guidance, and dedicated after-sales support.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-5 pb-2 overflow-hidden">
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-header d-flex flex-wrap justify-content-between mb-5">
+          <h2 class="section-title text-dark">Category</h2>
+
+          <div class="d-flex align-items-center">
+            <a href="/shop" class="btn bg-teal text-light me-2">View All</a>
+            <div class="swiper-buttons">
+              <button class="swiper-prev category-carousel-prev btn bg-teal text-light">❮</button>
+              <button class="swiper-next category-carousel-next btn bg-teal text-light">❯</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="category-carousel swiper">
+          <div class="swiper-wrapper">
+            <% if (categories && categories.length > 0) { %>
+              <% categories.forEach(category => { %>
+                <a href="/shop/category/<%= category.id %>" class="nav-link swiper-slide text-center">
+                  <% if (category.image) { %>
+                    <img src="<%= category.image %>" class="rounded-circle category-thumbnail" alt="<%= category.name %>">
+                  <% } else { %>
+                    <div class="rounded-circle bg-light d-flex justify-content-center align-items-center category-thumbnail">
+                      <i class="bi bi-collection fs-1 text-muted"></i>
+                    </div>
+                  <% } %>
+                  <h4 class="fs-6 mt-3 fw-normal category-title"><%= category.name %></h4>
+                </a>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pb-2">
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-header d-flex flex-wrap justify-content-between my-4">
+          <h2 class="section-title text-dark">Best selling products</h2>
+          <div class="d-flex align-items-center">
+            <a href="/shop/products" class="btn bg-teal text-light rounded-1 me-2">View All</a>
+            <div class="swiper-buttons">
+              <button class="swiper-prev bestselling-carousel-prev btn bg-teal text-light">❮</button>
+              <button class="swiper-next bestselling-carousel-next btn bg-teal text-light">❯</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="bestselling-carousel swiper">
+          <div class="swiper-wrapper">
+            <% if (featuredProducts && featuredProducts.length > 0) { %>
+              <% featuredProducts.slice(0, 10).forEach(product => { %>
+                <div class="swiper-slide">
+                  <div class="product-item">
+                    <a href="/shop/product/<%= product.id %>" class="a">
+                      <figure class="m-0 p-3 text-center">
+                        <% if (product.images && product.images.length > 0) { %>
+                          <% 
+                            // หารูปที่เป็นรูปหลัก
+                            const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
+                          %>
+                          <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
+                        <% } else { %>
+                          <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
+                            <i class="bi bi-image fs-1 text-muted"></i>
+                          </div>
+                        <% } %>
+                      </figure>
+                      <div class="d-flex flex-column text-center p-3 pt-0">
+                        <h3 class="fs-6 fw-normal text-dark"><%= product.name %></h3>
+                        <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
+                          <span class="text-dark fw-semibold"><%= product.price || 'ไม่ระบุราคา' %> ฿</span>
                         </div>
-                      <% } %>
-                      <h4 class="fs-6 mt-3 fw-normal category-title"><%= category.name %></h4>
+                        <div class="d-flex justify-content-between align-items-center gap-2">
+                          <% if (product.category) { %>
+                            <small class="badge bg-success"><%= product.category.name %></small>
+                          <% } else { %>
+                            <small class="text-muted">ไม่มีหมวดหมู่</small>
+                          <% } %>
+                          <small class="text-dark">
+                            <i class="fa-solid fa-eye"></i> <%= product.fakeViews || 0 %>
+                          </small>
+                        </div>
+                      </div>
                     </a>
-                  <% }) %>
-                <% } %>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="pb-2">
-      <div class="container-lg">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="section-header d-flex flex-wrap justify-content-between my-4">
-              <h2 class="section-title text-dark">Best selling products</h2>
-              <div class="d-flex align-items-center">
-                <a href="/shop/products" class="btn bg-teal rounded-1">View All</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-              <% if (featuredProducts && featuredProducts.length > 0) { %>
-                <% featuredProducts.slice(0, 5).forEach(product => { %>
-                  <div class="col mb-4">
-                    <div class="product-item">
-                      <a href="/shop/product/<%= product.id %>" class="a">
-                        <figure class="m-0 p-3 text-center">
-                          <% if (product.images && product.images.length > 0) { %>
-                            <% 
-                              // หารูปที่เป็นรูปหลัก
-                              const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
-                            %>
-                            <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
-                          <% } else { %>
-                            <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
-                              <i class="bi bi-image fs-1 text-muted"></i>
-                            </div>
-                          <% } %>
-                        </figure>
-                        <div class="d-flex flex-column text-center p-3 pt-0">
-                          <h3 class="fs-6 fw-normal text-dark"><%= product.name %></h3>
-                          <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
-                            <span class="text-dark fw-semibold"><%= product.price || 'ไม่ระบุราคา' %> ฿</span>
-                          </div>
-                          <div class="d-flex justify-content-between align-items-center gap-2">
-                            <% if (product.category) { %>
-                              <small class="badge bg-success"><%= product.category.name %></small>
-                            <% } else { %>
-                              <small class="text-muted">ไม่มีหมวดหมู่</small>
-                            <% } %>
-                            <small class="text-dark">
-                              <i class="fa-solid fa-eye"></i> <%= product.fakeViews || 0 %>
-                            </small>
-                          </div>
-                        </div>
-                      </a>
-                    </div>
                   </div>
-                <% }) %>
-              <% } else { %>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="swiper-slide">
                 <div class="col-12 text-center">
                   <p>ยังไม่มีสินค้าขายดี</p>
                 </div>
-              <% } %>
-            </div>
-            <!-- / product-grid -->
+              </div>
+            <% } %>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section class="py-3">
-      <div class="container-lg">
-        <div class="row">
-          <div class="col-md-12">
-
-            <div class="banner-blocks">
-            
-              <div class="banner-ad d-flex align-items-center large bg-info block-1" style="background: url('images/bp2.jpg') no-repeat; background-size: cover;">
-                <div class="banner-content p-5">
-                  <div class="content-wrapper text-dark">
-                    <h3 class="banner-title text-dark">Items on SALE</h3>
-                    <p>Discounts up to 30%</p>
-                    <a href="#" class="btn-link text-white">Shop Now</a>
-                  </div>
-                </div>
+<section class="py-3">
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-12">
+        <div class="banner-blocks d-flex gap-0 flex-wrap">
+          <div class=" bg-teal block-3 bg-dark" style="min-width: 33.33%;">
+          <!-- <div class="banner-ad flex-fill bg-info block-1 " style="background: url('images/bp2.jpg') no-repeat; background-size: cover; min-width: 33.33%;"> -->
+            <div class="banner-content p-5 h-100 d-flex align-items-center">
+              <div class="content-wrapper text-light">
+                <h3 class="banner-title text-light">Items on SALE</h3>
+                <p>Discounts up to 30%</p>
+                <a href="#" class="btn-link text-white">Shop Now</a>
               </div>
-              
-              <div class="banner-ad bg-cyan bg-success-subtle block-2">
-                <div class="banner-content align-items-center p-5">
-                  <div class="content-wrapper text-dark">
-                    <h3 class="banner-title text-dark">Combo offers</h3>
-                    <p>Discounts up to 50%</p>
-                    <a href="#" class="btn-link text-white">Shop Now</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="banner-ad bg-teal block-3" >
-                <div class="banner-content align-items-center p-5">
-                  <div class="content-wrapper text-dark">
-                    <h3 class="banner-title text-dark">Discount Coupons</h3>
-                    <p>Discounts up to 40%</p>
-                    <a href="#" class="btn-link text-white">Shop Now</a>
-                  </div>
-                </div>
-              </div>
-
             </div>
-            <!-- / Banner Blocks -->
-              
+          </div>
+
+          <div class=" bg-teal block-3 bg-teal" style="min-width: 33.33%;">
+            <div class="banner-content p-5 h-100 d-flex align-items-center">
+              <div class="content-wrapper text-light">
+                <h3 class="banner-title text-light">Combo offers</h3>
+                <p>Discounts up to 50%</p>
+                <a href="#" class="btn-link text-white">Shop Now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class=" bg-teal block-3 bg-cyan" style="min-width: 33.33%;">
+            <div class="banner-content p-5 h-100 d-flex align-items-center">
+              <div class="content-wrapper text-light">
+                <h3 class="banner-title text-light">Discount Coupons</h3>
+                <p>Discounts up to 40%</p>
+                <a href="#" class="btn-link text-white">Shop Now</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="pb-5">
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-header d-flex flex-wrap justify-content-between my-4">
+          <h2 class="section-title">Recommended for You</h2>
+          <div class="d-flex align-items-center">
+            <a href="/shop/products" class="btn bg-teal text-light rounded-1 me-2">View All</a>
+            <div class="swiper-buttons">
+              <button class="swiper-prev popular-carousel-prev btn bg-teal text-light">❮</button>
+              <button class="swiper-next popular-carousel-next btn bg-teal text-light">❯</button>
+            </div>
           </div>
         </div>
       </div>
-    </section>
-
-    <section class="">
-      <div class="container-lg">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="section-header d-flex flex-wrap justify-content-between my-4">
-              <h2 class="section-title">Most popular products</h2>
-              <div class="d-flex align-items-center">
-                <a href="/shop/products" class="btn bg-teal rounded-1">View All</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-              <% if (featuredProducts && featuredProducts.length > 0) { %>
-                <% featuredProducts.forEach(product => { %>
-                  <div class="col mb-4">
-                    <div class="product-item">
-                      <a href="/shop/product/<%= product.id %>" class="a">
-                        <figure class="m-0 p-3 text-center">
-                          <% if (product.images && product.images.length > 0) { %>
-                            <% 
-                              // หารูปที่เป็นรูปหลัก
-                              const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
-                            %>
-                            <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
-                          <% } else { %>
-                            <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
-                              <i class="bi bi-image fs-1 text-muted"></i>
-                            </div>
-                          <% } %>
-                        </figure>
-                        <div class="d-flex flex-column text-center p-3 pt-0">
-                          <h3 class="fs-6 fw-normal text-dark"><%= product.name %></h3>
-                          <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
-                            <span class="text-dark fw-semibold"><%= product.price || 'ไม่ระบุราคา' %> ฿</span>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="popular-carousel swiper">
+          <div class="swiper-wrapper">
+            <% if (randomProducts && randomProducts.length > 0) { %>
+              <% randomProducts.forEach(product => { %>
+                <div class="swiper-slide">
+                  <div class="product-item">
+                    <a href="/shop/product/<%= product.id %>" class="a">
+                      <figure class="m-0 p-3 text-center">
+                        <% if (product.images && product.images.length > 0) { %>
+                          <% 
+                            // หารูปที่เป็นรูปหลัก
+                            const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
+                          %>
+                          <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
+                        <% } else { %>
+                          <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
+                            <i class="bi bi-image fs-1 text-muted"></i>
                           </div>
-                          <div class="d-flex justify-content-between align-items-center gap-2">
-                            <% if (product.category) { %>
-                              <small class="badge bg-success"><%= product.category.name %></small>
-                            <% } else { %>
-                              <small class="text-muted">ไม่มีหมวดหมู่</small>
-                            <% } %>
-                            <small class="text-dark">
-                              <i class="fa-solid fa-eye"></i> <%= product.fakeViews || 0 %>
-                            </small>
-                          </div>
+                        <% } %>
+                      </figure>
+                      <div class="d-flex flex-column text-center p-3 pt-0">
+                        <h3 class="fs-6 fw-normal text-dark"><%= product.name %></h3>
+                        <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
+                          <span class="text-dark fw-semibold"><%= product.price || 'ไม่ระบุราคา' %> ฿</span>
                         </div>
-                      </a>
-                    </div>
+                        <div class="d-flex justify-content-between align-items-center gap-2">
+                          <% if (product.category) { %>
+                            <small class="badge bg-success"><%= product.category.name %></small>
+                          <% } else { %>
+                            <small class="text-muted">ไม่มีหมวดหมู่</small>
+                          <% } %>
+                          <small class="text-dark">
+                            <i class="fa-solid fa-eye"></i> <%= product.fakeViews || 0 %>
+                          </small>
+                        </div>
+                      </div>
+                    </a>
                   </div>
-                <% }) %>
-              <% } else { %>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="swiper-slide">
                 <div class="col-12 text-center">
                   <p>ยังไม่มีสินค้าขายดี</p>
                 </div>
-              <% } %>
-            </div>
-
+              </div>
+            <% } %>
           </div>
         </div>
       </div>
-    </section>
-<!--
-    <section>
-      <div class="container-lg">
+    </div>
+  </div>
+</section>
 
-        <div class="bg-secondary text-light py-5 my-5" style="background: url('images/banner-newsletter.jpg') no-repeat; background-size: cover;">
-          <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-md-5 p-3">
-                <div class="section-header">
-                  <h2 class="section-title display-5 text-light">Get 25% Discount on your first purchase</h2>
-                </div>
-                <p>Just Sign Up & Register it now to become member.</p>
-              </div>
-              <div class="col-md-5 p-3">
-                <form>
-                  <div class="mb-3">
-                    <label for="name" class="form-label d-none">Name</label>
-                    <input type="text"
-                      class="form-control form-control-md rounded-0" name="name" id="name" placeholder="Name">
-                  </div>
-                  <div class="mb-3">
-                    <label for="email" class="form-label d-none">Email</label>
-                    <input type="email" class="form-control form-control-md rounded-0" name="email" id="email" placeholder="Email Address">
-                  </div>
-                  <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-dark btn-md rounded-0">Submit</button>
-                  </div>
-                </form>
-                
-              </div>
-              
-            </div>
-            
-          </div>
-        </div>
-        
-      </div>
-    </section>
-
-
-
-
-
-    <section id="latest-blog" class="pb-4">
-      <div class="container-lg">
-        <div class="row">
-          <div class="section-header d-flex align-items-center justify-content-between my-4">
-            <h2 class="section-title">Our Recent Blog</h2>
-            <a href="#" class="btn bg-teal">View All</a>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <article class="post-item card border-0 shadow-sm p-3">
-              <div class="image-holder zoom-effect">
-                <a href="#">
-                  <img src="/images/bp1.jpg" alt="post" class="card-img-top">
-                </a>
-              </div>
-              <div class="card-body">
-                <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                  <div class="meta-date"><svg width="16" height="16"><use xlink:href="#calendar"></use></svg>22 Aug 2021</div>
-                  <div class="meta-categories"><svg width="16" height="16"><use xlink:href="#category"></use></svg>tips & tricks</div>
-                </div>
-                <div class="post-header">
-                  <h3 class="post-title">
-                    <a href="#" class="text-decoration-none">Top 10 casual look ideas to dress up your kids</a>
-                  </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                </div>
-              </div>
-            </article>
-          </div>
-          <div class="col-md-4">
-            <article class="post-item card border-0 shadow-sm p-3">
-              <div class="image-holder zoom-effect">
-                <a href="#">
-                  <img src="/images/bp2.jpg" alt="post" class="card-img-top">
-                </a>
-              </div>
-              <div class="card-body">
-                <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                  <div class="meta-date"><svg width="16" height="16"><use xlink:href="#calendar"></use></svg>25 Aug 2021</div>
-                  <div class="meta-categories"><svg width="16" height="16"><use xlink:href="#category"></use></svg>trending</div>
-                </div>
-                <div class="post-header">
-                  <h3 class="post-title">
-                    <a href="#" class="text-decoration-none">Latest trends of wearing street wears supremely</a>
-                  </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                </div>
-              </div>
-            </article>
-          </div>
-          <div class="col-md-4">
-            <article class="post-item card border-0 shadow-sm p-3">
-              <div class="image-holder zoom-effect">
-                <a href="#">
-                  <img src="/images/bp3.jpg" alt="post" class="card-img-top">
-                </a>
-              </div>
-              <div class="card-body">
-                <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                  <div class="meta-date"><svg width="16" height="16"><use xlink:href="#calendar"></use></svg>28 Aug 2021</div>
-                  <div class="meta-categories"><svg width="16" height="16"><use xlink:href="#category"></use></svg>inspiration</div>
-                </div>
-                <div class="post-header">
-                  <h3 class="post-title">
-                    <a href="#" class="text-decoration-none">10 Different Types of comfortable clothes ideas for women</a>
-                  </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="pb-4 my-4">
-      <div class="container-lg">
-
-        <div class="bg-warning pt-5 rounded-5">
-          <div class="container">
-            <div class="row justify-content-center align-items-center">
-              <div class="col-md-4">
-                <h2 class="mt-5">Download Organic App</h2>
-                <p>Online Orders made easy, fast and reliable</p>
-                <div class="d-flex gap-2 flex-wrap mb-5">
-                  <a href="#" title="App store"><img src="images/img-app-store.png" alt="app-store"></a>
-                  <a href="#" title="Google Play"><img src="images/img-google-play.png" alt="google-play"></a>
-                </div>
-              </div>
-              <div class="col-md-5">
-                <img src="images/banner-onlineapp.png" alt="phone" class="img-fluid">
-              </div>
-            </div>
-          </div>
-        </div>
-        
-      </div>
-    </section>
-
-    <section class="py-4">
-      <div class="container-lg">
-        <h2 class="my-4">People are also looking for</h2>
-        <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Sweet Vanilla Yogurt</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Foster Farms Takeout Crispy wings</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Warrior Blend Organic</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Chao Cheese Creamy</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Sweet Vanilla Yogurt</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Foster Farms Takeout Crispy wings</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Warrior Blend Organic</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Chao Cheese Creamy</a>
-        <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
-      </div>
-    </section>
-
-    <section class="py-5">
-      <div class="container-lg">
-        <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-5">
-          <div class="col">
-            <div class="card mb-3 border border-dark-subtle p-3">
-              <div class="text-dark mb-3">
-                <svg width="32" height="32"><use xlink:href="#package"></use></svg>
-              </div>
-              <div class="card-body p-0">
-                <h5>Free delivery</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card mb-3 border border-dark-subtle p-3">
-              <div class="text-dark mb-3">
-                <svg width="32" height="32"><use xlink:href="#secure"></use></svg>
-              </div>
-              <div class="card-body p-0">
-                <h5>100% secure payment</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card mb-3 border border-dark-subtle p-3">
-              <div class="text-dark mb-3">
-                <svg width="32" height="32"><use xlink:href="#quality"></use></svg>
-              </div>
-              <div class="card-body p-0">
-                <h5>Quality guarantee</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card mb-3 border border-dark-subtle p-3">
-              <div class="text-dark mb-3">
-                <svg width="32" height="32"><use xlink:href="#savings"></use></svg>
-              </div>
-              <div class="card-body p-0">
-                <h5>guaranteed savings</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card mb-3 border border-dark-subtle p-3">
-              <div class="text-dark mb-3">
-                <svg width="32" height="32"><use xlink:href="#offers"></use></svg>
-              </div>
-              <div class="card-body p-0">
-                <h5>Daily offers</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    -->
-    <script>
- 
-    </script>
-
-
-
-
-</html>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize swiper for category carousel
+    var categoryCarousel = new Swiper(".category-carousel", {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".category-carousel-next",
+        prevEl: ".category-carousel-prev",
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 4, 
+          spaceBetween: 20,
+        },
+        992: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
+      },
+    });
+    
+    // Initialize swiper for best selling products
+    var bestSellingCarousel = new Swiper(".bestselling-carousel", {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".bestselling-carousel-next",
+        prevEl: ".bestselling-carousel-prev",
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        992: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
+      },
+    });
+    
+    // Initialize swiper for popular products
+    var popularCarousel = new Swiper(".popular-carousel", {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".popular-carousel-next",
+        prevEl: ".popular-carousel-prev",
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        992: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
+</script>

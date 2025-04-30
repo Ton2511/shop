@@ -24,7 +24,7 @@
                         
                         <div class="mb-3">
                             <label for="code" class="form-label">รหัสสินค้า</label>
-                            <input type="text" class="form-control" id="code" name="code" required>
+                            <input type="text" class="form-control" id="code" name="code" value="-">
                         </div>
                         
                         <% if (selectedCategory) { %>
@@ -54,7 +54,7 @@
                         
                         <div class="mb-3">
                             <label for="stock" class="form-label">คลังสินค้า</label>
-                            <input type="number" class="form-control" id="stock" name="stock" value="0">
+                            <input type="number" class="form-control" id="stock" name="stock" value="99">
                         </div>
                         
                         <div class="mb-3">
@@ -76,7 +76,7 @@
                         
                         <div class="mb-3">
                             <label for="fakeViews" class="form-label">ยอดเข้าชมเริ่มต้น (ถ้าไม่ระบุจะสุ่ม)</label>
-                            <input type="number" class="form-control" id="fakeViews" name="fakeViews" placeholder="เช่น 100">
+                            <input type="number" class="form-control" id="fakeViews" name="fakeViews" placeholder="เช่น 100" >
                             <div class="form-text">ยอดเข้าชมที่จะแสดงให้ลูกค้าเห็น</div>
                         </div>
                         
