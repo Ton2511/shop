@@ -1,0 +1,60 @@
+<!-- views/partials/pagination.ejs -->
+<% if (pagination && pagination.totalPages > 1) { %>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <!-- Previous button -->
+        <li class="page-item <%= !pagination.hasPrevPage ? 'disabled' : '' %>">
+          <a class="page-link" href="<%= baseUrl %>?page=<%= pagination.prevPage %><%= queryParams %>" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        
+        <!-- First page button (if not in range) -->
+        <% if (pagination.startPage > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="<%= baseUrl %>?page=1<%= queryParams %>">1</a>
+          </li>
+          <% if (pagination.startPage > 2) { %>
+            <li class="page-item disabled">
+              <span class="page-link">...</span>
+            </li>
+          <% } %>
+        <% } %>
+        
+        <!-- Page numbers -->
+        <% pagination.pages.forEach(page => { %>
+          <li class="page-item <%= page === pagination.currentPage ? 'active' : '' %>">
+            <a class="page-link" href="<%= baseUrl %>?page=<%= page %><%= queryParams %>">
+              <%= page %>
+            </a>
+          </li>
+        <% }); %>
+        
+        <!-- Last page button (if not in range) -->
+        <% if (pagination.endPage < pagination.totalPages) { %>
+          <% if (pagination.endPage < pagination.totalPages - 1) { %>
+            <li class="page-item disabled">
+              <span class="page-link">...</span>
+            </li>
+          <% } %>
+          <li class="page-item">
+            <a class="page-link" href="<%= baseUrl %>?page=<%= pagination.totalPages %><%= queryParams %>">
+              <%= pagination.totalPages %>
+            </a>
+          </li>
+        <% } %>
+        
+        <!-- Next button -->
+        <li class="page-item <%= !pagination.hasNextPage ? 'disabled' : '' %>">
+          <a class="page-link" href="<%= baseUrl %>?page=<%= pagination.nextPage %><%= queryParams %>" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="text-center text-muted small mb-4">
+      แสดง <%= (pagination.currentPage - 1) * pagination.perPage + 1 %>-<%= Math.min(pagination.currentPage * pagination.perPage, pagination.totalItems) %> 
+      จาก <%= pagination.totalItems %> รายการ
+    </div>
+  <% } %>

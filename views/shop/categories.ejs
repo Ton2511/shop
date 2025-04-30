@@ -49,14 +49,20 @@
                   <div class="d-flex flex-column text-center p-3 pt-0">
                     <h3 class="fs-5 fw-normal text-dark"><%= category.name %></h3>
                     <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
-                      <span class="text-dark small">สินค้า: 
-                        <% if (Array.isArray(category.products)) { %>
-                          <%= category.products.length %> 
-                        <% } else { %>
-                          0
-                        <% } %>
-                        รายการ
-                      </span>
+                      <!-- แก้ไขการแสดงจำนวนสินค้า
+                      <span class="text-dark small">
+                        <i class="bi bi-box me-1"></i>
+                        <% 
+                          // ดึงจำนวนสินค้าจากฐานข้อมูล
+                          let productCount = 0;
+                          if (category.productCount !== undefined) {
+                            productCount = category.productCount;
+                          } else if (Array.isArray(category.products)) {
+                            productCount = category.products.length;
+                          }
+                        %>
+                        <%= productCount %> รายการ
+                      </span> -->
                     </div>
                   </div>
                 </a>

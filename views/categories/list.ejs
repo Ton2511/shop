@@ -1,3 +1,4 @@
+<!-- views/categories/list.ejs -->
 <div class="custom-container-lg mx-auto d-flex flex-column mb-5">
     <div class="mt-5">
         <h4 aria-label="breadcrumb ">
@@ -10,47 +11,59 @@
         </h4>
       </div>
     <div class="card mt-3 mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-1 col-12">
+        <div class="d-flex justify-content-between align-items-center mb-1 col-12 p-3">
             <h1 class="text-cyan">Category Management</h1>
             <a href="/categories/new" class="btn bg-teal text-light">Add New Category</a>
         </div>
-        <table class="table table-bordered text-center mb-5">
-            <tr class="bg-dark text-center table-hover">
-                <th class="col-5">Name</th>
-                <th class="col-1">Products</th>
-                <th class="col-1">Image</th> <!-- คอลัมน์แสดงภาพ -->
-                <th class="col-5">Actions</th>
-            </tr>
-            <% categories.forEach(category => { %>
-                <tr class='text-center'>
-                    <td><%= category.name %></td>
-                    <td>
-                        <% if (Array.isArray(category.products)) { %>
-                            <%= category.products.length %>
-                        <% } else { %>
-                            0
-                        <% } %>
-                    </td>
-                    <td>
-                        <% if (category.image) { %>
-                            <!-- ปุ่มเพื่อแสดงภาพ -->
-                            <button class="btn btn-info text-light" onclick="showImage('<%= category.image %>')">Image</button>
-                        <% } else { %>
-                            None
-                        <% } %>
-                    </td>
-                    <td>
-                        <a href="/products/category/<%= category.id %>" class="btn bg-dark text-light">Products</a> | 
-                        <!-- เปลี่ยนลิงก์ Add Product ให้ตรงกับ route ใหม่ -->
-                        <a href="/products/addto/<%= category.id %>" class="btn bg-success text-light">Add Product</a> | 
-                        <a href="/categories/edit/<%= category.id %>" class="btn bg-warning text-light">Edit</a> | 
-                        <form action="/categories/delete/<%= category.id %>" method="POST" style="display:inline;">
-                            <button type="submit" class="btn bg-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            <% }) %>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered text-center mb-5">
+                <thead>
+                    <tr class="bg-dark text-center table-hover">
+                        <th class="col-5">Name</th>
+                        <th class="col-1">Products</th>
+                        <th class="col-1">Image</th> <!-- คอลัมน์แสดงภาพ -->
+                        <th class="col-5">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach(category => { %>
+                        <tr class='text-center'>
+                            <td><%= category.name %></td>
+                            <td>
+                                <!-- แก้ไขการแสดงจำนวนสินค้า -->
+                                <% 
+                                    // ดึงจำนวนสินค้าจากฐานข้อมูล
+                                    let productCount = 0;
+                                    if (category.productCount !== undefined) {
+                                        productCount = category.productCount;
+                                    } else if (Array.isArray(category.products)) {
+                                        productCount = category.products.length;
+                                    }
+                                %>
+                                <%= productCount %>
+                            </td>
+                            <td>
+                                <% if (category.image) { %>
+                                    <!-- ปุ่มเพื่อแสดงภาพ -->
+                                    <button class="btn btn-info text-light" onclick="showImage('<%= category.image %>')">Image</button>
+                                <% } else { %>
+                                    None
+                                <% } %>
+                            </td>
+                            <td>
+                                <a href="/products/category/<%= category.id %>" class="btn btn-sm bg-dark text-light">Products</a> | 
+                                <!-- เปลี่ยนลิงก์ Add Product ให้ตรงกับ route ใหม่ -->
+                                <a href="/products/addto/<%= category.id %>" class="btn btn-sm bg-success text-light">Add Product</a> | 
+                                <a href="/categories/edit/<%= category.id %>" class="btn btn-sm bg-warning text-light">Edit</a> | 
+                                <form action="/categories/delete/<%= category.id %>" method="POST" style="display:inline;" onsubmit="return confirm('คุณแน่ใจหรือไม่ที่จะลบหมวดหมู่นี้?');">
+                                    <button type="submit" class="btn btn-sm bg-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -77,3 +90,26 @@
         imageModal.show();
     }
 </script>
+
+<style>
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    @media (max-width: 768px) {
+        .d-flex.justify-content-between {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        td, th {
+            font-size: 0.85rem;
+        }
+        
+        .btn-sm {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.7rem;
+        }
+    }
+</style>

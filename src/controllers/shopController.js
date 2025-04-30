@@ -1,6 +1,7 @@
-// controllers/shopController.js
+// src/controllers/shopController.js
 const { Category, Product, ProductImage } = require('../models');
 const { Op } = require('sequelize');
+const { getPagination } = require('../utils/pagination');
 
 // หน้าแสดงหมวดหมู่ทั้งหมดสำหรับลูกค้า
 exports.showCategories = async (req, res) => {
@@ -16,11 +17,10 @@ exports.showCategories = async (req, res) => {
   }
 };
 
-// หน้าแสดงสินค้าในหมวดหมู่ที่เลือก
+// หน้าแสดงสินค้าในหมวดหมู่ที่เลือก (มีการเพิ่ม pagination)
 exports.showProductsByCategory = async (req, res) => {
   try {
     const categoryId = req.params.categoryId;
-    
     const category = await Category.findByPk(categoryId);
     
     if (!category) {
@@ -28,14 +28,32 @@ exports.showProductsByCategory = async (req, res) => {
       return res.redirect("/shop");
     }
     
+    // รับพารามิเตอร์จากการเพจิเนชัน
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 10; // สินค้าต่อหน้า
+
+    // นับจำนวนสินค้าทั้งหมดในหมวดหมู่
+    const totalItems = await Product.count({ where: { categoryId } });
+    
+    // คำนวณข้อมูลเพจิเนชัน
+    const pagination = getPagination(totalItems, page, perPage);
+    
+    // ดึงข้อมูลสินค้าตามเพจิเนชัน
     const products = await Product.findAll({
       where: { categoryId },
-      include: [{ model: ProductImage, as: 'images' }]
+      include: [{ model: ProductImage, as: 'images' }],
+      limit: pagination.perPage,
+      offset: pagination.offset,
+      order: [['updatedAt', 'DESC']] // เรียงจากใหม่ไปเก่า
     });
     
+    // ส่งข้อมูลไปยัง view
     res.render("shop/products", { 
       category, 
       products,
+      pagination,
+      baseUrl: `/shop/category/${categoryId}`,
+      queryParams: '',
       title: `สินค้าในหมวดหมู่ ${category.name}`
     });
   } catch (err) {
@@ -97,18 +115,35 @@ exports.showProductDetails = async (req, res) => {
   }
 };
 
-// แสดงสินค้าทั้งหมด (ไม่แยกหมวดหมู่)
+// แสดงสินค้าทั้งหมด (ไม่แยกหมวดหมู่) - มีการเพิ่ม pagination
 exports.showAllProducts = async (req, res) => {
   try {
+    // รับพารามิเตอร์จากการเพจิเนชัน
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 12; // สินค้าต่อหน้า
+
+    // นับจำนวนสินค้าทั้งหมด
+    const totalItems = await Product.count();
+    
+    // คำนวณข้อมูลเพจิเนชัน
+    const pagination = getPagination(totalItems, page, perPage);
+    
+    // ดึงข้อมูลสินค้าตามเพจิเนชัน
     const products = await Product.findAll({
       include: [
         { model: Category, as: 'category' },
         { model: ProductImage, as: 'images' }
-      ]
+      ],
+      limit: pagination.perPage,
+      offset: pagination.offset,
+      order: [['updatedAt', 'DESC']] // เรียงจากใหม่ไปเก่า
     });
     
     res.render("shop/all-products", { 
       products,
+      pagination,
+      baseUrl: '/shop/products',
+      queryParams: '',
       title: "สินค้าทั้งหมด"
     });
   } catch (err) {
@@ -143,6 +178,7 @@ const incrementFakeViews = async (productId) => {
   }
 };
 
+// ค้นหาสินค้า - มีการเพิ่ม pagination
 exports.searchProducts = async (req, res) => {
   try {
     const searchQuery = req.query.q || '';
@@ -151,7 +187,25 @@ exports.searchProducts = async (req, res) => {
       return res.redirect('/shop/products');
     }
     
-    // Search products by name, code, or description
+    // รับพารามิเตอร์จากการเพจิเนชัน
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 12; // สินค้าต่อหน้า
+    
+    // คำนวณจำนวนสินค้าที่ตรงกับการค้นหา
+    const totalItems = await Product.count({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${searchQuery}%` } },
+          { code: { [Op.like]: `%${searchQuery}%` } },
+          { description: { [Op.like]: `%${searchQuery}%` } }
+        ]
+      }
+    });
+    
+    // คำนวณข้อมูลเพจิเนชัน
+    const pagination = getPagination(totalItems, page, perPage);
+    
+    // ดึงข้อมูลสินค้าตามเพจิเนชัน
     const products = await Product.findAll({
       where: {
         [Op.or]: [
@@ -163,12 +217,21 @@ exports.searchProducts = async (req, res) => {
       include: [
         { model: Category, as: 'category' },
         { model: ProductImage, as: 'images' }
-      ]
+      ],
+      limit: pagination.perPage,
+      offset: pagination.offset,
+      order: [['updatedAt', 'DESC']] // เรียงจากใหม่ไปเก่า
     });
+    
+    // สร้าง query parameter สำหรับการค้นหาในเพจิเนชัน
+    const queryParams = `&q=${encodeURIComponent(searchQuery)}`;
     
     res.render("shop/search-results", { 
       products,
       searchQuery,
+      pagination,
+      baseUrl: '/shop/search',
+      queryParams,
       title: `ผลการค้นหา: ${searchQuery}`
     });
   } catch (err) {

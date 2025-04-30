@@ -75,6 +75,10 @@
             </div>
           <% }) %>
         </div>
+        
+        <!-- เพิ่มระบบเพจิเนชัน -->
+        <%- include('../partials/pagination') %>
+        
       <% } else { %>
         <div class="col-12 text-center py-5">
           <div class="alert alert-info">
@@ -147,6 +151,25 @@
     color: inherit;
   }
   
+  /* Pagination Styles */
+  .pagination {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .page-item.active .page-link {
+    background-color: #008080;
+    border-color: #008080;
+  }
+  
+  .page-link {
+    color: #008080;
+  }
+  
+  .page-link:hover {
+    color: #005353;
+  }
+  
   /* Mobile Responsive Styles */
   @media (max-width: 576px) {
     .carousel-item img {
@@ -182,21 +205,12 @@
       padding: 0.5rem !important;
     }
     
-    h1 {
-      font-size: 1.5rem;
+    .pagination {
+      font-size: 0.85rem;
     }
     
-    .fs-6 {
-      font-size: 0.9rem !important;
-    }
-    
-    .badge {
-      font-size: 0.6rem;
-    }
-    
-    .container {
-      padding-left: 10px;
-      padding-right: 10px;
+    .page-link {
+      padding: 0.3rem 0.6rem;
     }
     
     .breadcrumb {

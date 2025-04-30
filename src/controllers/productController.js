@@ -42,16 +42,39 @@ const upload = multer({
   }
 });
 
+// เพิ่ม import สำหรับระบบเพจิเนชัน
+const { getPagination } = require('../utils/pagination');
+
 // แสดงรายการสินค้าทั้งหมด
 exports.listProducts = async (req, res) => {
   try {
+    // รับพารามิเตอร์จากการเพจิเนชัน
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 10; // สินค้าต่อหน้า
+
+    // นับจำนวนสินค้าทั้งหมด
+    const totalItems = await Product.count();
+    
+    // คำนวณข้อมูลเพจิเนชัน
+    const pagination = getPagination(totalItems, page, perPage);
+    
+    // ดึงข้อมูลสินค้าตามเพจิเนชัน
     const products = await Product.findAll({
       include: [
         { model: Category, as: 'category' },
         { model: ProductImage, as: 'images' }
-      ]
+      ],
+      limit: pagination.perPage,
+      offset: pagination.offset,
+      order: [['updatedAt', 'DESC']] // เรียงจากใหม่ไปเก่า
     });
-    res.render("products/list", { products });
+    
+    res.render("products/list", { 
+      products,
+      pagination,
+      baseUrl: '/products',
+      queryParams: ''
+    });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:", err);
     res.redirect("/");
@@ -349,19 +372,97 @@ exports.listProductsByCategory = async (req, res) => {
       return res.redirect("/categories");
     }
     
+    // รับพารามิเตอร์จากการเพจิเนชัน
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 10; // สินค้าต่อหน้า
+
+    // นับจำนวนสินค้าทั้งหมดในหมวดหมู่
+    const totalItems = await Product.count({ where: { categoryId } });
+    
+    // คำนวณข้อมูลเพจิเนชัน
+    const pagination = getPagination(totalItems, page, perPage);
+    
+    // ดึงข้อมูลสินค้าตามเพจิเนชัน
     const products = await Product.findAll({
       where: { categoryId },
-      include: [{ model: ProductImage, as: 'images' }]
+      include: [{ model: ProductImage, as: 'images' }],
+      limit: pagination.perPage,
+      offset: pagination.offset,
+      order: [['updatedAt', 'DESC']] // เรียงจากใหม่ไปเก่า
     });
     
     res.render("products/categoryProducts", { 
       category, 
       products,
+      pagination,
+      baseUrl: `/products/category/${categoryId}`,
+      queryParams: '',
       categoryId
     });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสินค้าตามหมวดหมู่:", err);
     res.redirect("/categories");
+  }
+};
+
+// ฟังก์ชันค้นหาสินค้าสำหรับผู้ดูแลระบบ (เพิ่มใหม่)
+exports.searchProductsAdmin = async (req, res) => {
+  try {
+    const searchQuery = req.query.q || '';
+    
+    if (!searchQuery.trim()) {
+      return res.redirect('/products');
+    }
+    
+    // รับพารามิเตอร์จากการเพจิเนชัน
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 10; // สินค้าต่อหน้า
+    
+    // คำนวณจำนวนสินค้าที่ตรงกับการค้นหา
+    const totalItems = await Product.count({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${searchQuery}%` } },
+          { code: { [Op.like]: `%${searchQuery}%` } },
+          { description: { [Op.like]: `%${searchQuery}%` } }
+        ]
+      }
+    });
+    
+    // คำนวณข้อมูลเพจิเนชัน
+    const pagination = getPagination(totalItems, page, perPage);
+    
+    // ดึงข้อมูลสินค้าตามเพจิเนชัน
+    const products = await Product.findAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${searchQuery}%` } },
+          { code: { [Op.like]: `%${searchQuery}%` } },
+          { description: { [Op.like]: `%${searchQuery}%` } }
+        ]
+      },
+      include: [
+        { model: Category, as: 'category' },
+        { model: ProductImage, as: 'images' }
+      ],
+      limit: pagination.perPage,
+      offset: pagination.offset,
+      order: [['updatedAt', 'DESC']] // เรียงจากใหม่ไปเก่า
+    });
+    
+    // สร้าง query parameter สำหรับการค้นหาในเพจิเนชัน
+    const queryParams = `&q=${encodeURIComponent(searchQuery)}`;
+    
+    res.render("products/search-results", { 
+      products,
+      searchQuery,
+      pagination,
+      baseUrl: '/products/search',
+      queryParams
+    });
+  } catch (err) {
+    console.error("เกิดข้อผิดพลาดในการค้นหาสินค้า:", err);
+    res.redirect("/products");
   }
 };
 

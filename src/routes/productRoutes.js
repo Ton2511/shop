@@ -1,12 +1,17 @@
+// src/routes/productRoutes.js
 const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
-console.log('Available functions in productController:', Object.keys(productController));
+
 // ให้ตั้งค่า routes ที่มี pattern ตายตัวก่อน routes ที่มี parameter
+
 // 1. routes ทั่วไป
-router.get("/", productController.listProducts); //
+router.get("/", productController.listProducts);
 router.get("/new", productController.showNewProductForm);
 router.post("/new", productController.saveProduct);
+
+// 1.1 เพิ่ม route สำหรับค้นหาสินค้า (สำหรับผู้ดูแลระบบ)
+router.get("/search", productController.searchProductsAdmin);
 
 // 2. routes สำหรับดูสินค้าตามหมวดหมู่
 router.get("/category/:categoryId", productController.listProductsByCategory);

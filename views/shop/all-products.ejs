@@ -1,3 +1,4 @@
+<!-- views/shop/all-products.ejs -->
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -32,8 +33,6 @@
       <li class="breadcrumb-item active" aria-current="page">สินค้าทั้งหมด</li>
     </ol>
   </nav>
-
-
 
   <h1 class="my-4 text-dark">สินค้าทั้งหมด</h1>
   
@@ -80,6 +79,10 @@
             </div>
           <% }) %>
         </div>
+        
+        <!-- เพิ่มระบบเพจิเนชัน -->
+        <%- include('../partials/pagination') %>
+        
       <% } else { %>
         <div class="col-12 text-center py-5">
           <div class="alert alert-info">
@@ -131,5 +134,35 @@
   .a {
     text-decoration: none;
     color: inherit;
+  }
+  
+  /* Pagination Styles */
+  .pagination {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .page-item.active .page-link {
+    background-color: #008080;
+    border-color: #008080;
+  }
+  
+  .page-link {
+    color: #008080;
+  }
+  
+  .page-link:hover {
+    color: #005353;
+  }
+  
+  /* Mobile responsive pagination */
+  @media (max-width: 576px) {
+    .pagination {
+      font-size: 0.85rem;
+    }
+    
+    .page-link {
+      padding: 0.3rem 0.6rem;
+    }
   }
 </style>
