@@ -88,7 +88,7 @@
                   </p>
                 </div>
                 <div class="card-footer bg-white">
-                  <a href="/shop/product/<%= related._id %>" class="btn btn-sm btn-outline-primary w-100">
+                  <a href="/shop/product/<%= related._id %>" class="btn btn-sm btn-outline-dark w-100">
                     ดูรายละเอียด
                   </a>
                 </div>
@@ -100,7 +100,7 @@
     <% } %>
     
     <div class="text-center mt-4">
-      <a href="/shop/category/<%= product.category ? product.category._id : '' %>" class="btn btn-outline-primary">
+      <a href="/shop/category/<%= product.category ? product.category._id : '' %>" class="btn btn-outline-dark">
         <i class="bi bi-arrow-left me-2"></i>
         กลับไปยังรายการสินค้า
       </a>

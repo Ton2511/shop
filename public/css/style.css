@@ -195,6 +195,188 @@ body {
   color: inherit;
 }
 
+/* Product Card Styles */
+.product-card {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Image container */
+.product-img-container {
+  position: relative;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.product-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.05);
+}
+
+/* Product info */
+.product-info {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #10182f;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  line-height: 1.5;
+  text-align: center;
+}
+
+.product-price {
+  font-weight: 700; /* หรือใช้ 800 หากต้องการหนามาก */
+  color: #10182f;
+  font-size: 16px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-top: auto;
+}
+
+.product-category {
+  background-color: #71dd37;
+  color: white;
+  padding: 1px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-views {
+  color: #10182f;
+}
+
+/* Breadcrumb and general styles */
+.a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Carousel adjustments for mobile */
+@media (max-width: 768px) {
+  .carousel-item img {
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  h1 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* Product card adjustments for mobile */
+@media (max-width: 576px) {
+  .product-img-container {
+    padding-top: 80%; /* Slightly taller for mobile */
+  }
+  
+  .product-info {
+    padding: 8px;
+  }
+  
+  .product-title {
+    font-size: 13px;
+    min-height: 38px;
+    margin-bottom: 4px;
+  }
+  
+  .product-price {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .product-meta {
+    font-size: 11px;
+  }
+  
+  .product-category {
+    max-width: 90px;
+    padding: 2px 6px;
+  }
+  
+  /* Improve grid layout on very small screens */
+  .g-2 {
+    --bs-gutter-x: 0.5rem;
+  }
+  
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Pagination Styles */
+.pagination {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.page-item.active .page-link {
+  background-color: #008080;
+  border-color: #008080;
+}
+
+.page-link {
+  color: #008080;
+}
+
+.page-link:hover {
+  color: #005353;
+}
+
+@media (max-width: 576px) {
+  .pagination {
+    font-size: 0.85rem;
+  }
+  
+  .page-link {
+    padding: 0.3rem 0.6rem;
+  }
+}
+
 
 
 

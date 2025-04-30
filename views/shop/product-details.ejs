@@ -1,8 +1,9 @@
-<!-- views/shop/product-details.ejs -->
-<!-- เพิ่ม Font Awesome สำหรับไอคอน -->
+<!-- views/shop/product-details.ejs (Mobile-Optimized) -->
+<!-- Font Awesome for icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <style>
+    /* Base carousel styles */
     .carousel-wrapper {
         position: relative;
     }
@@ -67,19 +68,8 @@
         left: 50%;
         transform: translateX(-50%);
     }
-
-    .carousel-buttons {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 0;
-        width: 100%;
-        z-index: 10;
-    }
     
+    /* Button colors */
     .bg-blackgreen {
         background-color: #25D366;
         color: white;
@@ -90,6 +80,7 @@
         color: white;
     }
     
+    /* Text colors */
     .text-warning {
         color: #FFC107 !important;
     }
@@ -98,12 +89,86 @@
         color: #6c757d !important;
     }
     
+    /* Horizontal thumbnail carousel for mobile */
+    .mobile-thumbnails {
+        display: none; /* Hidden by default, shown on mobile */
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 10px 0;
+        gap: 10px;
+    }
+    
+    .mobile-thumbnails img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+    }
+    
+    .mobile-thumbnails img.active {
+        border: 2px solid #008080;
+    }
+    
+    /* Swiper styles for related products */
+    .tab-image {
+        max-width: 100%;
+        max-height: 180px;
+        object-fit: contain;
+    }
+    
+    .product-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 3em;
+    }
+    
+    .product-item {
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 100%;
+    }
+    
+    .product-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .swiper-buttons button {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        margin: 0 2px;
+    }
+    
+    /* Product title for mobile - prevent long titles from breaking layout */
+    .product-title-mobile {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
     /* Mobile Responsive Styles */
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
+        /* Hide desktop carousel on mobile */
         .carousel-wrapper {
             display: none;
         }
         
+        /* Show mobile thumbnails */
+        .mobile-thumbnails {
+            display: flex;
+        }
+        
+        /* Adjust columns for mobile */
         .col-1, .col-5, .col-6 {
             width: 100%;
             flex: 0 0 100%;
@@ -111,67 +176,87 @@
             padding: 10px;
         }
         
+        /* Fix padding for product details */
         .ps-5 {
             padding-left: 1rem !important;
         }
         
+        /* Image sizing for mobile */
         .custom-size-main {
             max-width: 100%;
+            height: auto;
+            max-height: 300px;
         }
         
-        .d-flex.mb-3 {
+        /* Stack detail items vertically on mobile */
+        .detail-row {
             flex-direction: column;
         }
         
+        .detail-row > div {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        /* Remove left margin on mobile as items stack */
         .ms-5 {
             margin-left: 0 !important;
             margin-top: 10px;
         }
         
-        .col-3, .col-9 {
-            width: 100%;
-            flex: 0 0 100%;
-            max-width: 100%;
+        /* Adjust heading sizes for mobile */
+        h2 {
+            font-size: 1.5rem;
         }
         
-        /* Mobile thumbnails horizontal scroll */
-        .mobile-thumbnails {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 10px 0;
-            margin-top: 10px;
+        h3 {
+            font-size: 1.2rem;
         }
         
-        .mobile-thumbnails img {
-            height: 60px;
-            width: 60px;
-            object-fit: cover;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
+        h4, h5 {
+            font-size: 1rem;
         }
         
+        /* Social/contact buttons stack better on mobile */
         .social-buttons {
             flex-direction: column;
-            align-items: stretch;
             gap: 10px;
         }
         
         .social-buttons .btn {
+            margin-bottom: 10px;
+        }
+        
+        /* Description sections stack better on mobile */
+        .description-section {
+            margin-bottom: 20px;
+        }
+        
+        .description-section > div {
             width: 100%;
-            margin: 5px 0;
+            padding: 0;
         }
         
-        /* Adjust the contact buttons for mobile */
-        .text-center.mt h3 {
-            font-size: 1.2rem;
+        /* Mobile styles for swiper */
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start !important;
         }
         
-        .text-center.mt .btn {
-            margin: 5px;
-            padding: 6px 12px;
-            font-size: 0.9rem;
+        .section-header .d-flex {
+            width: 100%;
+            margin-top: 10px;
+            justify-content: space-between !important;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+        }
+        
+        .swiper-buttons button {
+            width: 25px;
+            height: 25px;
+            font-size: 12px;
         }
     }
 </style>
@@ -179,22 +264,22 @@
 <div class="bg-light">
   <div class="container mx-auto d-flex flex-column">
     <!-- Breadcrumb -->
-    <div class="mt-5">
-      <h4 aria-label="breadcrumb">
+    <div class="mt-4 mt-md-5">
+      <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item text-dark"><a class="a" href="/">หมวดหมู่สินค้า</a></li>
+          <li class="breadcrumb-item"><a href="/" class="text-decoration-none">หน้าแรก</a></li>
           <% if (product.category) { %>
-            <li class="breadcrumb-item text-dark"><a class="a" href="/shop/category/<%= product.category.id %>"><%= product.category.name %></a></li>
+            <li class="breadcrumb-item"><a href="/shop/category/<%= product.category.id %>" class="text-decoration-none"><%= product.category.name %></a></li>
           <% } %>
-          <li class="breadcrumb-item active" aria-current="page"><%= product.name %></li>
+          <li class="breadcrumb-item active text-truncate" aria-current="page"><%= product.name %></li>
         </ol>
-      </h4>
+      </nav>
     </div>
 
     <div class="mt-2 mb-5">
-      <div class="row mt-3" style="height: auto">
-        <!-- รูปย่อย (Thumbnails) - แสดงเฉพาะบนจอใหญ่ -->
-        <div class="col-1">
+      <div class="row">
+        <!-- Desktop vertical thumbnails (hidden on mobile) -->
+        <div class="col-1 d-none d-md-block">
           <% if (product.images && product.images.length > 0) { %>
             <div class="carousel-wrapper">
               <div class="carousel-container">
@@ -219,33 +304,28 @@
                 </div>
               </div>
               
-              <!-- ปุ่มเลื่อนขึ้นและเลื่อนลง -->
-              <button class="carousel-btn btn-up" onclick="moveCarousel(-1)">
-                <i class="fas fa-arrow-up"></i>
-              </button>
-              <button class="carousel-btn btn-down" onclick="moveCarousel(1)">
-                <i class="fas fa-arrow-down"></i>
-              </button>
+              <!-- Navigation buttons -->
+              <% if (product.images && product.images.length > 3) { %>
+                <button class="carousel-btn btn-up" onclick="moveCarousel(-1)">
+                  <i class="fas fa-arrow-up"></i>
+                </button>
+                <button class="carousel-btn btn-down" onclick="moveCarousel(1)">
+                  <i class="fas fa-arrow-down"></i>
+                </button>
+              <% } %>
             </div>
           <% } %>
         </div>
 
-        <!-- รูปหลัก -->
-        <div class="col-5">
-          <div class="d-flex justify-content-center align-items-center">
+        <!-- Main product image -->
+        <div class="col-12 col-md-5 text-center">
+          <div class="d-flex justify-content-center align-items-center mb-3">
             <% if (product.images && product.images.length > 0) { %>
               <% 
                 // หารูปที่เป็นรูปหลัก
                 const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
               %>
               <img id="mainImage" src="<%= featuredImage.url %>" alt="<%= product.name %>" class="custom-size-main">
-              
-              <!-- Mobile thumbnails (แสดงเฉพาะบนมือถือ) -->
-              <div class="mobile-thumbnails d-md-none">
-                <% product.images.forEach((image, index) => { %>
-                  <img src="<%= image.url %>" alt="<%= product.name %>" onclick="setMainImage('<%= image.url %>', <%= index %>)">
-                <% }) %>
-              </div>
             <% } else { %>
               <div class="bg-light d-flex flex-column justify-content-center align-items-center py-5 rounded" style="height: 300px; width: 100%;">
                 <i class="bi bi-image fs-1 text-muted"></i>
@@ -253,139 +333,198 @@
               </div>
             <% } %>
           </div>
+          
+          <!-- Mobile horizontal thumbnails (shown only on mobile) -->
+          <% if (product.images && product.images.length > 0) { %>
+            <div class="mobile-thumbnails d-md-none">
+              <% product.images.forEach((image, index) => { %>
+                <img src="<%= image.url %>" alt="<%= product.name %>" 
+                     onclick="setMainImage('<%= image.url %>', <%= index %>)" 
+                     class="<%= (image.isFeatured) ? 'active' : '' %>">
+              <% }) %>
+            </div>
+          <% } %>
         </div>
 
-        <!-- รายละเอียดสินค้า -->
-        <div class="col-6 ps-5">
-          <h3 class='text-dark mb-2 mt-5'><b><%= product.name %></b></h3>
-          <div class="d-flex justify-content-between align-items-center mb-1 col-12">
-            <h6 class='text-gray'>รหัสสินค้า : <%= product.code %></h6>
-            <h6 class='text-gray'>view : <%= displayViews || 0 %> <i class="fa-solid fa-eye"></i></h6>
+        <!-- Product details -->
+        <div class="col-12 col-md-6 ps-md-5 mt-3 mt-md-0 ">
+          <h3 class="text-dark mb-2 product-title-mobile mt-5"><b><%= product.name %></b></h3>
+          
+          <div class="d-flex justify-content-between align-items-center mb-1"></div>
+            <span class="text-gray me-5">รหัสสินค้า: <%= product.code %></span>
+            <span class="text-gray">
+              <i class="fa-solid fa-eye"></i> <%= displayViews || 0 %>
+            </span>
+          
+          
+          <h2 class="text-cyan my-3"><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
+          
+          <div class="row g-2 mb-3">
+            <div class="col-12 col-sm-6">
+              <h5 class="mb-1"><strong>หมวดหมู่:</strong> 
+                <% if (product.category) { %>
+                  <a href="/shop/category/<%= product.category.id %>" class="text-gray text-decoration-none">
+                    <%= product.category.name %>
+                  </a>
+                <% } else { %>
+                  <span class="text-gray">ไม่ระบุ</span>
+                <% } %>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6">
+              <h5 class="mb-1"><strong>คงเหลือ:</strong> <span class="text-gray"><%= product.stock || 0 %> ชิ้น</span></h5>
+            </div>
+            <div class="col-12">
+              <h5 class="mb-1"><strong>สถานะ:</strong> <span class="text-gray">พร้อมจัดส่ง</span></h5>
+            </div>
           </div>
-          <h2 class='text-cyan my-4'><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
-          <h4 class='mb-2 text-dark'>หมวดหมู่ :  
-            <% if (product.category) { %>
-              <a href="/shop/category/<%= product.category.id %>" class="text-gray text-decoration-none">
-                <%= product.category.name %>
+
+          <hr class="my-3">
+
+          <!-- Contact buttons -->
+          <div class="text-center mt-4">
+            <h4 class="text-dark mb-3">ติดต่อสั่งซื้อ</h4>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+              <a href="#" class="btn bg-blackgreen px-4 py-2" data-bs-toggle="modal" data-bs-target="#lineModal">
+                <i class="fab fa-line me-2"></i> Line
               </a>
-            <% } %>
-          </h4>
-          <h4 class='mb-3'>คงเหลือ : <span class="text-gray"><%= product.stock || 0 %> ชิ้น</span></h4>
-          <h4 class='mb-3'>สถานะ : <span class='text-gray'>พร้อมจัดส่ง</span></h4>
-
-          <hr class="my-4">
-
-          <div class="text-center mt social-buttons">
-            <h3 class="text-dark">ติดต่อสั่งซื้อ</h3>
-            <div class="d-flex flex-wrap justify-content-center gap-2 mt-2">
-              <a href="#" class="btn bg-blackgreen btn-lg px-4" data-bs-toggle="modal" data-bs-target="#lineModal">Line</a>
-              <a href="https://www.facebook.com/profile.php?id=61570979126029" target="_blank" class="btn bg-blue btn-lg px-4">Facebook</a>
+              <a href="https://www.facebook.com/profile.php?id=61570979126029" target="_blank" class="btn bg-blue px-4 py-2">
+                <i class="fab fa-facebook-f me-2"></i> Facebook
+              </a>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Modal -->
-<div class="modal fade" id="lineModal" tabindex="-1" aria-labelledby="lineModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="lineModalLabel">ติดต่อผ่าน Line Ruk2</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
-      </div>
-      <div class="modal-body text-center">
-        <!-- QR Code -->
-        <img src="/images/qrcodeline.jpg" alt="QR Code Line" class="img-fluid" style="max-width: 300px;">
-        <!-- Line ID -->
-        <p class="mt-2">Line ID: <strong>0864562964</strong></p>
-        
-      </div>
-    </div>
-  </div>
-</div>
       
-      <!-- รายละเอียดเพิ่มเติม -->
-      <h3 class="text-dark mt-5 mb-3"><b>รายละเอียดสินค้า</b></h3>
-      <div class="row">
-        <div class="col-3">
-          <h4 class="text-dark"><b>ข้อมูล |</b></h4>
-        </div>
-        <div class="col-9 d-flex flex-wrap mb-3">
-          <h5 class=""><b class="text-dark">คงเหลือ </b> <%= product.stock || 0 %></h5>
-          <h5 class="ms-md-5 ms-0 mt-2 mt-md-0"><b class="text-dark">วันลงสินค้า </b> <%= new Date(product.createdAt).toLocaleDateString('th-TH') %></h5>
-          <h5 class="ms-md-5 ms-0 mt-2 mt-md-0"><b class="text-dark">แก้ไขล่าสุด </b> <%= new Date(product.updatedAt).toLocaleDateString('th-TH') %></h5>
-        </div>
-        <div class="col-3">
-          <h4 class="text-dark"><b>รายละเอียด |</b></h4>
-        </div>
-        <div class="col-9 mb-3">
-          <h5 class=""><%= product.description || 'ไม่มีรายละเอียด' %></h5>
-        </div>
-        <div class="col-3">
-          <h4 class="text-dark"><b>วิธีการสั่งซื้อ |</b></h4>
-        </div>
-        <div class="col-9 d-flex flex-wrap mb-3">
-          <h5 class="me-3">สำนักงาน 043-393939</h5>
-          <h5 class="me-3">มือถือ 086-4562964</h5>
-          <h5>ID line: 0864562964</h5>
-        </div>
-        <div class="col-3">
-          <h4 class="text-dark"><b>วิธีการจัดส่ง |</b></h4>
-        </div>
-        <div class="col-9 mb-3">
-          <h5>บริการขนส่งของรัฐและเอกชน เช่น ไปรษณีย์, Inter express, Kerry express</h5>
-        </div>
-      </div>
-      
-      <!-- สินค้าที่เกี่ยวข้อง -->
-      <% if (relatedProducts && relatedProducts.length > 0) { %>
-        <div class="mt-5">
-          <h3 class="text-dark mb-4"><b>สินค้าที่เกี่ยวข้อง</b></h3>
-          <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-            <% relatedProducts.forEach(related => { %>
-              <div class="col mb-4">
-                <div class="product-item h-100 border shadow-sm rounded">
-                  <a href="/shop/product/<%= related.id %>" title="<%= related.name %>" class="a">
-                    <figure class="m-0 p-3 text-center">
-                      <% if (related.images && related.images.length > 0) { %>
-                        <% 
-                          // หารูปที่เป็นรูปหลัก
-                          const featuredImage = related.images.find(img => img.isFeatured) || related.images[0];
-                        %>
-                        <img src="<%= featuredImage.url %>" alt="<%= related.name %>" class="tab-image" style="height: 180px; object-fit: contain;">
-                      <% } else { %>
-                        <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
-                          <i class="bi bi-image fs-1 text-muted"></i>
-                        </div>
-                      <% } %>
-                    </figure>
-                    <div class="d-flex flex-column text-center p-3 pt-0">
-                      <h3 class="fs-6 fw-normal text-dark"><%= related.name %></h3>
-                      <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
-                        <span class="text-dark fw-semibold"><%= related.price || 'ไม่ระบุราคา' %> ฿</span>
-                      </div>
-                      
-                      <div class="d-flex justify-content-between align-items-center gap-2">
-                        <% if (product.category) { %>
-                          <small class="badge bg-success"><%= product.category.name %></small>
-                        <% } else { %>
-                          <small class="text-muted">ไม่มีหมวดหมู่</small>
-                        <% } %>
-                        <small class="text-dark">
-                          <i class="fa-solid fa-eye"></i> <%= related.fakeViews || 0 %>
-                        </small>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            <% }) %>
+      <!-- Line QR Code Modal -->
+      <div class="modal fade" id="lineModal" tabindex="-1" aria-labelledby="lineModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="lineModalLabel">ติดต่อผ่าน Line</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+            </div>
+            <div class="modal-body text-center">
+              <!-- QR Code -->
+              <img src="/images/qrcodeline.jpg" alt="QR Code Line" class="img-fluid" style="max-width: 250px;">
+              <!-- Line ID -->
+              <p class="mt-3 fw-bold">Line ID: 0864562964</p>
+            </div>
           </div>
         </div>
+      </div>
+      
+      <!-- Product details sections -->
+      <div class="mt-4 mt-md-5">
+        <h3 class="text-dark mb-3"><b>รายละเอียดสินค้า</b></h3>
+        
+        <div class="row mb-3 description-section">
+          <div class="col-12 col-md-3">
+            <h4 class="text-dark"><b>ข้อมูล |</b></h4>
+          </div>
+          <div class="col-12 col-md-9">
+            <div class="d-flex flex-column flex-md-row mb-3">
+              <h5 class="me-md-4 mb-2 mb-md-0"><b class="text-dark">คงเหลือ:</b> <%= product.stock || 0 %></h5>
+              <h5 class="me-md-4 mb-2 mb-md-0"><b class="text-dark">วันลงสินค้า:</b> <%= new Date(product.createdAt).toLocaleDateString('th-TH') %></h5>
+              <h5><b class="text-dark">แก้ไขล่าสุด:</b> <%= new Date(product.updatedAt).toLocaleDateString('th-TH') %></h5>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mb-3 description-section">
+          <div class="col-12 col-md-3">
+            <h4 class="text-dark"><b>รายละเอียด |</b></h4>
+          </div>
+          <div class="col-12 col-md-9">
+            <h5 class="text-break"><%= product.description || 'ไม่มีรายละเอียด' %></h5>
+          </div>
+        </div>
+        
+        <div class="row mb-3 description-section">
+          <div class="col-12 col-md-3">
+            <h4 class="text-dark"><b>วิธีการสั่งซื้อ |</b></h4>
+          </div>
+          <div class="col-12 col-md-9">
+            <div class="d-flex flex-column flex-md-row mb-md-2">
+              <h5 class="me-md-4 mb-2 mb-md-0">สำนักงาน: 043-393939</h5>
+              <h5 class="me-md-4 mb-2 mb-md-0">มือถือ: 086-4562964</h5>
+              <h5>ID line: 0864562964</h5>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mb-3 description-section">
+          <div class="col-12 col-md-3">
+            <h4 class="text-dark"><b>วิธีการจัดส่ง |</b></h4>
+          </div>
+          <div class="col-12 col-md-9">
+            <h5>บริการขนส่งของรัฐและเอกชน เช่น ไปรษณีย์, Inter express, Kerry express</h5>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Related products with Swiper.js carousel -->
+      <% if (relatedProducts && relatedProducts.length > 0) { %>
+        <section class="pt-4 pb-5">
+          <div class="container-lg px-0">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="section-header d-flex flex-wrap justify-content-between my-4">
+                  <h2 class="section-title text-dark">สินค้าที่เกี่ยวข้อง</h2>
+                  <div class="d-flex align-items-center">
+                    <a href="/shop/category/<%= product.category ? product.category.id : '' %>" class="btn bg-teal text-light rounded-1 me-2">ดูทั้งหมด</a>
+                    <div class="swiper-buttons">
+                      <button class="swiper-prev related-carousel-prev btn bg-teal text-light">❮</button>
+                      <button class="swiper-next related-carousel-next btn bg-teal text-light">❯</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-12">
+                <div class="related-carousel swiper">
+                  <div class="swiper-wrapper">
+                    <% relatedProducts.forEach(related => { %>
+                      <div class="swiper-slide">
+                        <div class="product-item h-100 border shadow-sm rounded">
+                          <a href="/shop/product/<%= related.id %>" class="text-decoration-none d-block h-100">
+                            <figure class="m-0 p-3 text-center">
+                              <% if (related.images && related.images.length > 0) { %>
+                                <% 
+                                  // หารูปที่เป็นรูปหลัก
+                                  const featuredImage = related.images.find(img => img.isFeatured) || related.images[0];
+                                %>
+                                <img src="<%= featuredImage.url %>" alt="<%= related.name %>" class="tab-image" style="height: 180px; object-fit: contain;">
+                              <% } else { %>
+                                <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
+                                  <i class="bi bi-image fs-1 text-muted"></i>
+                                </div>
+                              <% } %>
+                            </figure>
+                            <div class="d-flex flex-column text-center p-3 pt-0">
+                              <h3 class="fs-6 fw-normal text-dark product-title"><%= related.name %></h3>
+                              <div class="d-flex justify-content-center align-items-center gap-2 mt-1">
+                                <span class="text-dark fw-semibold"><%= related.price || 'ไม่ระบุราคา' %> ฿</span>
+                              </div>
+
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    <% }) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       <% } %>
       
-      <div class="text-center mt-4 mb-5">
-        <a href="/shop/category/<%= product.category ? product.category.id : '' %>" class="btn btn-outline-primary">
+      <!-- Back button -->
+      <div class="text-center mt-4 mb-4">
+        <a href="/shop/category/<%= product.category ? product.category.id : '' %>" class="btn btn-outline-dark">
           <i class="bi bi-arrow-left me-2"></i>
           กลับไปยังรายการสินค้า
         </a>
@@ -400,11 +539,13 @@
   const itemsPerPage = 3; // จำนวนรูปที่แสดงใน carousel
 
   function moveCarousel(direction) {
+    // ตรวจสอบว่าอยู่ในหน้าจอมือถือหรือไม่
+    if (window.innerWidth <= 767) return;
+    
     const items = document.querySelectorAll('.carousel-item');
     const totalItems = items.length;
     
     if (totalItems <= itemsPerPage) return; // ถ้ามีรูปน้อยกว่าหรือเท่ากับที่แสดงได้ ไม่ต้องเลื่อน
-    if (window.innerWidth <= 768) return; // ไม่ทำงานในมือถือ
     
     const carouselInner = document.getElementById('carouselItems');
 
@@ -424,5 +565,60 @@
   // ฟังก์ชันเปลี่ยนรูปหลัก
   function setMainImage(imageUrl, index) {
     document.getElementById('mainImage').src = imageUrl;
+    
+    // ถ้าอยู่ในมือถือ ให้เปลี่ยนสถานะ active ของ thumbnail
+    if (window.innerWidth <= 767) {
+      const thumbnails = document.querySelectorAll('.mobile-thumbnails img');
+      thumbnails.forEach((thumb, i) => {
+        if (i === index) {
+          thumb.classList.add('active');
+        } else {
+          thumb.classList.remove('active');
+        }
+      });
+    }
   }
+  
+  // ตรวจสอบการเปลี่ยนขนาดหน้าจอ
+  window.addEventListener('resize', function() {
+    // ถ้าเปลี่ยนเป็นหน้าจอขนาดใหญ่ รีเซ็ต carousel
+    if (window.innerWidth > 767) {
+      const carouselInner = document.getElementById('carouselItems');
+      if (carouselInner) {
+        currentIndex = 0;
+        carouselInner.style.transform = `translateY(0)`;
+      }
+    }
+  });
+
+  // Swiper initialization for related products carousel
+  document.addEventListener('DOMContentLoaded', function() {
+    // สร้าง Swiper สำหรับสินค้าที่เกี่ยวข้อง
+    var relatedCarousel = new Swiper(".related-carousel", {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".related-carousel-next",
+        prevEl: ".related-carousel-prev",
+      },
+      breakpoints: {
+        576: {
+          slidesPerView: 2,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        992: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
 </script>
