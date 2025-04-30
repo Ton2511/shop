@@ -1,0 +1,153 @@
+/* CSS แก้ไขสำหรับ Navbar บนมือถือ */
+
+/* สีหลักของเว็บไซต์ */
+.bg-teal {
+    background-color: #008080 !important;
+  }
+  
+  .text-teal {
+    color: #008080 !important;
+  }
+  
+  /* การจัดการพื้นที่บน Navbar */
+  header.bg-teal {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    padding: 0;
+  }
+  
+  .navbar-brand h2 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  /* แก้ไขปุ่มบนมือถือให้มีพื้นที่เพียงพอ */
+  .navbar-toggler {
+    padding: 0.5rem;
+    line-height: 1;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  /* แก้ไขช่องค้นหาให้เป็นระเบียบ */
+  #mobileSearchCollapse {
+    padding: 0.5rem 1rem;
+  }
+  
+  #mobileSearchCollapse .form-control {
+    border-radius: 0.25rem 0 0 0.25rem;
+    border-right: none;
+  }
+  
+  #mobileSearchCollapse .btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+    border-left: none;
+  }
+  
+  /* ปรับแต่ง Dropdown */
+  .dropdown-menu {
+    margin-top: 0.5rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+  }
+  
+  .dropdown-item {
+    padding: 0.5rem 1rem;
+  }
+  
+  .dropdown-item:active {
+    background-color: #008080;
+  }
+  
+  /* ปรับแต่งรูปแบบ Offcanvas บนมือถือ */
+  .offcanvas {
+    max-width: 280px;
+  }
+  
+  .offcanvas-title {
+    font-size: 1.25rem;
+    color: #008080;
+  }
+  
+  .list-group-item {
+    padding: 0.75rem 1rem;
+    border-left: none;
+    border-right: none;
+    transition: all 0.2s ease;
+  }
+  
+  .list-group-item:hover {
+    background-color: rgba(0, 128, 128, 0.05);
+  }
+  
+  .list-group-item:active {
+    background-color: rgba(0, 128, 128, 0.1);
+  }
+  
+  .list-group-item i {
+    width: 20px;
+    text-align: center;
+  }
+  
+  /* แก้ไขการแสดงผลบนมือถือขนาดเล็ก */
+  @media (max-width: 375px) {
+    .navbar-brand h2 {
+      font-size: 1.2rem;
+    }
+    
+    .dropdown-toggle::after {
+      display: none;
+    }
+    
+    .offcanvas {
+      max-width: 250px;
+    }
+  }
+  
+  /* ปรับปรุงการแสดงผลบนมือถือ */
+  @media (max-width: 576px) {
+    /* ปรับขนาดปุ่มให้ใหญ่ขึ้นเพื่อให้กดง่ายขึ้น */
+    .navbar-toggler, 
+    .btn[data-bs-toggle="collapse"] {
+      min-width: 40px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* ลดขนาดไอคอนลงเล็กน้อย */
+    .fa-bars, .fa-search {
+      font-size: 0.9rem;
+    }
+    
+    /* ปรับระยะห่างระหว่างองค์ประกอบ */
+    .ms-3 {
+      margin-left: 0.5rem !important;
+    }
+    
+    /* ทำให้ช่องค้นหาเต็มพื้นที่ */
+    #mobileSearchCollapse .input-group {
+      width: 100%;
+    }
+  }
+  
+  /* Media query สำหรับจอกลาง */
+  @media (min-width: 577px) and (max-width: 991px) {
+    .navbar-brand h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* แก้ไขการแสดงผลบน iPad และแท็บเล็ต */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .offcanvas {
+      max-width: 320px;
+    }
+  }

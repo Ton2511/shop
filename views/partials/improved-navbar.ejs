@@ -1,0 +1,237 @@
+<!-- views/partials/improved-navbar.ejs - แก้ไขให้ซ่อนฟอร์มค้นหาบนมือถือ -->
+<header class="bg-teal">
+    <div class="container-fluid">
+      <div class="row py-2 border-bottom align-items-center">
+        
+        <!-- Logo & Toggle Button -->
+        <div class="col-6 col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-start">
+          <div class="d-flex align-items-center my-2 my-sm-0">
+            <a href="/" class="nav-link navbar-brand">
+              <h2 class="text-light ms-2 ms-sm-4"><i class="fa-solid fa-heart-pulse"></i> R.P.C</h2>
+            </a>
+          </div>
+          <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar">
+            <i class="fas fa-bars text-white"></i>
+          </button>
+        </div>
+        
+        <!-- Search Bar - ซ่อนบนมือถือ แสดงเฉพาะบนแท็บเล็ตและเดสก์ท็อป -->
+        <div class="col-12 col-sm-10 col-md-8 col-lg-4 order-3 order-sm-2 d-none d-sm-block">
+          <form id="search-form" action="/shop/search" method="get">
+            <div class="search-bar bg-light p-2 rounded-4 d-flex align-items-center">
+              <input 
+                type="text" 
+                class="form-control border-0 bg-transparent me-2" 
+                name="q" 
+                placeholder="ค้นหาสินค้า..."
+                aria-label="Search products"
+              >
+              <button 
+                type="submit" 
+                class="btn border-0 bg-transparent"
+                aria-label="Search"
+              >
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Navigation Links - Desktop -->
+        <div class="col-6 col-lg-4 order-2 order-sm-3 d-none d-lg-block">
+          <ul class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-4 justify-content-end flex-wrap align-items-center mb-0 fw-bold text-uppercase">
+            <li class="nav-item text-light">
+              <a href="/" class="nav-link">หน้าแรก</a>
+            </li>
+            <li class="nav-item text-light dropdown">
+              <a class="nav-link dropdown-toggle" href="/shop" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                หมวดหมู่
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/shop">ดูทั้งหมด</a></li>
+                <% if (locals.categories && categories.length > 0) { %>
+                  <% categories.forEach(category => { %>
+                    <li><a class="dropdown-item" href="/shop/category/<%= category.id %>"><%= category.name %></a></li>
+                  <% }); %>
+                <% } %>
+              </ul>
+            </li>
+            <li class="nav-item text-light">
+              <a href="/shop/products" class="nav-link">สินค้าทั้งหมด</a>
+            </li>
+            <li class="nav-item text-light">
+              <a href="/about-us" class="nav-link">เกี่ยวกับเรา</a>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Login/Admin Links -->
+        <div class="col-6 col-sm-4 col-lg-2 d-flex gap-2 align-items-center justify-content-end order-2 order-sm-3">
+          <ul class="d-flex justify-content-end list-unstyled m-0">
+            <!-- ปุ่มค้นหาบนมือถือ (แสดงเฉพาะบนมือถือ) -->
+            <li class="d-block d-sm-none">
+              <a href="#" class="p-2 mx-1 text-light" data-bs-toggle="modal" data-bs-target="#mobileSearchModal">
+                <i class="fas fa-search"></i>
+              </a>
+            </li>
+            
+            <% if (locals.isLoggedIn) { %>
+              <li class="dropdown">
+                <a href="#" class="p-2 mx-1 text-light dropdown-toggle" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-user-tie"></i>
+                  <span class="d-none d-md-inline">แอดมิน</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                  <li><a class="dropdown-item" href="/categories"><i class="fa-solid fa-list me-2"></i>จัดการหมวดหมู่</a></li>
+                  <li><a class="dropdown-item" href="/products"><i class="fa-solid fa-box me-2"></i>จัดการสินค้า</a></li>
+                  <li><a class="dropdown-item" href="/users/list"><i class="fa-solid fa-users me-2"></i>จัดการผู้ใช้</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a class="dropdown-item" href="/logout" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?')">
+                      <i class="fa-solid fa-right-from-bracket me-2"></i>ออกจากระบบ
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            <% } else { %>
+              <li>
+                <a href="/login" class="p-2 mx-1 text-light">
+                  <i class="fa-solid fa-right-to-bracket"></i>
+                  <span class="d-none d-md-inline">เข้าสู่ระบบ</span>
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Mobile Sidebar Menu -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
+    <div class="offcanvas-header justify-content-between">
+      <h4 class="fw-normal text-uppercase fs-6">เมนู</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+  
+    <div class="offcanvas-body">
+      <!-- Mobile Search Form (แสดงเฉพาะในเมนูด้านข้าง) -->
+      <form action="/shop/search" method="get" class="mb-4">
+        <div class="input-group">
+          <input type="text" class="form-control" name="q" placeholder="ค้นหาสินค้า..." aria-label="Search">
+          <button class="btn btn-outline-secondary" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+  
+      <!-- Mobile Navigation Links -->
+      <ul class="navbar-nav justify-content-start menu-list list-unstyled d-flex flex-column gap-2 mb-4">
+        <li class="nav-item border-bottom py-2">
+          <a href="/" class="nav-link d-flex align-items-center gap-3 text-dark">
+            <i class="fa-solid fa-home"></i>
+            <span>หน้าแรก</span>
+          </a>
+        </li>
+        <li class="nav-item border-bottom py-2">
+          <a href="/shop" class="nav-link d-flex align-items-center gap-3 text-dark">
+            <i class="fa-solid fa-store"></i>
+            <span>หมวดหมู่สินค้า</span>
+          </a>
+        </li>
+        <li class="nav-item border-bottom py-2">
+          <a href="/shop/products" class="nav-link d-flex align-items-center gap-3 text-dark">
+            <i class="fa-solid fa-box"></i>
+            <span>สินค้าทั้งหมด</span>
+          </a>
+        </li>
+        <li class="nav-item border-bottom py-2">
+          <a href="/about-us" class="nav-link d-flex align-items-center gap-3 text-dark">
+            <i class="fa-solid fa-info-circle"></i>
+            <span>เกี่ยวกับเรา</span>
+          </a>
+        </li>
+        <% if (locals.isLoggedIn) { %>
+          <li class="nav-item border-bottom py-2">
+            <a href="/logout" class="nav-link d-flex align-items-center gap-3 text-dark" onclick="return confirm('คุณต้องการออกจากระบบหรือไม่?')">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>ออกจากระบบ</span>
+            </a>
+          </li>
+        <% } else { %>
+          <li class="nav-item border-bottom py-2">
+            <a href="/login" class="nav-link d-flex align-items-center gap-3 text-dark">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <span>เข้าสู่ระบบ</span>
+            </a>
+          </li>
+        <% } %>
+      </ul>
+      
+      <!-- Categories List -->
+      <h5 class="mb-3">หมวดหมู่สินค้า</h5>
+      <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex flex-column gap-md-3 mb-4">
+        <% if (locals.categories && categories.length > 0) { %>
+          <% categories.forEach(category => { %>
+            <li class="nav-item border-dashed">
+              <a href="/shop/category/<%= category.id %>" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span><%= category.name %></span>
+              </a>
+            </li>
+          <% }); %>
+        <% } else { %>
+          <li>ไม่มีหมวดหมู่</li>
+        <% } %>
+      </ul>
+  
+      <!-- Admin Functions (if logged in) -->
+      <% if (locals.isLoggedIn) { %>
+        <hr class="my-3">
+        <h5 class="mb-3">แผงควบคุมผู้ดูแล</h5>
+        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex flex-column gap-md-2 mb-0">
+          <li class="nav-item border-dashed">
+            <a href="/categories" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <i class="fa-solid fa-list"></i>
+              <span>จัดการหมวดหมู่</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="/products" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span>จัดการสินค้า</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="/users/list" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <i class="fa-solid fa-user"></i>
+              <span>จัดการผู้ใช้</span>
+            </a>
+          </li>
+        </ul>
+      <% } %>
+    </div>
+  </div>
+  
+  <!-- Modal สำหรับค้นหาบนมือถือ -->
+  <div class="modal fade" id="mobileSearchModal" tabindex="-1" aria-labelledby="mobileSearchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mobileSearchModalLabel">ค้นหาสินค้า</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/shop/search" method="get">
+            <div class="input-group">
+              <input type="text" class="form-control" name="q" placeholder="พิมพ์คำค้นหา..." aria-label="Search" autofocus>
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search"></i> ค้นหา
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
