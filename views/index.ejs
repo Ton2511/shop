@@ -199,7 +199,7 @@
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header d-flex flex-wrap justify-content-between mb-5">
+        <div class="section-header d-flex flex-wrap justify-content-between mb-3 mb-md-5">
           <h2 class="section-title text-dark">Category</h2>
 
           <div class="d-flex align-items-center">
@@ -226,7 +226,7 @@
                       <i class="bi bi-collection fs-1 text-muted"></i>
                     </div>
                   <% } %>
-                  <h4 class="fs-6 mt-3 fw-normal category-title"><%= category.name %></h4>
+                  <h4 class="fs-6 mt-2 fw-normal category-title"><%= category.name %></h4>
                 </a>
               <% }) %>
             <% } %>
@@ -235,6 +235,53 @@
       </div>
     </div>
   </div>
+
+  <style>
+    @media (max-width: 767px) {
+      .category-thumbnail {
+        width: 70px !important;
+        height: 70px !important;
+      }
+      
+      .category-title {
+        font-size: 0.8rem !important;
+        margin-top: 0.5rem !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90px;
+      }
+      
+      .swiper-slide {
+        width: auto !important;
+        margin-right: 10px !important;
+      }
+
+      .swiper-buttons button {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+        padding: 0;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .category-thumbnail {
+        width: 60px !important;
+        height: 60px !important;
+      }
+      
+      .category-title {
+        font-size: 0.75rem !important;
+        max-width: 80px;
+      }
+      
+      .section-title {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+
 </section>
 
 <section class="pb-2">
@@ -447,6 +494,36 @@
         },
       },
     });
+
+      document.addEventListener('DOMContentLoaded', function() {
+    // Initialize swiper for category carousel with updated settings for mobile
+    var categoryCarousel = new Swiper(".category-carousel", {
+      slidesPerView: 'auto',  // Changed to auto for better mobile responsiveness
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".category-carousel-next",
+        prevEl: ".category-carousel-prev",
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 3,
+          spaceBetween: 8,
+        },
+        480: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 5, 
+          spaceBetween: 15,
+        },
+        992: {
+          slidesPerView: 6,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
     
     // Initialize swiper for best selling products
     var bestSellingCarousel = new Swiper(".bestselling-carousel", {
