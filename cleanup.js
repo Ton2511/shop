@@ -1,4 +1,4 @@
-// cleanup.js - สคริปต์สำหรับทำความสะอาดไฟล์ชั่วคราวและรีเซ็ตฐานข้อมูลหากจำเป็น
+// cleanup.js - สคริปต์สำหรับทำความสะอาดไฟล์ชั่วคราวและการเชื่อมต่อฐานข้อมูล
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -36,13 +36,18 @@ async function cleanupTempFiles() {
       if (file === '.gitkeep') continue; // ข้ามไฟล์ .gitkeep
       
       const filePath = path.join(folder, file);
-      const fileStat = fs.statSync(filePath);
       
-      // ตรวจสอบว่าเป็นไฟล์ (ไม่ใช่โฟลเดอร์) และเก่าเกินกำหนด
-      if (fileStat.isFile() && (now - fileStat.mtime.getTime() > maxAge)) {
-        fs.unlinkSync(filePath);
-        totalRemoved++;
-        console.log(`Removed old file: ${filePath}`);
+      try {
+        const fileStat = fs.statSync(filePath);
+        
+        // ตรวจสอบว่าเป็นไฟล์ (ไม่ใช่โฟลเดอร์) และเก่าเกินกำหนด
+        if (fileStat.isFile() && (now - fileStat.mtime.getTime() > maxAge)) {
+          fs.unlinkSync(filePath);
+          totalRemoved++;
+          console.log(`Removed old file: ${filePath}`);
+        }
+      } catch (error) {
+        console.error(`Error processing file ${filePath}:`, error.message);
       }
     }
   }
@@ -79,14 +84,27 @@ async function checkDatabaseConnections() {
     console.log(`Long-running connections (>60s): ${longRunningConnections}`);
     
     // ถ้าจำเป็น สามารถปิดการเชื่อมต่อที่ไม่ได้ใช้งาน
-    if (process.argv.includes('--kill-sleep') && sleepConnections > 10) {
+    if (process.argv.includes('--kill-sleep') || sleepConnections > 20) {
       console.log('Killing sleep connections...');
+      let killed = 0;
       for (const conn of results) {
-        if (conn.State === 'Sleep' && conn.Id) {
-          await sequelize.query(`KILL ${conn.Id}`);
-          console.log(`Killed connection ID: ${conn.Id}`);
+        if (conn.State === 'Sleep' && conn.Time > 120 && conn.Id) {
+          // Kill only connections that have been sleeping for more than 2 minutes
+          try {
+            await sequelize.query(`KILL ${conn.Id}`);
+            killed++;
+            console.log(`Killed connection ID: ${conn.Id} (idle for ${conn.Time}s)`);
+          } catch (error) {
+            console.error(`Error killing connection ${conn.Id}:`, error.message);
+          }
         }
       }
+      console.log(`Killed ${killed} sleep connections`);
+    }
+
+    // ตรวจสอบถ้ามีการเชื่อมต่อที่ค้างอยู่มากเกินไป
+    if (longRunningConnections > 5) {
+      console.log('Too many long-running connections. Consider restarting the application if experiencing issues.');
     }
     
   } catch (error) {

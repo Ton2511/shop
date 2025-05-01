@@ -7,7 +7,7 @@ const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-const { sequelize, connectDB, pingDatabase } = require("./db");
+const { sequelize, connectDB, pingDatabase, closeConnection, cleanupConnections } = require("./db");
 const { Category } = require("./src/models");
 const { authMiddleware } = require("./src/utils/jwtAuth");
 
@@ -21,11 +21,19 @@ app.use(expressLayouts);
 app.set("layout", "layouts/main");
 
 // ตั้งค่า Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use(methodOverride("_method"));
 app.use(cookieParser()); // Cookie parser middleware
 app.use(cors()); // Enable CORS
+
+// ตั้งค่า timeout เพื่อป้องกันการค้างของการร้องขอ
+app.use((req, res, next) => {
+  // ตั้งค่า timeout สำหรับการร้องขอทั้งหมด (2 นาที)
+  req.setTimeout(120000);
+  res.setTimeout(120000);
+  next();
+});
 
 // ตั้งค่า Static Files
 app.use(express.static(path.join(__dirname, "public")));
@@ -133,10 +141,12 @@ const startApp = async () => {
     
     // ตั้งค่า timeout สำหรับ HTTP server
     server.timeout = 120000; // 2 นาที
+    server.keepAliveTimeout = 65000; // 65 วินาที
+    server.headersTimeout = 66000; // 66 วินาที (ต้องมากกว่า keepAliveTimeout)
     
     // ตั้ง interval ping ไปยังฐานข้อมูลเพื่อรักษาการเชื่อมต่อ
     const PING_INTERVAL = 5 * 60 * 1000; // 5 นาที
-    setInterval(async () => {
+    const pingIntervalId = setInterval(async () => {
       const isConnected = await pingDatabase();
       if (!isConnected) {
         console.log('⚠️ Database connection lost. Attempting to reconnect...');
@@ -144,24 +154,37 @@ const startApp = async () => {
       }
     }, PING_INTERVAL);
     
+    // ตั้ง interval สำหรับทำความสะอาดการเชื่อมต่อค้าง
+    const CLEANUP_INTERVAL = 30 * 60 * 1000; // 30 นาที
+    const cleanupIntervalId = setInterval(async () => {
+      console.log('🧹 Running scheduled connection cleanup...');
+      await cleanupConnections();
+    }, CLEANUP_INTERVAL);
+    
     // Graceful shutdown
-    const gracefulShutdown = (signal) => {
+    const gracefulShutdown = async (signal) => {
       console.log(`⚠️ ${signal} signal received. Closing server gracefully...`);
+      
+      // ยกเลิก interval ทั้งหมด
+      clearInterval(pingIntervalId);
+      clearInterval(cleanupIntervalId);
+      
+      // ปิด server ก่อน
       server.close(async () => {
         console.log('✅ HTTP server closed.');
         try {
-          await sequelize.close();
-          console.log('✅ Database connection closed.');
+          // ปิด database connection
+          await closeConnection();
           process.exit(0);
         } catch (error) {
-          console.error('❌ Error closing database connection:', error);
+          console.error('❌ Error during graceful shutdown:', error);
           process.exit(1);
         }
       });
       
       // Force close if graceful shutdown takes too long
       setTimeout(() => {
-        console.error('❌ Forcefully shutting down...');
+        console.error('❌ Forcefully shutting down after timeout...');
         process.exit(1);
       }, 30000); // 30 seconds timeout
     };
@@ -190,9 +213,8 @@ process.on('uncaughtException', (err) => {
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ UNHANDLED REJECTION! Application will continue running but may be unstable.');
-  console.error('Reason:', reason);
-  // We don't exit here to allow the application to continue running
+  console.error('❌ UNHANDLED REJECTION:', reason);
+  // We don't exit here to allow the application to continue running but log the error
 });
 
 // Periodic garbage collection hint (if running with --expose-gc)
