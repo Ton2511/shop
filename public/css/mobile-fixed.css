@@ -114,13 +114,13 @@
   @media (max-width: 576px) {
     /* ปรับขนาดปุ่มให้ใหญ่ขึ้นเพื่อให้กดง่ายขึ้น */
     .navbar-toggler, 
-    .btn[data-bs-toggle="collapse"] {
+    /* .btn[data-bs-toggle="collapse"] {
       min-width: 40px;
       min-height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
+    } */
     
     /* ลดขนาดไอคอนลงเล็กน้อย */
     .fa-bars, .fa-search {
