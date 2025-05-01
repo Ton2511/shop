@@ -21,31 +21,38 @@ exports.verifyToken = (token) => {
   try {
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
+    console.error("JWT verification error:", error.message);
     return null;
   }
 };
 
 // Authentication middleware
 exports.authMiddleware = (req, res, next) => {
-  // Check for token in cookies
-  const token = req.cookies?.authToken;
-  
-  if (!token) {
-    return res.redirect('/login');
-  }
-  
-  const decoded = this.verifyToken(token);
-  if (!decoded) {
-    // Clear invalid token
+  try {
+    // Check for token in cookies
+    const token = req.cookies?.authToken;
+    
+    if (!token) {
+      return res.redirect('/login');
+    }
+    
+    const decoded = this.verifyToken(token);
+    if (!decoded) {
+      // Clear invalid token
+      res.clearCookie('authToken');
+      return res.redirect('/login');
+    }
+    
+    // Attach user info to request
+    req.user = decoded;
+    
+    // Also set in res.locals for templates
+    res.locals.user = decoded;
+    
+    next();
+  } catch (error) {
+    console.error("Auth middleware error:", error);
     res.clearCookie('authToken');
     return res.redirect('/login');
   }
-  
-  // Attach user info to request
-  req.user = decoded;
-  
-  // Also set in res.locals for templates
-  res.locals.user = decoded;
-  
-  next();
 };

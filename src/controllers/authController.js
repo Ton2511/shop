@@ -29,7 +29,8 @@ exports.postLogin = async (req, res) => {
         res.cookie('authToken', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
+            sameSite: 'strict' // Prevent CSRF attacks
         });
         
         res.redirect("/");

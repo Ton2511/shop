@@ -5,6 +5,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const { sequelize, connectDB } = require("./db");
 const { Category } = require("./src/models");
@@ -23,7 +24,8 @@ app.set("layout", "layouts/main");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
-app.use(cookieParser()); // Add cookie parser middleware
+app.use(cookieParser()); // Cookie parser middleware
+app.use(cors()); // Enable CORS
 
 // ตั้งค่า Static Files
 app.use(express.static(path.join(__dirname, "public")));
@@ -44,6 +46,7 @@ app.use(async (req, res, next) => {
   try {
     res.locals.categories = await Category.findAll();
   } catch (error) {
+    console.error("Error fetching categories:", error);
     res.locals.categories = [];
   }
   next();
@@ -64,6 +67,12 @@ app.use("/users", requireAuth, userRoutes);
 app.use("/categories", requireAuth, categoryRoutes);
 app.use("/products", productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ
 app.use("/shop", shopRoutes);
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Server Error:', err);
+  res.status(500).send('Something went wrong! Please try again later.');
+});
 
 // จัดการเส้นทางที่ไม่พบ
 app.all("*", (req, res) => {
@@ -92,6 +101,18 @@ const startApp = async () => {
     process.exit(1);
   }
 };
+
+// Process-level error handling for uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+  // In production, you might want to gracefully restart the server
+  // process.exit(1);
+});
+
+// Handle promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
 // เรียกใช้ฟังก์ชันเริ่มแอปพลิเคชัน
 startApp();
