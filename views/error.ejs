@@ -1,0 +1,52 @@
+<!-- views/error.ejs -->
+<div class="container mt-5 pt-3">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card border-0 shadow-lg">
+          <div class="card-header bg-danger text-white">
+            <h3 class="m-0"><i class="fas fa-exclamation-triangle me-2"></i> <%= title %></h3>
+          </div>
+          <div class="card-body p-5">
+            <h4 class="mb-4 text-center">พบข้อผิดพลาด</h4>
+            <p class="lead text-center mb-4"><%= message %></p>
+            
+            <% if (error && error.stack && process.env.NODE_ENV === 'development') { %>
+              <div class="alert alert-secondary small p-3 my-3">
+                <pre class="mb-0" style="white-space: pre-wrap;"><%= error.stack %></pre>
+              </div>
+            <% } %>
+            
+            <div class="text-center mt-4">
+              <a href="/" class="btn btn-primary">
+                <i class="fas fa-home me-2"></i> กลับไปหน้าหลัก
+              </a>
+              <button type="button" class="btn btn-secondary ms-2" onclick="window.history.back();">
+                <i class="fas fa-arrow-left me-2"></i> ย้อนกลับ
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-3 text-muted small">
+          <p>หากยังพบปัญหา กรุณาติดต่อผู้ดูแลระบบ</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    .card {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .card-header {
+      border-radius: 10px 10px 0 0 !important;
+    }
+    
+    @media (max-width: 767px) {
+      .card-body {
+        padding: 2rem !important;
+      }
+    }
+  </style>

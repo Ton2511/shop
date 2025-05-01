@@ -4,7 +4,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start:pm2": "pm2 start ecosystem.config.js",
+    "stop:pm2": "pm2 stop rpcint_nodejs",
+    "restart:pm2": "pm2 restart rpcint_nodejs",
+    "logs:pm2": "pm2 logs rpcint_nodejs",
+    "monitor:pm2": "pm2 monit",
+    "cleanup": "node cleanup.js"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +28,11 @@
     "method-override": "^3.0.0",
     "multer": "^1.4.5-lts.2",
     "mysql2": "^3.14.0",
+    "pm2": "^5.3.1",
     "sequelize": "^6.37.7"
   },
-  "description": ""
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "description": "RPC Intertrade Online Shop"
 }

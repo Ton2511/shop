@@ -7,7 +7,7 @@ const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-const { sequelize, connectDB, pingDatabase } = require("./db");
+const { sequelize, connectDB } = require("./db");
 const { Category } = require("./src/models");
 const { authMiddleware } = require("./src/utils/jwtAuth");
 
@@ -68,43 +68,10 @@ app.use("/categories", requireAuth, categoryRoutes);
 app.use("/products", productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ
 app.use("/shop", shopRoutes);
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  const memoryUsage = process.memoryUsage();
-  res.json({
-    status: 'ok',
-    uptime: process.uptime(),
-    memoryUsage: {
-      rss: `${Math.round(memoryUsage.rss / 1024 / 1024)} MB`,
-      heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)} MB`,
-      heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)} MB`,
-      external: `${Math.round(memoryUsage.external / 1024 / 1024)} MB`
-    },
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Server Error:', err);
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Something went wrong! Please try again later.';
-  
-  // HTML response for browser requests
-  if (req.accepts('html')) {
-    return res.status(statusCode).render('error', { 
-      title: `Error ${statusCode}`,
-      message,
-      error: process.env.NODE_ENV === 'development' ? err : {}
-    });
-  }
-  
-  // JSON response for API requests
-  res.status(statusCode).json({
-    status: 'error',
-    message,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
-  });
+  res.status(500).send('Something went wrong! Please try again later.');
 });
 
 // จัดการเส้นทางที่ไม่พบ
@@ -126,50 +93,9 @@ const startApp = async () => {
     console.log('✅ Database tables synchronized');
     
     // เริ่มเซิร์ฟเวอร์
-    const server = app.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`💻 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
-    
-    // ตั้งค่า timeout สำหรับ HTTP server
-    server.timeout = 120000; // 2 นาที
-    
-    // ตั้ง interval ping ไปยังฐานข้อมูลเพื่อรักษาการเชื่อมต่อ
-    const PING_INTERVAL = 5 * 60 * 1000; // 5 นาที
-    setInterval(async () => {
-      const isConnected = await pingDatabase();
-      if (!isConnected) {
-        console.log('⚠️ Database connection lost. Attempting to reconnect...');
-        await connectDB();
-      }
-    }, PING_INTERVAL);
-    
-    // Graceful shutdown
-    const gracefulShutdown = (signal) => {
-      console.log(`⚠️ ${signal} signal received. Closing server gracefully...`);
-      server.close(async () => {
-        console.log('✅ HTTP server closed.');
-        try {
-          await sequelize.close();
-          console.log('✅ Database connection closed.');
-          process.exit(0);
-        } catch (error) {
-          console.error('❌ Error closing database connection:', error);
-          process.exit(1);
-        }
-      });
-      
-      // Force close if graceful shutdown takes too long
-      setTimeout(() => {
-        console.error('❌ Forcefully shutting down...');
-        process.exit(1);
-      }, 30000); // 30 seconds timeout
-    };
-    
-    // Handle graceful shutdown signals
-    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-    
   } catch (error) {
     console.error('❌ Error starting server:', error);
     process.exit(1);
@@ -178,33 +104,15 @@ const startApp = async () => {
 
 // Process-level error handling for uncaught exceptions
 process.on('uncaughtException', (err) => {
-  console.error('❌ UNCAUGHT EXCEPTION! Application will shut down gracefully.');
-  console.error(err.name, err.message);
-  console.error(err.stack);
-  
-  // Attempt to perform cleanup
-  setTimeout(() => {
-    process.exit(1);
-  }, 3000);
+  console.error('❌ Uncaught Exception:', err);
+  // In production, you might want to gracefully restart the server
+  // process.exit(1);
 });
 
-// Handle unhandled promise rejections
+// Handle promise rejections
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ UNHANDLED REJECTION! Application will continue running but may be unstable.');
-  console.error('Reason:', reason);
-  // We don't exit here to allow the application to continue running
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
 });
-
-// Periodic garbage collection hint (if running with --expose-gc)
-if (global.gc) {
-  const GC_INTERVAL = 30 * 60 * 1000; // 30 minutes
-  setInterval(() => {
-    const beforeMem = process.memoryUsage().heapUsed / 1024 / 1024;
-    global.gc();
-    const afterMem = process.memoryUsage().heapUsed / 1024 / 1024;
-    console.log(`🧹 Manual garbage collection: ${beforeMem.toFixed(2)} MB -> ${afterMem.toFixed(2)} MB (freed ${(beforeMem - afterMem).toFixed(2)} MB)`);
-  }, GC_INTERVAL);
-}
 
 // เรียกใช้ฟังก์ชันเริ่มแอปพลิเคชัน
 startApp();
