@@ -9,3 +9,10 @@
 {"message":"Waiting 1.5 seconds before trying again...\n","timestamp":"2025-05-01T21:26:09","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
 {"message":"Waiting 2.25 seconds before trying again...\n","timestamp":"2025-05-01T21:26:18","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
 {"message":"Waiting 3.375 seconds before trying again...\n","timestamp":"2025-05-01T21:26:29","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
+{"message":"Waiting 5.0625 seconds before trying again...\n","timestamp":"2025-05-01T21:26:40","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
+{"message":"Waiting 1.5 seconds before trying again...\n","timestamp":"2025-05-01T21:27:04","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
+{"message":"Waiting 2.25 seconds before trying again...\n","timestamp":"2025-05-01T21:27:14","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
+{"message":"Waiting 3.375 seconds before trying again...\n","timestamp":"2025-05-01T21:27:24","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
+{"message":"Waiting 5.0625 seconds before trying again...\n","timestamp":"2025-05-01T21:27:35","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
+{"message":"Waiting 1.5 seconds before trying again...\n","timestamp":"2025-05-01T21:27:59","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
+{"message":"Waiting 2.25 seconds before trying again...\n","timestamp":"2025-05-01T21:28:09","type":"out","process_id":0,"app_name":"rpcint_nodejs"}
