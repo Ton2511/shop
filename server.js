@@ -130,7 +130,7 @@ const startApp = async () => {
     await connectDB();
     
     // ซิงค์โมเดลทั้งหมดกับฐานข้อมูล (สร้างตารางถ้ายังไม่มี)
-    await sequelize.sync({ alter: true });  // ใช้ alter: true เพื่อปรับโครงสร้างตารางที่มีอยู่แล้ว
+    await sequelize.sync({ alter: false });
     console.log('✅ Database tables synchronized');
     
     // เริ่มเซิร์ฟเวอร์

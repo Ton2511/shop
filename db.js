@@ -38,10 +38,7 @@ const sequelize = new Sequelize(
     dialectOptions: {
       connectTimeout: 60000, // เวลาในการรอเชื่อมต่อกับ MySQL
       // ตั้งค่า keepAlive เพื่อป้องกันการตัดการเชื่อมต่อโดย firewall
-      socketOptions: {
-        keepAlive: true,
-        keepAliveInitialDelay: 30000 // 30 วินาที
-      }
+      // Remove socketOptions property which causes warnings
     }
   }
 );

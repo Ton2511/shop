@@ -16,7 +16,8 @@ const User = sequelize.define('User', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    // Remove unique constraint from model definition
+    // We'll handle this manually if needed
     validate: {
       isEmail: true
     }
@@ -27,7 +28,9 @@ const User = sequelize.define('User', {
   }
 }, {
   tableName: 'users',
-  timestamps: true
+  timestamps: true,
+  // Add this option to prevent Sequelize from auto-creating indexes
+  indexes: [] // Explicitly define no automatic indexes
 });
 
 // Hook สำหรับเข้ารหัสรหัสผ่านก่อนบันทึก
