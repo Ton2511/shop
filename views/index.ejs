@@ -50,12 +50,21 @@
     color: #333;
   }
 
-  /* ===== Hero Section ===== */
+  /* Desktop — รูปเดิม */
   .hero-section {
-    min-height: 50vh;
+    background-image: url('/images/banner-1.png');
   }
 
-  /* ===== Feature Cards (3 cards below hero) ===== */
+  /* มือถือ — รูปอื่น */
+  @media (max-width: 767px) {
+    .hero-section {
+      background-image: url('/images/banner-1.png');
+      min-height: 35vh !important;
+      background-position: center center !important;
+    }
+  }
+
+  /* ===== Feature Cards ===== */
   .feature-card .card {
     border-radius: 0;
   }
@@ -70,7 +79,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 12px;
   }
-  
+
   .banner-ad {
     border-radius: 8px;
     overflow: hidden;
@@ -87,7 +96,7 @@
     background: rgba(0,0,0,0.35);
     min-height: 160px;
   }
-  
+
   .block-1 {
     grid-column: span 3;
   }
@@ -139,16 +148,27 @@
     font-size: 0.7rem;
   }
 
-  /* ===== Section Header ===== */
+  /* ===== Section Header — เหมือน PC ทุก breakpoint ===== */
   .section-header {
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
+  .section-title {
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+
+  /* ===== Swiper Buttons — ขนาดเท่ากับ .btn ทุก breakpoint ===== */
   .swiper-buttons button {
-    /* ลบ width และ height ออก ให้ Bootstrap จัดการขนาดเอง */
-    padding: 0.375rem 0.75rem;  /* เท่ากับ .btn default */
-    line-height: 1.5;
-    font-size: 1rem;
+    padding: 0.375rem 0.75rem !important;
+    line-height: 1.5 !important;
+    font-size: 1rem !important;
+    width: auto !important;
+    height: auto !important;
     border-radius: 4px;
   }
 
@@ -158,31 +178,10 @@
 
   /* --- Tablet (≤768px) --- */
   @media (max-width: 768px) {
-
-    /* Hero */
-    .hero-section {
-      min-height: 40vh;
-      background-position: center right !important;
-    }
-
-    .hero-section h2.display-4 {
-      font-size: 1.8rem;
-    }
-
-    .hero-section h2.display-5 {
-      font-size: 1.4rem;
-    }
-
-    .hero-section p.fs-5 {
-      font-size: 0.95rem !important;
-    }
-
-    /* Feature cards — stack vertically on tablet */
     .feature-card .card {
       padding: 1rem !important;
     }
 
-    /* Banner blocks — 2 columns on tablet */
     .banner-blocks {
       grid-template-columns: 1fr 1fr;
       gap: 10px;
@@ -192,12 +191,10 @@
       grid-column: span 2;
     }
 
-    /* Product image */
     .tab-image {
       max-height: 140px;
     }
 
-    /* Category thumbnail */
     .category-thumbnail {
       width: 80px;
       height: 80px;
@@ -211,33 +208,7 @@
   /* --- Mobile (≤576px) --- */
   @media (max-width: 576px) {
 
-    /* Hero */
-    .hero-section {
-      min-height: auto;
-      padding: 2rem 0 0 0 !important;
-      background-position: top center !important;
-    }
-
-    .hero-section h2.display-4 {
-      font-size: 1.5rem;
-    }
-
-    .hero-section h2.display-5 {
-      font-size: 1.2rem;
-      line-height: 1.3;
-    }
-
-    .hero-section p.fs-5 {
-      font-size: 0.85rem !important;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero-section .btn {
-      font-size: 0.8rem !important;
-      padding: 0.5rem 1.2rem !important;
-    }
-
-    /* Feature cards — icon + text side by side, smaller padding */
+    /* Feature cards */
     .feature-card .card {
       padding: 0.75rem !important;
     }
@@ -255,9 +226,9 @@
       margin-bottom: 0;
     }
 
-    /* Banner blocks — 1 column on mobile */
+    /* Banner blocks */
     .banner-blocks {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr !important;
       gap: 8px;
     }
 
@@ -283,30 +254,18 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Section header */
-    .section-header {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 1rem !important;
-    }
-
+    /* Section title */
     .section-title {
       font-size: 1.1rem;
     }
 
+    /* ปุ่ม View All บน mobile */
     .section-header .btn {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.75rem;
+      padding: 0.375rem 0.75rem !important;
+      font-size: 0.875rem !important;
     }
 
-    .swiper-buttons button {
-      width: 28px;
-      height: 28px;
-      font-size: 0.75rem;
-    }
-
-    /* Product card */
+    /* Product */
     .tab-image {
       max-height: 110px;
     }
@@ -342,23 +301,32 @@
     }
   }
 
-  /* --- Very small (≤375px) --- */
-  @media (max-width: 375px) {
-    .hero-section h2.display-4 {
-      font-size: 1.3rem;
-    }
-
-    .hero-section h2.display-5 {
-      font-size: 1rem;
-    }
-
+  /* --- Small mobile (≤480px) --- */
+  @media (max-width: 480px) {
     .category-thumbnail {
-      width: 55px;
-      height: 55px;
+      width: 60px !important;
+      height: 60px !important;
     }
 
     .category-title {
-      font-size: 0.68rem;
+      font-size: 0.75rem !important;
+      max-width: 80px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+    }
+  }
+
+  /* --- Very small (≤375px) --- */
+  @media (max-width: 375px) {
+    .category-thumbnail {
+      width: 55px !important;
+      height: 55px !important;
+    }
+
+    .category-title {
+      font-size: 0.68rem !important;
       max-width: 65px;
     }
 
@@ -367,11 +335,16 @@
     }
   }
 </style>
-    
-    
-<section class="hero-section text-white d-flex align-items-center" style="background-image: url('/images/banner-1.png'); background-repeat: no-repeat; background-size: cover; background-position: center; min-height: 50vh;">
-  <div class="custom-container-lg mx-auto px-3">
-    <div class="row">
+
+
+<!-- ===== HERO ===== -->
+<section class="hero-section text-white d-flex align-items-center" 
+  style="background-repeat: no-repeat; background-size: cover; background-position: center; min-height: 50vh;">
+  
+  <div class="custom-container-lg mx-auto px-3 w-100">
+
+    <!-- ซ่อนบนมือถือ แสดงแค่ md ขึ้นไป -->
+    <div class="row d-none d-md-flex">
       <div class="col-12 col-md-10 col-lg-6 pt-4 mt-3 text-center text-lg-start">
         <h2 class="display-4 ls-5"><span class="fw-bold text-dark">R.P.C </span></h2>
         <h2 class="display-5 ls-1"><span class="fw-bold text-dark">Intertrade Limited </span> <span class="fw-bold text-dark">Partnership</span></h2>
@@ -383,8 +356,8 @@
       </div>
     </div>
     
-    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 mt-4 mt-md-5">
-
+    <!-- ซ่อนบนมือถือ แสดงแค่ md ขึ้นไป -->
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 mt-4 mt-md-5 d-none d-md-flex">
       <div class="col feature-card">
         <div class="card h-100 border-0 bg-dark rounded-0 p-4 text-light">
           <div class="row align-items-center h-100">
@@ -432,19 +405,19 @@
           </div>
         </div>
       </div>
-      
     </div>
-    
+
   </div>
 </section>
 
-<section class="mt-5 pb-2 overflow-hidden">
+
+<!-- ===== CATEGORY ===== -->
+<section class="mt-4 mt-md-5 pb-2 overflow-hidden">
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header d-flex flex-wrap justify-content-between mb-3 mb-md-3">
+        <div class="section-header mb-3 mb-md-5">
           <h2 class="section-title text-dark">Category</h2>
-
           <div class="d-flex align-items-center">
             <a href="/shop" class="btn bg-teal text-light me-2">View All</a>
             <div class="swiper-buttons">
@@ -478,60 +451,15 @@
       </div>
     </div>
   </div>
-
-  <style>
-    @media (max-width: 767px) {
-      .category-thumbnail {
-        width: 70px !important;
-        height: 70px !important;
-      }
-      
-      .category-title {
-        font-size: 0.8rem !important;
-        margin-top: 0.5rem !important;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 90px;
-      }
-      
-      .swiper-slide {
-        width: auto !important;
-        margin-right: 10px !important;
-      }
-
-      .swiper-buttons button {
-        width: 25px;
-        height: 25px;
-        font-size: 0.8rem;
-        padding: 0;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .category-thumbnail {
-        width: 60px !important;
-        height: 60px !important;
-      }
-      
-      .category-title {
-        font-size: 0.75rem !important;
-        max-width: 80px;
-      }
-      
-      .section-title {
-        font-size: 1.25rem;
-      }
-    }
-  </style>
-
 </section>
 
+
+<!-- ===== BEST SELLING ===== -->
 <section class="pb-2">
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header d-flex flex-wrap justify-content-between my-4">
+        <div class="section-header my-4">
           <h2 class="section-title text-dark">Best selling products</h2>
           <div class="d-flex align-items-center">
             <a href="/shop/products" class="btn bg-teal text-light rounded-1 me-2">View All</a>
@@ -555,9 +483,7 @@
                     <a href="/shop/product/<%= product.id %>" class="a">
                       <figure class="m-0 p-3 text-center">
                         <% if (product.images && product.images.length > 0) { %>
-                          <% 
-                            const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
-                          %>
+                          <% const featuredImage = product.images.find(img => img.isFeatured) || product.images[0]; %>
                           <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
                         <% } else { %>
                           <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
@@ -597,6 +523,8 @@
   </div>
 </section>
 
+
+<!-- ===== BANNER ADS ===== -->
 <section class="pt-3 pb-0">
   <div class="container-lg">
     <div class="row">
@@ -639,21 +567,13 @@
   </div>
 </section>
 
-<style>
-  /* Mobile: เรียงแนวตั้ง */
-  @media (max-width: 576px) {
-    .banner-blocks {
-      grid-template-columns: 1fr !important;
-    }
-  }
-</style>
 
-
+<!-- ===== RECOMMENDED ===== -->
 <section class="pt-2 pb-4">
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header d-flex flex-wrap justify-content-between mt-2 mb-3">
+        <div class="section-header mt-2 mb-3">
           <h2 class="section-title">Recommended for You</h2>
           <div class="d-flex align-items-center">
             <a href="/shop/products" class="btn bg-teal text-light rounded-1 me-2">View All</a>
@@ -677,9 +597,7 @@
                     <a href="/shop/product/<%= product.id %>" class="a">
                       <figure class="m-0 p-3 text-center">
                         <% if (product.images && product.images.length > 0) { %>
-                          <% 
-                            const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
-                          %>
+                          <% const featuredImage = product.images.find(img => img.isFeatured) || product.images[0]; %>
                           <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
                         <% } else { %>
                           <div class="bg-light d-flex justify-content-center align-items-center py-4" style="height: 180px;">
@@ -719,11 +637,12 @@
   </div>
 </section>
 
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
 
     // Category carousel
-    var categoryCarousel = new Swiper(".category-carousel", {
+    new Swiper(".category-carousel", {
       spaceBetween: 10,
       navigation: {
         nextEl: ".category-carousel-next",
@@ -738,7 +657,7 @@
     });
 
     // Best selling carousel
-    var bestSellingCarousel = new Swiper(".bestselling-carousel", {
+    new Swiper(".bestselling-carousel", {
       spaceBetween: 10,
       navigation: {
         nextEl: ".bestselling-carousel-next",
@@ -754,7 +673,7 @@
     });
     
     // Recommended carousel
-    var popularCarousel = new Swiper(".popular-carousel", {
+    new Swiper(".popular-carousel", {
       spaceBetween: 10,
       navigation: {
         nextEl: ".popular-carousel-next",
