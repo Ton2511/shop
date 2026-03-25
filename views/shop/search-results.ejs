@@ -29,8 +29,8 @@
 <div class="container my-4">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-dark">หน้าแรก</a></li>
-      <li class="breadcrumb-item"><a href="/shop" class="text-decoration-none text-dark">หมวดหมู่สินค้า</a></li>
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-dark">Home</a></li>
+      <li class="breadcrumb-item"><a href="/shop" class="text-decoration-none text-dark">Categories</a></li>
       <li class="breadcrumb-item active text-truncate search-query" aria-current="page">ผลการค้นหา: <%= searchQuery %></li>
     </ol>
   </nav>
@@ -110,7 +110,7 @@
           <i class="bi bi-info-circle fs-4 me-3"></i>
           <div>
             <p class="mb-0">ไม่พบสินค้าที่ตรงกับคำค้นหา "<strong><%= searchQuery %></strong>"</p>
-            <p class="mb-0 mt-2 small">ลองค้นหาด้วยคำค้นอื่น หรือดูสินค้าทั้งหมดในหมวดหมู่สินค้า</p>
+            <p class="mb-0 mt-2 small">ลองค้นหาด้วยคำค้นอื่น หรือดูสินค้าทั้งหมดในCategories</p>
           </div>
         </div>
       <% } %>
@@ -120,7 +120,7 @@
   <div class="text-center mt-4 mb-5">
     <a href="/shop" class="btn btn-outline-dark">
       <i class="bi bi-arrow-left me-2"></i>
-      กลับไปยังหมวดหมู่สินค้า
+      กลับไปยังCategories
     </a>
   </div>
 </div>

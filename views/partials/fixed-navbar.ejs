@@ -41,7 +41,7 @@
               <a href="/shop/products" class="nav-link text-light">สินค้าทั้งหมด</a>
             </li>
             <li class="nav-item">
-              <a href="/about-us" class="nav-link text-light">เกี่ยวกับเรา</a>
+              <a href="/about-us" class="nav-link text-light">About Us</a>
             </li>
           </ul>
           
@@ -125,13 +125,13 @@
           <i class="fa-solid fa-home me-2"></i> home
         </a>
         <a href="/shop" class="list-group-item list-group-item-action">
-          <i class="fa-solid fa-store me-2"></i> หมวดหมู่สินค้า
+          <i class="fa-solid fa-store me-2"></i> Categories
         </a>
         <a href="/shop/products" class="list-group-item list-group-item-action">
           <i class="fa-solid fa-box me-2"></i> สินค้าทั้งหมด
         </a>
         <a href="/about-us" class="list-group-item list-group-item-action">
-          <i class="fa-solid fa-info-circle me-2"></i> เกี่ยวกับเรา
+          <i class="fa-solid fa-info-circle me-2"></i> About Us
         </a>
         
         <% if (locals.isLoggedIn) { %>
@@ -148,7 +148,7 @@
       
       <!-- รายการหมวดหมู่ -->
       <div class="mt-3 p-3">
-        <h6 class="fw-bold border-bottom pb-2">หมวดหมู่สินค้า</h6>
+        <h6 class="fw-bold border-bottom pb-2">Categories</h6>
         <div class="list-group list-group-flush">
           <% if (locals.categories && categories.length > 0) { %>
             <% categories.forEach(category => { %>

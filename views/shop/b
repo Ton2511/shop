@@ -1,7 +1,7 @@
 <div class="container my-5">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/shop">หมวดหมู่สินค้า</a></li>
+        <li class="breadcrumb-item"><a href="/shop">Categories</a></li>
         <% if (product.category) { %>
           <li class="breadcrumb-item"><a href="/shop/category/<%= product.category._id %>"><%= product.category.name %></a></li>
         <% } %>

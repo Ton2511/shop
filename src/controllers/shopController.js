@@ -19,7 +19,7 @@ exports.showCategories = async (req, res) => {
     
     res.render("shop/categories", { 
       categories,
-      title: "หมวดหมู่สินค้า"
+      title: "Categories"
     });
   } catch (err) {
     console.error("เกิดข้อผิดพลาดในการดึงข้อมูลหมวดหมู่:", err);

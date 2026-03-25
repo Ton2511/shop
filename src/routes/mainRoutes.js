@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mainController = require('../controllers/mainController');
 
-// หน้าแรก
+// Home
 router.get('/', mainController.getHomePage);
 
 router.get('/about-us', (req, res) => {

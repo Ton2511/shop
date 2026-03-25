@@ -30,13 +30,13 @@
 
   <%- include('../partials/breadcrumb', { 
     items: [
-      { name: 'หน้าแรก', url: '/', icon: 'fa-solid fa-home' },
-      { name: 'หมวดหมู่สินค้า', active: true, icon: 'fa-solid fa-tags' }
+      { name: 'Home', url: '/', icon: 'fa-solid fa-home' },
+      { name: 'Categories', active: true, icon: 'fa-solid fa-tags' }
     ],
     style: 'modern' // เลือก: 'classic', 'modern', 'minimal', 'gradient', 'accent'
   }) %>
 
-  <h1 class="mb-4 text-dark fs-2">หมวดหมู่สินค้า</h1>
+  <h1 class="mb-4 text-dark fs-2">Categories</h1>
   
   <div class="row">
     <div class="col-md-12">
@@ -83,7 +83,7 @@
         <div class="col-12 text-center py-5">
           <div class="alert alert-info">
             <i class="bi bi-info-circle me-2"></i>
-            ยังไม่มีหมวดหมู่สินค้าในระบบ
+            ยังไม่มีCategoriesในระบบ
           </div>
         </div>
       <% } %>

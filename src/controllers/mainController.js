@@ -2,7 +2,7 @@
 const { Category, Product, ProductImage } = require('../models');
 const { Op, fn, literal } = require('sequelize');
 
-// หน้าแรก - แสดงหมวดหมู่และสินค้าขายดี
+// Home - แสดงหมวดหมู่และสินค้าขายดี
 exports.getHomePage = async (req, res) => {
   try {
     // ดึงข้อมูลหมวดหมู่ทั้งหมด
@@ -35,7 +35,7 @@ exports.getHomePage = async (req, res) => {
       title: 'หน้าหลัก | ร้านค้าออนไลน์'
     });
   } catch (err) {
-    console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสำหรับหน้าแรก:', err);
+    console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสำหรับHome:', err);
     res.render('index', { 
       categories: [],
       featuredProducts: [],

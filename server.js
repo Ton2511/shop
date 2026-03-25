@@ -71,9 +71,9 @@ const shopRoutes = require("./src/routes/shopRoutes");
 // กำหนด Routes
 app.use('/', mainRoutes);
 app.use("/", authRoutes); // ให้ /login และ /logout ทำงานที่ root
-app.use("/users", requireAuth, userRoutes);
+app.use("/users", userRoutes);
 app.use("/categories", requireAuth, categoryRoutes);
-app.use("/products", productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ
+app.use("/products",requireAuth, productRoutes); // ลบ requireAuth ชั่วคราวเพื่อทดสอบ
 app.use("/shop", shopRoutes);
 
 // Health check endpoint

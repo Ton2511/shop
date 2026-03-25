@@ -31,8 +31,8 @@
     <div class="mt-4 mt-md-5">
       <%- include('../partials/breadcrumb', { 
         items: [
-          { name: 'หน้าแรก', url: '/', icon: 'fa-solid fa-home' },
-          { name: 'หมวดหมู่สินค้า', url: '/shop', icon: 'fa-solid fa-tags' },
+          { name: 'Home', url: '/', icon: 'fa-solid fa-home' },
+          { name: 'Categories', url: '/shop', icon: 'fa-solid fa-tags' },
           { name: category.name, active: true }
         ],
         style: 'modern'
@@ -89,7 +89,7 @@
           </div>
           <a href="/shop" class="btn btn-outline-dark mt-3">
             <i class="bi bi-arrow-left me-2"></i>
-            กลับไปยังหมวดหมู่สินค้า
+            กลับไปยังCategories
           </a>
         </div>
       <% } %>
@@ -99,7 +99,7 @@
   <div class="text-center mt-4 mb-5">
     <a href="/shop" class="btn btn-outline-dark">
       <i class="bi bi-arrow-left me-2"></i>
-      กลับไปยังหมวดหมู่สินค้า
+      กลับไปยังCategories
     </a>
   </div>
 </div>

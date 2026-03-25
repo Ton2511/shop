@@ -569,7 +569,7 @@ tr:hover {
   }
 } 
 
-.banner-blocks {
+/* .banner-blocks {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(2, 1fr);
@@ -588,7 +588,7 @@ tr:hover {
   .block-2 { grid-area: 3 / 1 / 4 / 2; }
   .block-3 { grid-area: 4 / 1 / 5 / 2; }
   
-}
+} */
 
 /* Swiper carousel */
 .swiper-prev,

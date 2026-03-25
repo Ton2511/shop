@@ -49,26 +49,12 @@
     font-size: 1rem;
     color: #333;
   }
-
-  /* ===== Hero Section ===== */
-  .hero-section {
-    min-height: 50vh;
-  }
-
-  /* ===== Feature Cards (3 cards below hero) ===== */
-  .feature-card .card {
-    border-radius: 0;
-  }
-
-  .feature-card i {
-    font-size: 2.5rem;
-  }
   
-  /* ===== Banner Blocks ===== */
+  /* Banner Blocks Styling */
   .banner-blocks {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
+    gap: 15px;
   }
   
   .banner-ad {
@@ -76,23 +62,12 @@
     overflow: hidden;
     position: relative;
   }
-
-  .block-3 {
-    border-radius: 8px;
-    overflow: hidden;
-    min-height: 160px;
-  }
-
-  .banner-content {
-    background: rgba(0,0,0,0.35);
-    min-height: 160px;
-  }
   
   .block-1 {
     grid-column: span 3;
   }
   
-  /* ===== Swiper ===== */
+  /* Swiper Customization */
   .swiper-wrapper {
     padding: 10px 0;
   }
@@ -100,270 +75,56 @@
   .swiper-slide {
     height: auto;
   }
-
-  /* ===== Product Info ===== */
-  .product-info {
-    padding: 0.75rem;
-  }
-
-  .product-title {
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .product-price {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #008080;
-    margin-bottom: 0.25rem;
-  }
-
-  .product-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.75rem;
-    color: #666;
-  }
-
-  .product-category {
-    background: #e8f5e9;
-    color: #2e7d32;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-  }
-
-  /* ===== Section Header ===== */
-  .section-header {
-    align-items: center;
-  }
-
-  .swiper-buttons button {
-    /* ลบ width และ height ออก ให้ Bootstrap จัดการขนาดเอง */
-    padding: 0.375rem 0.75rem;  /* เท่ากับ .btn default */
-    line-height: 1.5;
-    font-size: 1rem;
-    border-radius: 4px;
-  }
-
-  /* ============================================
-     MOBILE RESPONSIVE
-  ============================================ */
-
-  /* --- Tablet (≤768px) --- */
-  @media (max-width: 768px) {
-
-    /* Hero */
-    .hero-section {
-      min-height: 40vh;
-      background-position: center right !important;
+  
+  /* Mobile responsive improvements */
+  @media (max-width: 767px) {
+    .display-1 {
+      font-size: 2.2rem;
     }
-
-    .hero-section h2.display-4 {
-      font-size: 1.8rem;
+    .fs-4 {
+      font-size: 1rem !important;
     }
-
-    .hero-section h2.display-5 {
-      font-size: 1.4rem;
-    }
-
-    .hero-section p.fs-5 {
-      font-size: 0.95rem !important;
-    }
-
-    /* Feature cards — stack vertically on tablet */
-    .feature-card .card {
-      padding: 1rem !important;
-    }
-
-    /* Banner blocks — 2 columns on tablet */
     .banner-blocks {
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
-
-    .block-3:last-child {
-      grid-column: span 2;
+    .block-1, .block-2, .block-3 {
+      width: 100%;
     }
-
-    /* Product image */
+    .swiper-buttons {
+      margin-left: 10px;
+    }
     .tab-image {
-      max-height: 140px;
+      height: 120px !important;
     }
-
-    /* Category thumbnail */
+    .product-item .p-3 {
+      padding: 0.5rem !important;
+    }
     .category-thumbnail {
       width: 80px;
       height: 80px;
     }
-
-    .category-title {
-      font-size: 0.85rem;
-    }
   }
-
-  /* --- Mobile (≤576px) --- */
+  
   @media (max-width: 576px) {
-
-    /* Hero */
-    .hero-section {
-      min-height: auto;
-      padding: 2rem 0 0 0 !important;
-      background-position: top center !important;
-    }
-
-    .hero-section h2.display-4 {
-      font-size: 1.5rem;
-    }
-
-    .hero-section h2.display-5 {
-      font-size: 1.2rem;
-      line-height: 1.3;
-    }
-
-    .hero-section p.fs-5 {
-      font-size: 0.85rem !important;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero-section .btn {
-      font-size: 0.8rem !important;
-      padding: 0.5rem 1.2rem !important;
-    }
-
-    /* Feature cards — icon + text side by side, smaller padding */
-    .feature-card .card {
-      padding: 0.75rem !important;
-    }
-
-    .feature-card i {
+    .display-1 {
       font-size: 1.8rem;
     }
-
-    .feature-card h5 {
-      font-size: 0.9rem;
+    .fs-6 {
+      font-size: 0.8rem !important;
     }
-
-    .feature-card p {
-      font-size: 0.78rem;
-      margin-bottom: 0;
+    .gap-3 {
+      gap: 0.5rem !important;
     }
-
-    /* Banner blocks — 1 column on mobile */
-    .banner-blocks {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    .block-3 {
-      min-height: 130px;
-    }
-
-    .block-3:last-child {
-      grid-column: span 1;
-    }
-
-    .banner-content {
-      min-height: 130px;
-      padding: 1.25rem !important;
-    }
-
-    .banner-title {
-      font-size: 1.1rem;
-    }
-
-    .banner-content p {
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Section header */
     .section-header {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 1rem !important;
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 10px;
     }
-
-    .section-title {
-      font-size: 1.1rem;
-    }
-
-    .section-header .btn {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.75rem;
-    }
-
-    .swiper-buttons button {
-      width: 28px;
-      height: 28px;
-      font-size: 0.75rem;
-    }
-
-    /* Product card */
-    .tab-image {
-      max-height: 110px;
-    }
-
-    .product-item .p-3 {
-      padding: 0.5rem !important;
-    }
-
-    .product-info {
-      padding: 0.5rem;
-    }
-
-    .product-title {
-      font-size: 0.8rem;
-    }
-
-    .product-price {
-      font-size: 0.85rem;
-    }
-
-    /* Category */
-    .category-thumbnail {
-      width: 65px;
-      height: 65px;
-    }
-
-    .category-title {
-      font-size: 0.72rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 75px;
-    }
-  }
-
-  /* --- Very small (≤375px) --- */
-  @media (max-width: 375px) {
-    .hero-section h2.display-4 {
-      font-size: 1.3rem;
-    }
-
-    .hero-section h2.display-5 {
-      font-size: 1rem;
-    }
-
-    .category-thumbnail {
-      width: 55px;
-      height: 55px;
-    }
-
-    .category-title {
-      font-size: 0.68rem;
-      max-width: 65px;
-    }
-
-    .tab-image {
-      max-height: 95px;
+    .section-header .d-flex {
+      width: 100%;
+      justify-content: space-between !important;
     }
   }
 </style>
@@ -383,47 +144,48 @@
       </div>
     </div>
     
-    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 mt-4 mt-md-5">
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 mt-5">
 
-      <div class="col feature-card">
+      <div class="col">
         <div class="card h-100 border-0 bg-dark rounded-0 p-4 text-light">
           <div class="row align-items-center h-100">
-            <div class="col-3 col-md-3 text-center">
+            <div class="col-md-3 text-center">
               <i class="fa-brands fa-product-hunt fa-3x"></i>
             </div>
-            <div class="col-9 col-md-9">
+            <div class="col-md-9">
               <div class="card-body p-0">
                 <h5 class="text-light">Premium Quality Products</h5>
                 <p class="card-text">Carefully selected from internationally certified manufacturers to ensure safety and reliability.</p>
+
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col feature-card">
+      <div class="col">
         <div class="card h-100 border-0 bg-teal rounded-0 p-4 text-light">
           <div class="row align-items-center h-100">
-            <div class="col-3 col-md-3 text-center">
+            <div class="col-md-3 text-center">
               <i class="fa-solid fa-truck fa-3x"></i>
             </div>
-            <div class="col-9 col-md-9">
+            <div class="col-md-9">
               <div class="card-body p-0">
                 <h5 class="text-light">On-Time Delivery</h5>
-                <p class="card-text">Fast shipping with real-time tracking to ensure timely arrival.</p>
+                <p class="card-text">On-Time Delivery Fast shipping with real-time tracking to ensure timely arrival.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col feature-card">
+      <div class="col">
         <div class="card h-100 border-0 bg-cyan rounded-0 p-4 text-light">
           <div class="row align-items-center h-100">
-            <div class="col-3 col-md-3 text-center">
+            <div class="col-md-3 text-center">
               <i class="fa-solid fa-user-tie fa-3x"></i>
             </div>
-            <div class="col-9 col-md-9">
+            <div class="col-md-9">
               <div class="card-body p-0">
                 <h5 class="text-light">Comprehensive Service</h5>
                 <p class="card-text">We offer expert consultation, usage guidance, and dedicated after-sales support.</p>
@@ -442,7 +204,7 @@
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header d-flex flex-wrap justify-content-between mb-3 mb-md-3">
+        <div class="section-header d-flex flex-wrap justify-content-between mb-3 mb-md-5">
           <h2 class="section-title text-dark">Category</h2>
 
           <div class="d-flex align-items-center">
@@ -556,6 +318,7 @@
                       <figure class="m-0 p-3 text-center">
                         <% if (product.images && product.images.length > 0) { %>
                           <% 
+                            // หารูปที่เป็นรูปหลัก
                             const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
                           %>
                           <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
@@ -597,38 +360,38 @@
   </div>
 </section>
 
-<section class="pt-3 pb-0">
+<section class="py-3">
   <div class="container-lg">
     <div class="row">
       <div class="col-12">
-        <div class="banner-blocks" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <div class="banner-blocks d-flex gap-0 flex-wrap">
 
-          <div style="background: url('images/banner-ad-1.jpg') no-repeat center center / cover; border-radius: 8px; min-height: 200px;">
-            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.35); border-radius: 8px; min-height: 200px;">
-              <div class="text-light">
-                <h3 class="text-light">Items on SALE</h3>
+          <div class="block-3" style="min-width: 33.33%; background: url('images/banner-ad-1.jpg') no-repeat center center / cover;">
+            <div class="banner-content p-5 h-100 d-flex align-items-center">
+              <div class="content-wrapper text-light">
+                <h3 class="banner-title text-light">Items on SALE</h3>
                 <p>Discounts up to 30%</p>
-                <a href="#" class="text-white">Shop Now</a>
+                <a href="#" class="btn-link text-white">Shop Now</a>
               </div>
             </div>
           </div>
 
-          <div style="background: url('images/banner-ad-2.jpg') no-repeat center center / cover; border-radius: 8px; min-height: 200px;">
-            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.35); border-radius: 8px; min-height: 200px;">
-              <div class="text-light">
-                <h3 class="text-light">Combo offers</h3>
+          <div class="block-3" style="min-width: 33.33%; background: url('images/banner-ad-2.jpg') no-repeat center center / cover;">
+            <div class="banner-content p-5 h-100 d-flex align-items-center">
+              <div class="content-wrapper text-light">
+                <h3 class="banner-title text-light">Combo offers</h3>
                 <p>Discounts up to 50%</p>
-                <a href="#" class="text-white">Shop Now</a>
+                <a href="#" class="btn-link text-white">Shop Now</a>
               </div>
             </div>
           </div>
 
-          <div style="background: url('images/banner-ad-3.jpg') no-repeat center center / cover; border-radius: 8px; min-height: 200px;">
-            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.35); border-radius: 8px; min-height: 200px;">
-              <div class="text-light">
-                <h3 class="text-light">Discount Coupons</h3>
+          <div class="block-3" style="min-width: 33.33%; background: url('images/banner-ad-3.jpg') no-repeat center center / cover;">
+            <div class="banner-content p-5 h-100 d-flex align-items-center">
+              <div class="content-wrapper text-light">
+                <h3 class="banner-title text-light">Discount Coupons</h3>
                 <p>Discounts up to 40%</p>
-                <a href="#" class="text-white">Shop Now</a>
+                <a href="#" class="btn-link text-white">Shop Now</a>
               </div>
             </div>
           </div>
@@ -639,21 +402,12 @@
   </div>
 </section>
 
-<style>
-  /* Mobile: เรียงแนวตั้ง */
-  @media (max-width: 576px) {
-    .banner-blocks {
-      grid-template-columns: 1fr !important;
-    }
-  }
-</style>
 
-
-<section class="pt-2 pb-4">
+<section class="pb-5">
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header d-flex flex-wrap justify-content-between mt-2 mb-3">
+        <div class="section-header d-flex flex-wrap justify-content-between my-4">
           <h2 class="section-title">Recommended for You</h2>
           <div class="d-flex align-items-center">
             <a href="/shop/products" class="btn bg-teal text-light rounded-1 me-2">View All</a>
@@ -678,6 +432,7 @@
                       <figure class="m-0 p-3 text-center">
                         <% if (product.images && product.images.length > 0) { %>
                           <% 
+                            // หารูปที่เป็นรูปหลัก
                             const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
                           %>
                           <img src="<%= featuredImage.url %>" alt="<%= product.name %>" class="tab-image">
@@ -721,53 +476,114 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-
-    // Category carousel
+    // Initialize swiper for category carousel
     var categoryCarousel = new Swiper(".category-carousel", {
+      slidesPerView: 2,
       spaceBetween: 10,
       navigation: {
         nextEl: ".category-carousel-next",
         prevEl: ".category-carousel-prev",
       },
       breakpoints: {
-        320: { slidesPerView: 3, spaceBetween: 8 },
-        480: { slidesPerView: 4, spaceBetween: 10 },
-        768: { slidesPerView: 5, spaceBetween: 15 },
-        992: { slidesPerView: 6, spaceBetween: 20 },
+        576: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 4, 
+          spaceBetween: 20,
+        },
+        992: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
       },
     });
 
-    // Best selling carousel
+      document.addEventListener('DOMContentLoaded', function() {
+    // Initialize swiper for category carousel with updated settings for mobile
+    var categoryCarousel = new Swiper(".category-carousel", {
+      slidesPerView: 'auto',  // Changed to auto for better mobile responsiveness
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".category-carousel-next",
+        prevEl: ".category-carousel-prev",
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 3,
+          spaceBetween: 8,
+        },
+        480: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 5, 
+          spaceBetween: 15,
+        },
+        992: {
+          slidesPerView: 6,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
+    
+    // Initialize swiper for best selling products
     var bestSellingCarousel = new Swiper(".bestselling-carousel", {
+      slidesPerView: 2,
       spaceBetween: 10,
       navigation: {
         nextEl: ".bestselling-carousel-next",
         prevEl: ".bestselling-carousel-prev",
       },
       breakpoints: {
-        320: { slidesPerView: 2, spaceBetween: 8 },
-        576: { slidesPerView: 2, spaceBetween: 12 },
-        768: { slidesPerView: 3, spaceBetween: 15 },
-        992: { slidesPerView: 4, spaceBetween: 20 },
-        1200: { slidesPerView: 5, spaceBetween: 20 },
+        576: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        992: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
       },
     });
     
-    // Recommended carousel
+    // Initialize swiper for popular products
     var popularCarousel = new Swiper(".popular-carousel", {
+      slidesPerView: 2,
       spaceBetween: 10,
       navigation: {
         nextEl: ".popular-carousel-next",
         prevEl: ".popular-carousel-prev",
       },
       breakpoints: {
-        320: { slidesPerView: 2, spaceBetween: 8 },
-        576: { slidesPerView: 2, spaceBetween: 12 },
-        768: { slidesPerView: 3, spaceBetween: 15 },
-        992: { slidesPerView: 4, spaceBetween: 20 },
-        1200: { slidesPerView: 5, spaceBetween: 20 },
+        576: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        992: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+        1200: {
+          slidesPerView: 5,
+          spaceBetween: 20,
+        },
       },
     });
-
   });
 </script>
