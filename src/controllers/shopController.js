@@ -130,7 +130,7 @@ exports.showAllProducts = async (req, res) => {
   try {
     // รับพารามิเตอร์จากการเพจิเนชัน
     const page = parseInt(req.query.page) || 1;
-    const perPage = 12; // สินค้าต่อหน้า
+    const perPage = 15; // สินค้าต่อหน้า
 
     // นับจำนวนสินค้าทั้งหมด
     const totalItems = await Product.count();

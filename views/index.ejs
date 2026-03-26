@@ -200,9 +200,7 @@
       height: 80px;
     }
 
-    .category-title {
-      font-size: 0.85rem;
-    }
+    
   }
 
   /* --- Mobile (≤576px) --- */
@@ -334,6 +332,16 @@
       max-height: 95px;
     }
   }
+
+  @media (max-width: 576px) {
+  .category-carousel .swiper-wrapper {
+    padding: 5px 0;
+  }
+
+  .category-carousel .swiper-slide {
+    padding: 0 2px;
+  }
+}
 </style>
 
 
@@ -416,7 +424,8 @@
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header mb-3 mb-md-5">
+        
+        <div class="section-header mb-3 mb-md-">
           <h2 class="section-title text-dark">Category</h2>
           <div class="d-flex align-items-center">
             <a href="/shop" class="btn bg-teal text-light me-2">View All</a>
@@ -442,7 +451,7 @@
                       <i class="bi bi-collection fs-1 text-muted"></i>
                     </div>
                   <% } %>
-                  <h4 class="fs-6 mt-2 fw-normal category-title"><%= category.name %></h4>
+                  <h4 class="fs-6 mt-2 fw-normal text-dark"><%= category.name %></h4>
                 </a>
               <% }) %>
             <% } %>
@@ -479,7 +488,7 @@
             <% if (featuredProducts && featuredProducts.length > 0) { %>
               <% featuredProducts.slice(0, 10).forEach(product => { %>
                 <div class="swiper-slide">
-                  <div class="product-item">
+                  <div class="product-card">
                     <a href="/shop/product/<%= product.id %>" class="a">
                       <figure class="m-0 p-3 text-center">
                         <% if (product.images && product.images.length > 0) { %>
@@ -532,7 +541,7 @@
         <div class="banner-blocks" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
 
           <div style="background: url('images/banner-ad-1.jpg') no-repeat center center / cover; border-radius: 8px; min-height: 200px;">
-            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.35); border-radius: 8px; min-height: 200px;">
+            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0, 40, 63, 0.705); border-radius: 8px; min-height: 200px;">
               <div class="text-light">
                 <h3 class="text-light">Items on SALE</h3>
                 <p>Discounts up to 30%</p>
@@ -542,7 +551,7 @@
           </div>
 
           <div style="background: url('images/banner-ad-2.jpg') no-repeat center center / cover; border-radius: 8px; min-height: 200px;">
-            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.35); border-radius: 8px; min-height: 200px;">
+            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0, 134, 94, 0.678); border-radius: 8px; min-height: 200px;">
               <div class="text-light">
                 <h3 class="text-light">Combo offers</h3>
                 <p>Discounts up to 50%</p>
@@ -552,7 +561,7 @@
           </div>
 
           <div style="background: url('images/banner-ad-3.jpg') no-repeat center center / cover; border-radius: 8px; min-height: 200px;">
-            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0,0,0,0.35); border-radius: 8px; min-height: 200px;">
+            <div class="p-4 h-100 d-flex align-items-center" style="background: rgba(0, 154, 165, 0.781); border-radius: 8px; min-height: 200px;">
               <div class="text-light">
                 <h3 class="text-light">Discount Coupons</h3>
                 <p>Discounts up to 40%</p>
@@ -573,7 +582,7 @@
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
-        <div class="section-header mt-2 mb-3">
+        <div class="section-header mt-3 mb-3">
           <h2 class="section-title">Recommended for You</h2>
           <div class="d-flex align-items-center">
             <a href="/shop/products" class="btn bg-teal text-light rounded-1 me-2">View All</a>
@@ -593,7 +602,7 @@
             <% if (randomProducts && randomProducts.length > 0) { %>
               <% randomProducts.forEach(product => { %>
                 <div class="swiper-slide">
-                  <div class="product-item">
+                  <div class="product-card">
                     <a href="/shop/product/<%= product.id %>" class="a">
                       <figure class="m-0 p-3 text-center">
                         <% if (product.images && product.images.length > 0) { %>
@@ -649,8 +658,8 @@
         prevEl: ".category-carousel-prev",
       },
       breakpoints: {
-        320: { slidesPerView: 3, spaceBetween: 8 },
-        480: { slidesPerView: 4, spaceBetween: 10 },
+        320: { slidesPerView: 3, spaceBetween: 4 },  // ← ลดจาก 8 เป็น 4
+        480: { slidesPerView: 4, spaceBetween: 6 },  // ← ลดจาก 10 เป็น 6
         768: { slidesPerView: 5, spaceBetween: 15 },
         992: { slidesPerView: 6, spaceBetween: 20 },
       },

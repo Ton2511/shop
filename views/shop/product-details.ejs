@@ -3,71 +3,81 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <style>
-    /* Base carousel styles */
-    .carousel-wrapper {
-        position: relative;
+    /* ===== Desktop Image Gallery ===== */
+    .image-gallery {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
     }
 
-    .carousel-container {
-        position: relative;
-        overflow: hidden;
-        height: 500px;
-    }
-
-    .carousel-inner {
+    /* Thumbnail strip (left side) */
+    .thumbnail-strip {
         display: flex;
         flex-direction: column;
-        transition: transform 0.5s ease-in-out;
+        gap: 8px;
+        width: 80px;
+        flex-shrink: 0;
+        max-height: 480px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
     }
+    .thumbnail-strip::-webkit-scrollbar { width: 4px; }
+    .thumbnail-strip::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 
-    .carousel-item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 150px;
-        max-width: 100%;
-    }
-
-    .custom-size {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-
-    .custom-size-main {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-        object-fit: contain;
-    }
-
-    .carousel-btn {
-        position: absolute;
-        background-color: white;
-        color: #333;
-        border: 1px solid #ccc;
-        border-radius: 10%;
-        padding: 0px;
+    .thumb-item {
+        width: 76px;
+        height: 76px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
         cursor: pointer;
-        font-size: 15px;
-        width: 40px;
-        height: 40px;
-        text-align: center;
-        z-index: 10;
+        flex-shrink: 0;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background: #fafafa;
+    }
+    .thumb-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .thumb-item:hover {
+        border-color: #008080;
+    }
+    .thumb-item.active {
+        border-color: #008080;
+        box-shadow: 0 0 0 2px rgba(0,128,128,0.25);
     }
 
-    .btn-up {
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+    /* Main image area */
+    .main-image-area {
+        flex: 1;
+        position: relative;
+        background: #fafafa;
+        border: 1px solid #ebebeb;
+        border-radius: 12px;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+        max-height: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .main-image-area img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        cursor: zoom-in;
+    }
+    .main-image-area img:hover {
+        transform: scale(1.04);
     }
 
-    .btn-down {
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+    /* Legacy classes (kept for mobile compat) */
+    .carousel-wrapper { position: relative; }
+    .custom-size-main { width: 100%; max-width: 500px; height: auto; object-fit: contain; }
     
     /* Button colors */
     .bg-blackgreen {
@@ -120,6 +130,43 @@
         object-fit: contain;
     }
     
+    /* Styles for rich text description content */
+    .description-content {
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #333;
+        word-break: break-word;
+    }
+    .description-content h1,
+    .description-content h2,
+    .description-content h3 {
+        margin-top: 0.75rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    .description-content p {
+        margin-bottom: 0.75rem;
+    }
+    .description-content ul,
+    .description-content ol {
+        padding-left: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+    .description-content li {
+        margin-bottom: 0.25rem;
+    }
+    .description-content strong { font-weight: 700; }
+    .description-content em { font-style: italic; }
+    .description-content u { text-decoration: underline; }
+    .description-content .ql-align-center { text-align: center; }
+    .description-content .ql-align-right  { text-align: right; }
+    .description-content .ql-align-justify { text-align: justify; }
+    .description-content .ql-indent-1 { padding-left: 2rem; }
+    .description-content .ql-indent-2 { padding-left: 4rem; }
+    .description-content .ql-indent-3 { padding-left: 6rem; }
+    
     .product-title {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -143,10 +190,12 @@
     }
     
     .swiper-buttons button {
-        width: 30px;
-        height: 30px;
-        padding: 0;
+        width: auto;
+        height: auto;
+        padding: 0.375rem 0.75rem;
         margin: 0 2px;
+        font-size: 1rem;
+        line-height: 1.5;
     }
     
     /* Product title for mobile - prevent long titles from breaking layout */
@@ -239,9 +288,8 @@
         }
         
         .swiper-buttons button {
-            width: 25px;
-            height: 25px;
-            font-size: 12px;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.875rem;
         }
     }
 </style>
@@ -249,7 +297,7 @@
 <div class="bg-light">
   <div class="container mx-auto d-flex flex-column">
     <!-- Breadcrumb -->
-    <div class="mt-4 mt-md-5">
+    <div class="mt-3 mt-md-2">
       <%- include('../partials/breadcrumb', { 
         items: [
           { name: 'Home', url: '/', icon: 'fa-solid fa-home' },
@@ -262,90 +310,81 @@
 
     <div class="mt-2 mb-5">
       <div class="row">
-        <!-- Desktop vertical thumbnails (hidden on mobile) -->
-        <div class="col-1 d-none d-md-block">
-          <% if (product.images && product.images.length > 0) { %>
-            <div class="carousel-wrapper">
-              <div class="carousel-container">
-                <div class="carousel-inner" id="carouselItems">
-                  <% 
-                    // หารูปที่เป็นรูปหลัก
-                    const featuredIndex = product.images.findIndex(img => img.isFeatured);
-                    const orderedImages = [...product.images];
-                    
-                    // ถ้ามีรูปหลัก ให้สลับมาอยู่ลำดับแรก
-                    if (featuredIndex > 0) {
-                      [orderedImages[0], orderedImages[featuredIndex]] = [orderedImages[featuredIndex], orderedImages[0]];
-                    }
-                  %>
-                  
-                  <% orderedImages.forEach((image, index) => { %>
-                    <div class="carousel-item">
-                      <img src="<%= image.url %>" alt="<%= product.name %>" class="custom-size" 
-                           onclick="setMainImage('<%= image.url %>', <%= index %>)">
-                    </div>
-                  <% }) %>
-                </div>
+        <!-- Desktop Image Gallery (col-1 thumbnail strip + main image) -->
+        <div class="col-12 col-md-6 d-none d-md-block">
+          <%
+            const featuredIndexD = product.images ? product.images.findIndex(img => img.isFeatured) : -1;
+            const orderedImages = product.images ? [...product.images] : [];
+            if (featuredIndexD > 0) {
+              [orderedImages[0], orderedImages[featuredIndexD]] = [orderedImages[featuredIndexD], orderedImages[0]];
+            }
+            const featuredImageD = orderedImages.length > 0 ? orderedImages[0] : null;
+          %>
+          <% if (orderedImages.length > 0) { %>
+            <div class="image-gallery">
+              <!-- Thumbnail strip -->
+              <% if (orderedImages.length > 1) { %>
+              <div class="thumbnail-strip" id="thumbnailStrip">
+                <% orderedImages.forEach((image, index) => { %>
+                  <div class="thumb-item <%= index === 0 ? 'active' : '' %>"
+                       onclick="setMainImageDesktop('<%= image.url %>', this)">
+                    <img src="<%= image.url %>" alt="<%= product.name %>">
+                  </div>
+                <% }) %>
               </div>
-              
-              <!-- Navigation buttons -->
-              <% if (product.images && product.images.length > 3) { %>
-                <button class="carousel-btn btn-up" onclick="moveCarousel(-1)">
-                  <i class="fas fa-arrow-up"></i>
-                </button>
-                <button class="carousel-btn btn-down" onclick="moveCarousel(1)">
-                  <i class="fas fa-arrow-down"></i>
-                </button>
               <% } %>
+              <!-- Main image -->
+              <div class="main-image-area">
+                <img id="mainImageDesktop" src="<%= featuredImageD.url %>" alt="<%= product.name %>">
+              </div>
+            </div>
+          <% } else { %>
+            <div class="main-image-area" style="aspect-ratio:1/1; max-height:480px;">
+              <div class="d-flex flex-column justify-content-center align-items-center h-100 text-muted">
+                <i class="bi bi-image fs-1"></i>
+                <p class="mt-2">ไม่มีรูปภาพ</p>
+              </div>
             </div>
           <% } %>
         </div>
 
-        <!-- Main product image -->
-        <div class="col-12 col-md-5 text-center">
-          <div class="d-flex justify-content-center align-items-center mb-3">
-            <% if (product.images && product.images.length > 0) { %>
-              <% 
-                // หารูปที่เป็นรูปหลัก
-                const featuredImage = product.images.find(img => img.isFeatured) || product.images[0];
-              %>
-              <img id="mainImage" src="<%= featuredImage.url %>" alt="<%= product.name %>" class="custom-size-main">
-            <% } else { %>
-              <div class="bg-light d-flex flex-column justify-content-center align-items-center py-5 rounded" style="height: 300px; width: 100%;">
-                <i class="bi bi-image fs-1 text-muted"></i>
-                <p class="text-muted mt-2">ไม่มีรูปภาพ</p>
-              </div>
-            <% } %>
-          </div>
-          
-          <!-- Mobile horizontal thumbnails (shown only on mobile) -->
+        <!-- Mobile image section (hidden on desktop) -->
+        <div class="col-12 d-md-none text-center">
           <% if (product.images && product.images.length > 0) { %>
-            <div class="mobile-thumbnails d-md-none">
+            <% const featuredImageM = product.images.find(img => img.isFeatured) || product.images[0]; %>
+            <img id="mainImage" src="<%= featuredImageM.url %>" alt="<%= product.name %>"
+                 class="custom-size-main" style="max-height:300px; object-fit:contain;">
+            <div class="mobile-thumbnails mt-2">
               <% product.images.forEach((image, index) => { %>
-                <img src="<%= image.url %>" alt="<%= product.name %>" 
-                     onclick="setMainImage('<%= image.url %>', <%= index %>)" 
+                <img src="<%= image.url %>" alt="<%= product.name %>"
+                     onclick="setMainImage('<%= image.url %>', <%= index %>)"
                      class="<%= (image.isFeatured) ? 'active' : '' %>">
               <% }) %>
+            </div>
+          <% } else { %>
+            <div class="bg-light d-flex flex-column justify-content-center align-items-center py-5 rounded" style="height:300px;">
+              <i class="bi bi-image fs-1 text-muted"></i>
+              <p class="text-muted mt-2">ไม่มีรูปภาพ</p>
             </div>
           <% } %>
         </div>
 
         <!-- Product details -->
-        <div class="col-12 col-md-6 ps-md-5 mt-3 mt-md-0 ">
-          <h3 class="text-dark mb-2 product-title-mobile mt-5"><b><%= product.name %></b></h3>
+        <div class="col-12 col-md-6 ps-md-4 mt-4 mt-md-0">
+          <h2 class="text-dark mb-2 product-title-mobile mt-5"><b><%= product.name %></b></h2>
           
           <div class="d-flex justify-content-between align-items-center mb-1"></div>
-            <span class="text-gray me-5">รหัสสินค้า: <%= product.code %></span>
+            <!-- <span class="text-gray me-5">รหัสสินค้า: <%= product.code %></span>
             <span class="text-gray">
               <i class="fa-solid fa-eye"></i> <%= displayViews || 0 %>
-            </span>
+            </span> -->
           
           
           <h2 class="text-cyan my-3"><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
           
           <div class="row g-2 mb-3">
             <div class="col-12 col-sm-6">
-              <h5 class="mb-1"><strong>หมวดหมู่:</strong> 
+              <h4 class="mb-1"><strong>หมวดหมู่:</strong> 
                 <% if (product.category) { %>
                   <a href="/shop/category/<%= product.category.id %>" class="text-gray text-decoration-none">
                     <%= product.category.name %>
@@ -353,21 +392,22 @@
                 <% } else { %>
                   <span class="text-gray">ไม่ระบุ</span>
                 <% } %>
-              </h5>
+              </h4>
             </div>
             <div class="col-12 col-sm-6">
-              <h5 class="mb-1"><strong>คงเหลือ:</strong> <span class="text-gray"><%= product.stock || 0 %> ชิ้น</span></h5>
+              <h4 class="mb-1"><strong>คงเหลือ:</strong> <span class="text-gray"><%= product.stock || 0 %> ชิ้น</span></h4>
             </div>
             <div class="col-12">
-              <h5 class="mb-1"><strong>สถานะ:</strong> <span class="text-gray">พร้อมจัดส่ง</span></h5>
+              <h4 class="mb-1"><strong>สถานะ:</strong> <span class="text-gray">พร้อมจัดส่ง</span></h4>
             </div>
+            
           </div>
 
           <hr class="my-3">
 
           <!-- Contact buttons -->
           <div class="text-center mt-4">
-            <h4 class="text-dark mb-3">ติดต่อสั่งซื้อ</h4>
+            <h3 class="text-dark mb-3">ติดต่อสั่งซื้อ</h3>
             <div class="d-flex flex-wrap justify-content-center gap-3">
               <a href="#" class="btn bg-blackgreen px-4 py-2" data-bs-toggle="modal" data-bs-target="#lineModal">
                 <i class="fab fa-line me-2"></i> Line
@@ -420,7 +460,7 @@
             <h4 class="text-dark"><b>รายละเอียด |</b></h4>
           </div>
           <div class="col-12 col-md-9">
-            <h5 class="text-break"><%= product.description || 'ไม่มีรายละเอียด' %></h5>
+            <div class="description-content"><%= product.description || 'ไม่มีรายละเอียด' %></div>
           </div>
         </div>
         
@@ -518,62 +558,21 @@
 </div>
 
 <script>
-  // ฟังก์ชันเลื่อน carousel
-  let currentIndex = 0;
-  const itemsPerPage = 3; // จำนวนรูปที่แสดงใน carousel
-
-  function moveCarousel(direction) {
-    // ตรวจสอบว่าอยู่ในหน้าจอมือถือหรือไม่
-    if (window.innerWidth <= 767) return;
-    
-    const items = document.querySelectorAll('.carousel-item');
-    const totalItems = items.length;
-    
-    if (totalItems <= itemsPerPage) return; // ถ้ามีรูปน้อยกว่าหรือเท่ากับที่แสดงได้ ไม่ต้องเลื่อน
-    
-    const carouselInner = document.getElementById('carouselItems');
-
-    currentIndex += direction;
-
-    if (currentIndex < 0) {
-      currentIndex = totalItems - 1; // เลื่อนกลับไปที่ภาพสุดท้าย
-    } else if (currentIndex >= totalItems) {
-      currentIndex = 0; // เลื่อนกลับไปที่ภาพแรก
-    }
-
-    // เลื่อน carousel
-    const offset = -currentIndex * 150; // ขนาดของแต่ละภาพ
-    carouselInner.style.transform = `translateY(${offset}px)`;
+  // Desktop: เปลี่ยนรูปหลักและ active thumbnail
+  function setMainImageDesktop(imageUrl, thumbEl) {
+    document.getElementById('mainImageDesktop').src = imageUrl;
+    document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+    thumbEl.classList.add('active');
   }
 
-  // ฟังก์ชันเปลี่ยนรูปหลัก
+  // Mobile: เปลี่ยนรูปหลักและ active thumbnail
   function setMainImage(imageUrl, index) {
-    document.getElementById('mainImage').src = imageUrl;
-    
-    // ถ้าอยู่ในมือถือ ให้เปลี่ยนสถานะ active ของ thumbnail
-    if (window.innerWidth <= 767) {
-      const thumbnails = document.querySelectorAll('.mobile-thumbnails img');
-      thumbnails.forEach((thumb, i) => {
-        if (i === index) {
-          thumb.classList.add('active');
-        } else {
-          thumb.classList.remove('active');
-        }
-      });
-    }
+    const mobileMain = document.getElementById('mainImage');
+    if (mobileMain) mobileMain.src = imageUrl;
+    document.querySelectorAll('.mobile-thumbnails img').forEach((thumb, i) => {
+      thumb.classList.toggle('active', i === index);
+    });
   }
-  
-  // ตรวจสอบการเปลี่ยนขนาดหน้าจอ
-  window.addEventListener('resize', function() {
-    // ถ้าเปลี่ยนเป็นหน้าจอขนาดใหญ่ รีเซ็ต carousel
-    if (window.innerWidth > 767) {
-      const carouselInner = document.getElementById('carouselItems');
-      if (carouselInner) {
-        currentIndex = 0;
-        carouselInner.style.transform = `translateY(0)`;
-      }
-    }
-  });
 
   // Swiper initialization for related products carousel
   document.addEventListener('DOMContentLoaded', function() {
