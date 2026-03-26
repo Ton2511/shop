@@ -199,7 +199,7 @@ exports.searchProducts = async (req, res) => {
     
     // รับพารามิเตอร์จากการเพจิเนชัน
     const page = parseInt(req.query.page) || 1;
-    const perPage = 12; // สินค้าต่อหน้า
+    const perPage = 15; // สินค้าต่อหน้า
     
     // คำนวณจำนวนสินค้าที่ตรงกับการค้นหา
     const totalItems = await Product.count({
