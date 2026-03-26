@@ -76,10 +76,10 @@
         <ul class="list-unstyled m-0 d-flex align-items-center">
           <% if (locals.isLoggedIn) { %>
             <li class="dropdown">
-              <a href="#" class="p-2 text-light dropdown-toggle fw-bold d-flex align-items-center gap-1"
+              <a href="#" class="p-2 text-light dropdown-toggle fw-bold d-flex align-items-center gap-1 text-decoration-none"
                 id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-user-tie"></i>
-                <span class="d-none d-md-inline">Admin</span>
+                <span class="d-none d-md-inline ">Admin</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
                 <li><a class="dropdown-item" href="/categories"><i class="fa-solid fa-list me-2"></i>จัดการหมวดหมู่</a></li>
@@ -95,11 +95,11 @@
             </li>
           <% } else { %>
             <li>
-              <a href="/login" class="p-2 text-light d-flex align-items-center gap-1">
-                <i class="fa-solid fa-right-to-bracket"></i>
-                <span class="d-none d-md-inline fw-bold">Login</span>
-              </a>
-            </li>
+            <a href="/login" class="p-2 text-light d-flex align-items-center gap-1 text-decoration-none">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <span class="d-none d-md-inline fw-bold">Login</span>
+            </a>
+          </li>
           <% } %>
         </ul>
       </div>
