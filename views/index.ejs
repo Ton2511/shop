@@ -342,6 +342,25 @@
     padding: 0 2px;
   } */
 }
+
+  /* ===== FADE-UP ANIMATION ===== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* delay ให้แต่ละ section ทยอยขึ้นมา */
+  .fade-up:nth-child(1) { transition-delay: 0s; }
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up:nth-child(4) { transition-delay: 0.3s; }
+  .fade-up:nth-child(5) { transition-delay: 0.4s; }
 </style>
 
 <style>
@@ -392,7 +411,7 @@
 
 
 <!-- ===== HERO ===== -->
-<section class="hero-section text-white d-flex align-items-center" 
+<section class="hero-section text-white d-flex align-items-center fade-up" 
   style="background-repeat: no-repeat; background-size: cover; background-position: center; min-height: 50vh;">
   
   <div class="custom-container-lg mx-auto px-3 w-100">
@@ -466,7 +485,7 @@
 
 
 <!-- ===== CATEGORY ===== -->
-<section class="mt-4 pb-2 overflow-hidden">
+<section class="mt-4 pb-2 overflow-hidden fade-up">
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
@@ -513,7 +532,7 @@
 
 
 <!-- ===== BEST SELLING ===== -->
-<section class="pb-2">
+<section class="pb-2 fade-up">
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
@@ -583,7 +602,7 @@
 
 
 <!-- ===== BANNER ADS ===== -->
-<section class="pt-3 pb-0">
+<section class="pt-3 pb-0 fade-up">
   <div class="container-lg">
     <div class="row">
       <div class="col-12">
@@ -594,7 +613,7 @@
               <div class="text-light">
                 <h3 class="text-light">Items on SALE</h3>
                 <p>Discounts up to 30%</p>
-                <a href="#" class="text-white">Shop Now</a>
+                <a href="#" class="btn-link text-white">Shop Now</a>
               </div>
             </div>
           </div>
@@ -604,7 +623,7 @@
               <div class="text-light">
                 <h3 class="text-light">Combo offers</h3>
                 <p>Discounts up to 50%</p>
-                <a href="#" class="text-white">Shop Now</a>
+                <a href="#" class="btn-link text-white">Shop Now</a>
               </div>
             </div>
           </div>
@@ -614,7 +633,7 @@
               <div class="text-light">
                 <h3 class="text-light">Discount Coupons</h3>
                 <p>Discounts up to 40%</p>
-                <a href="#" class="text-white">Shop Now</a>
+                <a href="#" class="btn-link text-white">Shop Now</a>
               </div>
             </div>
           </div>
@@ -627,7 +646,7 @@
 
 
 <!-- ===== RECOMMENDED ===== -->
-<section class="pt-2 pb-4">
+<section class="pt-2 pb-4 fade-up">
   <div class="container-lg">
     <div class="row">
       <div class="col-md-12">
@@ -747,4 +766,21 @@
     });
 
   });
+
+  // ===== FADE-UP ANIMATION =====
+  const fadeEls = document.querySelectorAll('.fade-up');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // animate ครั้งเดียว
+      }
+    });
+  }, {
+    threshold: 0.1,   // เริ่ม animate เมื่อเห็น 10% ของ element
+    rootMargin: '0px 0px -50px 0px' // เริ่มก่อนถึง bottom เล็กน้อย
+  });
+
+  fadeEls.forEach(el => observer.observe(el));
 </script>
