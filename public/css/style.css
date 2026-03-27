@@ -318,8 +318,8 @@ body {
   }
   
   .product-title {
-    font-size: 13px;
-    min-height: 38px;
+    font-size: 14px;
+    min-height: 20px;
     margin-bottom: 4px;
   }
   
@@ -329,11 +329,11 @@ body {
   }
   
   .product-meta {
-    font-size: 11px;
+    font-size: 8px;
   }
   
   .product-category {
-    max-width: 90px;
+    max-width: 70px;
     padding: 2px 6px;
   }
   
