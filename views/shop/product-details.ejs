@@ -297,12 +297,22 @@
 <div class="bg-light">
   <div class="container mx-auto d-flex flex-column fade-up">
     <!-- Breadcrumb -->
-    <div class="mt-3 mt-md-2">
+    <!-- <div class="mt-3 mt-md-2">
       <%- include('../partials/breadcrumb', { 
         items: [
           { name: 'Home', url: '/', icon: 'fa-solid fa-home' },
           { name: 'All products', url: '/shop/products', icon: 'fab fa-product-hunt' },
           { name: product.name,icon:'fas fa-box', active: true }
+        ],
+        style: 'modern'
+      }) %>
+    </div> -->
+    <div class="mt-3 mt-md-2">
+      <%- include('../partials/breadcrumb', { 
+        items: [
+          { name: 'Home', url: '/', icon: 'fa-solid fa-home' },
+          { name: 'All products', url: '/shop/products', icon: 'fab fa-product-hunt' },
+          { name: 'Product',icon:'fas fa-box', active: true }
         ],
         style: 'modern'
       }) %>

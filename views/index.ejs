@@ -725,31 +725,57 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
 
-    // Category carousel
-    new Swiper(".category-carousel", {
-    spaceBetween: 10,
-    watchOverflow: true,
-    watchSlidesProgress: true,
-    resistance: true,
-    resistanceRatio: 0,          // ← ไม่ให้ยืดเกิน edge เลย
-    navigation: {
-      nextEl: ".category-carousel-next",
-      prevEl: ".category-carousel-prev",
-      disabledClass: "swiper-button-disabled-custom",
-    },
-    breakpoints: {
-      320: { slidesPerView: 3, spaceBetween: 4 },
-      480: { slidesPerView: 4, spaceBetween: 6 },
-      768: { slidesPerView: 5, spaceBetween: 15 },
-      992: { slidesPerView: 6, spaceBetween: 20 },
-    },
-  });
+    // ฟังก์ชัน helper — ล็อค touch ถ้า slide ไม่เกิน slidesPerView
+    function updateTouchMove(swiper) {
+      const total = swiper.slides.length;
+      const perView = swiper.params.slidesPerView;
+      if (total <= perView) {
+        swiper.allowTouchMove = false;
+        swiper.allowSlideNext = false;
+        swiper.allowSlidePrev = false;
+      } else {
+        swiper.allowTouchMove = true;
+        // next/prev ขึ้นอยู่กับตำแหน่งปัจจุบัน
+        swiper.allowSlideNext = !swiper.isEnd;
+        swiper.allowSlidePrev = !swiper.isBeginning;
+      }
+    }
 
-    // Best selling carousel
-    new Swiper(".bestselling-carousel", {
+    // Category carousel
+    const categorySwiper = new Swiper(".category-carousel", {
       spaceBetween: 10,
       watchOverflow: true,
-      allowTouchMove: true,
+      resistance: true,
+      resistanceRatio: 0,
+      navigation: {
+        nextEl: ".category-carousel-next",
+        prevEl: ".category-carousel-prev",
+        disabledClass: "swiper-button-disabled-custom",
+      },
+      breakpoints: {
+        320: { slidesPerView: 3, spaceBetween: 4 },
+        480: { slidesPerView: 4, spaceBetween: 6 },
+        768: { slidesPerView: 5, spaceBetween: 15 },
+        992: { slidesPerView: 6, spaceBetween: 20 },
+      },
+      on: {
+        init: function () { updateTouchMove(this); },
+        breakpoint: function () { updateTouchMove(this); },
+        reachEnd: function () { this.allowSlideNext = false; },
+        reachBeginning: function () { this.allowSlidePrev = false; },
+        fromEdge: function () {
+          this.allowSlideNext = !this.isEnd;
+          this.allowSlidePrev = !this.isBeginning;
+        },
+      },
+    });
+
+    // Best selling carousel
+    const bestSellingSwiper = new Swiper(".bestselling-carousel", {
+      spaceBetween: 10,
+      watchOverflow: true,
+      resistance: true,
+      resistanceRatio: 0,
       navigation: {
         nextEl: ".bestselling-carousel-next",
         prevEl: ".bestselling-carousel-prev",
@@ -762,14 +788,24 @@
         992: { slidesPerView: 4, spaceBetween: 20 },
         1200: { slidesPerView: 5, spaceBetween: 20 },
       },
-
+      on: {
+        init: function () { updateTouchMove(this); },
+        breakpoint: function () { updateTouchMove(this); },
+        reachEnd: function () { this.allowSlideNext = false; },
+        reachBeginning: function () { this.allowSlidePrev = false; },
+        fromEdge: function () {
+          this.allowSlideNext = !this.isEnd;
+          this.allowSlidePrev = !this.isBeginning;
+        },
+      },
     });
-    
-    // Recommenreacded carousel
-    new Swiper(".popular-carousel", {
+
+    // Recommended carousel
+    const popularSwiper = new Swiper(".popular-carousel", {
       spaceBetween: 10,
       watchOverflow: true,
-      allowTouchMove: true,
+      resistance: true,
+      resistanceRatio: 0,
       navigation: {
         nextEl: ".popular-carousel-next",
         prevEl: ".popular-carousel-prev",
@@ -783,14 +819,13 @@
         1200: { slidesPerView: 5, spaceBetween: 20 },
       },
       on: {
-        reachEnd: function () {
-          this.allowSlideNext = false;
-        },
+        init: function () { updateTouchMove(this); },
+        breakpoint: function () { updateTouchMove(this); },
+        reachEnd: function () { this.allowSlideNext = false; },
+        reachBeginning: function () { this.allowSlidePrev = false; },
         fromEdge: function () {
-          this.allowSlideNext = true;
-        },
-        slideChange: function () {
-          if (!this.isEnd) this.allowSlideNext = true;
+          this.allowSlideNext = !this.isEnd;
+          this.allowSlidePrev = !this.isBeginning;
         },
       },
     });
