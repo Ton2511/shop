@@ -301,14 +301,14 @@
       <%- include('../partials/breadcrumb', { 
         items: [
           { name: 'Home', url: '/', icon: 'fa-solid fa-home' },
-          { name: 'สินค้าทั้งหมด', url: '/shop/products', icon: 'fab fa-product-hunt' },
+          { name: 'All products', url: '/shop/products', icon: 'fab fa-product-hunt' },
           { name: product.name,icon:'fas fa-box', active: true }
         ],
         style: 'modern'
       }) %>
     </div>
 
-    <div class="mt-2 mb-5 fade-up">
+    <div class="mt-2 fade-up">
       <div class="row">
         <!-- Desktop Image Gallery (col-1 thumbnail strip + main image) -->
         <div class="col-12 col-md-6 d-none d-md-block">
@@ -370,8 +370,8 @@
         </div>
 
         <!-- Product details -->
-        <div class="col-12 col-md-6 ps-md-4 mt-4 mt-md-0 fade-up">
-          <h2 class="text-dark mb-2 product-title-mobile mt-5"><b><%= product.name %></b></h2>
+        <div class="col-12 col-md-6 ps-md-4 fade-up">
+          <h1 class="text-dark mb-2 product-title-mobile mt-4"><b><%= product.name %></b></h2>
           
           <div class="d-flex justify-content-between align-items-center mb-1"></div>
             <!-- <span class="text-gray me-5">รหัสสินค้า: <%= product.code %></span>
@@ -383,7 +383,7 @@
           <h2 class="text-cyan my-3"><b><%= product.price || 'ไม่ระบุราคา' %> บาท</b></h2>
           
           <div class="row g-2 mb-3">
-            <div class="col-12 col-sm-6">
+            <div class="col-12 ">
               <h4 class="mb-1"><strong>หมวดหมู่:</strong> 
                 <% if (product.category) { %>
                   <a href="/shop/category/<%= product.category.id %>" class="text-gray text-decoration-none">
@@ -394,7 +394,7 @@
                 <% } %>
               </h4>
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-12 ">
               <h4 class="mb-1"><strong>คงเหลือ:</strong> <span class="text-gray"><%= product.stock || 0 %> ชิ้น</span></h4>
             </div>
             <div class="col-12">
@@ -460,7 +460,7 @@
             <h4 class="text-dark"><b>รายละเอียด |</b></h4>
           </div>
           <div class="col-12 col-md-9">
-            <div class="description-content"><%= product.description || 'ไม่มีรายละเอียด' %></div>
+            <div class="description-content text-dark"><%= product.description || 'ไม่มีรายละเอียด' %></div>
           </div>
         </div>
         
