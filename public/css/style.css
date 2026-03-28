@@ -562,24 +562,7 @@ tr:hover {
 /* 6.1 Header
 --------------------------------------------------------------*/
 
-.carousel-item img {
-  width: 100%;
-  height: auto;        
-  display: block;
-  object-fit: contain;
-}
 
-
-@media (max-width: 768px) {
-  .carousel-item {
-    background-color: #000;
-  }
-  .carousel-item img {
-    aspect-ratio: 16 / 9;
-    object-fit: contain;
-    width: 100%;
-  }
-}
 
 
 /* *** Start editing below this line *** */
