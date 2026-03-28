@@ -9,21 +9,18 @@
   <div class="carousel-inner">
 
     <div class="carousel-item active">
-      <!-- ใส่รูป Banner 1 -->
       <a href="/your-link-here">
         <img src="/images/Carousel1.png" class="d-block w-100 carousel-img" alt="Promotion slide 1">
       </a>
     </div>
 
     <div class="carousel-item">
-      <!-- ใส่รูป Banner 2 -->
       <a href="/your-link-here-2">
         <img src="/images/Carousel2.png" class="d-block w-100 carousel-img" alt="Promotion slide 2">
       </a>
     </div>
 
     <div class="carousel-item">
-      <!-- ใส่รูป Banner 3 -->
       <a href="/your-link-here-3">
         <img src="/images/Carousel3.png" class="d-block w-100 carousel-img" alt="Promotion slide 3">
       </a>
@@ -42,19 +39,21 @@
 </div>
 
 <style>
-  /* ให้รูปแสดงเต็มโดยไม่ถูก crop */
-  .carousel-img {
-    width: 100%;
-    height: auto;        /* สูงตามสัดส่วนรูปจริง */
-    object-fit: contain; /* ไม่ crop รูป */
-    display: block;
+  /* รีเซ็ตทุกอย่างที่อาจบังคับ height */
+  #carouselExampleIndicators,
+  #carouselExampleIndicators .carousel-inner,
+  #carouselExampleIndicators .carousel-item,
+  #carouselExampleIndicators .carousel-item a {
+    height: auto !important;
+    max-height: none !important;
   }
 
-  /* มือถือ: ป้องกันรูปสูงเกินไป */
-  @media (max-width: 576px) {
-    .carousel-img {
-      max-height: none; /* ให้สูงตามสัดส่วนรูปจริงเต็มที่ */
-    }
+  .carousel-img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: fill !important;  /* fill = ยืดตามสัดส่วนจริง ไม่ crop */
+    display: block !important;
   }
 </style>
 
