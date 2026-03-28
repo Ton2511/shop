@@ -5,28 +5,32 @@
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
   </div>
+
   <div class="carousel-inner">
+
     <div class="carousel-item active">
-  <!-- ใส่รูป Banner รูปที่1 -->
-  <a href="/your-link-here">
-    <img src="/images/Carousel1.png" class="d-block w-100" alt="Promotion slide 1">
-  </a>
-</div>
+      <!-- ใส่รูป Banner 1 -->
+      <a href="/your-link-here">
+        <img src="/images/Carousel1.png" class="d-block w-100 carousel-img" alt="Promotion slide 1">
+      </a>
+    </div>
 
-<div class="carousel-item">
-  <!-- ใส่รูป Banner รูปที่2 -->
-  <a href="/your-link-here-2">
-    <img src="/images/Carousel2.png" class="d-block w-100" alt="Promotion slide 2">
-  </a>
-</div>
+    <div class="carousel-item">
+      <!-- ใส่รูป Banner 2 -->
+      <a href="/your-link-here-2">
+        <img src="/images/Carousel2.png" class="d-block w-100 carousel-img" alt="Promotion slide 2">
+      </a>
+    </div>
 
-<div class="carousel-item">
-  <!-- ใส่รูป Banner รูปที่3 -->
-  <a href="/your-link-here-3">
-    <img src="/images/Carousel3.png" class="d-block w-100" alt="Promotion slide 3">
-  </a>
-</div>
+    <div class="carousel-item">
+      <!-- ใส่รูป Banner 3 -->
+      <a href="/your-link-here-3">
+        <img src="/images/Carousel3.png" class="d-block w-100 carousel-img" alt="Promotion slide 3">
+      </a>
+    </div>
+
   </div>
+
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
@@ -36,6 +40,23 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
+<style>
+  /* ให้รูปแสดงเต็มโดยไม่ถูก crop */
+  .carousel-img {
+    width: 100%;
+    height: auto;        /* สูงตามสัดส่วนรูปจริง */
+    object-fit: contain; /* ไม่ crop รูป */
+    display: block;
+  }
+
+  /* มือถือ: ป้องกันรูปสูงเกินไป */
+  @media (max-width: 576px) {
+    .carousel-img {
+      max-height: none; /* ให้สูงตามสัดส่วนรูปจริงเต็มที่ */
+    }
+  }
+</style>
 
 <div class="container my-4 fade-up">
     <!-- Breadcrumb -->
