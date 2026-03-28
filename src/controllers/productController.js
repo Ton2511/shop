@@ -308,22 +308,30 @@ exports.incrementProductViews = async (productId) => {
   }
 };
 
-// ฟังก์ชันเพิ่มยอดเข้าชมปลอม
 exports.incrementFakeViews = async (productId) => {
   try {
-    const randomIncrement = Math.floor(Math.random() * 7) + 5;
-    
-    await Product.increment('fakeViews', { 
-      by: randomIncrement, 
-      where: { id: productId } 
-    });
-    
-    return randomIncrement;
+    await Product.increment('fakeViews', { by: 1, where: { id: productId } });
   } catch (err) {
-    console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชมปลอม:", err);
-    return 0;
+    console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชม:", err);
   }
 };
+
+// ฟังก์ชันเพิ่มยอดเข้าชมปลอม
+// exports.incrementFakeViews = async (productId) => {
+//   try {
+//     const randomIncrement = Math.floor(Math.random() * 7) + 1;
+    
+//     await Product.increment('fakeViews', { 
+//       by: randomIncrement, 
+//       where: { id: productId } 
+//     });
+    
+//     return randomIncrement;
+//   } catch (err) {
+//     console.error("เกิดข้อผิดพลาดในการอัพเดทยอดเข้าชมปลอม:", err);
+//     return 0;
+//   }
+// };
 
 // แสดงฟอร์มเพิ่มสินค้า
 exports.showNewProductForm = async (req, res) => {
